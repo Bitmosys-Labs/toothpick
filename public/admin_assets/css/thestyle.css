@@ -1,0 +1,28 @@
+.dt-button{
+	border: 1px solid #929292;
+	padding: 8px 10px 5px;
+	margin-right: 20px;
+	border-radius: 4px;
+}
+
+.dataTables_wrapper{
+	justify-content: space-between;
+	margin-top:20px;
+}
+.paginate_button{
+	padding-left:10px;
+}
+
+.panel-body{
+  margin-top:20px;
+}
+
+.box-footer{
+  margin-top:10px;
+}
+
+.site-footer{
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+}
