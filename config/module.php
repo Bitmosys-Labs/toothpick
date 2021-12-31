@@ -7,5 +7,12 @@ return [
         "Role",	//Do Not Change These Files
         "Role_user",  	//Do Not Change These Files
         "User",	//Do Not Change These Files
+        "About",
+        "Job",
+        "Job_application",
+        "Message",
+        "Team",
+        "Privacy",
+        "Term",
     ),
 ];
