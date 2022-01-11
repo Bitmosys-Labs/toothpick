@@ -36,106 +36,95 @@
                             </ul>
                         </li>
                     @endcan
-                    <li class="site-menu-category">Campaign</li>
-                    @can('categories')
+                    <li class="site-menu-category">Job</li>
+                    @can('jobs')
                         <li class="site-menu-item">
-                            <a href="{{ route('admin.categories') }}">
-                                <i class="site-menu-icon wb-list" aria-hidden="true"></i>
-                                <span class="site-menu-title">Category</span>
+                            <a href="{{ route('admin.jobs') }}">
+                                <i class="site-menu-icon fa fa-address-card" aria-hidden="true"></i>
+                                <span class="site-menu-title">Job</span>
                             </a>
                         </li>
                     @endcan
-                    @can('campaigns')
+                    @can('job_applications')
                         <li class="site-menu-item">
-                            <a href="{{ route('admin.campaigns') }}">
-                                <i class="site-menu-icon wb-list-numbered" aria-hidden="true"></i>
-                                <span class="site-menu-title">Campaign</span>
+                            <a href="{{ route('admin.job_applications') }}">
+                                <i class="site-menu-icon fa fa-check" aria-hidden="true"></i>
+                                <span class="site-menu-title">Job Application</span>
                             </a>
                         </li>
                     @endcan
-                    @can('donations')
+                    <li class="site-menu-category">CMS</li>
+                    @can('messages')
                         <li class="site-menu-item">
-                            <a href="{{ route('admin.donations') }}">
-                                <i class="site-menu-icon fa fa-credit-card" aria-hidden="true"></i>
-                                <span class="site-menu-title">Donation</span>
+                            <a href="{{ route('admin.messages') }}">
+                                <i class="site-menu-icon fa fa-envelope" aria-hidden="true"></i>
+                                <span class="site-menu-title">Message</span>
                             </a>
                         </li>
                     @endcan
-
-                    <li class="site-menu-category">Location</li>
-                    @can('countries')
+                    @can('abouts')
                         <li class="site-menu-item">
-                            <a href="{{ route('admin.countries') }}">
-                                <i class="site-menu-icon fa fa-globe" aria-hidden="true"></i>
-                                <span class="site-menu-title">Country</span>
+                            <a href="{{ route('admin.abouts') }}">
+                                <i class="site-menu-icon fa fa-bullhorn" aria-hidden="true"></i>
+                                <span class="site-menu-title">About</span>
                             </a>
                         </li>
                     @endcan
-                    @can('states')
+                    @can('teams')
                         <li class="site-menu-item">
-                            <a href="{{ route('admin.states') }}">
-                                <i class="site-menu-icon fa fa-compass" aria-hidden="true"></i>
-                                <span class="site-menu-title">State</span>
+                            <a href="{{ route('admin.teams') }}">
+                                <i class="site-menu-icon fa fa-users" aria-hidden="true"></i>
+                                <span class="site-menu-title">Team</span>
                             </a>
                         </li>
                     @endcan
-                    @can('cities')
+                    @can('privacies')
                         <li class="site-menu-item">
-                            <a href="{{ route('admin.cities') }}">
-                                <i class="site-menu-icon fa fa-map-marker" aria-hidden="true"></i>
-                                <span class="site-menu-title">City</span>
+                            <a href="{{ route('admin.privacies') }}">
+                                <i class="site-menu-icon fa fa-lock" aria-hidden="true"></i>
+                                <span class="site-menu-title">Privacy Policy</span>
                             </a>
                         </li>
                     @endcan
-
-                    <li class="site-menu-category">Campaign Updates</li>
-                    @can('campaign_updates')
+                    @can('terms')
                         <li class="site-menu-item">
-                            <a href="{{ route('admin.campaign_updates') }}">
-                                <i class="site-menu-icon fa fa-list-alt" aria-hidden="true"></i>
-                                <span class="site-menu-title">Campaign Update</span>
-                            </a>
-                        </li>
-                    @endcan
-                    @can('success_stories')
-                        <li class="site-menu-item">
-                            <a href="{{ route('admin.success_stories') }}">
+                            <a href="{{ route('admin.terms') }}">
                                 <i class="site-menu-icon fa fa-check-circle" aria-hidden="true"></i>
-                                <span class="site-menu-title">Success Story</span>
+                                <span class="site-menu-title">Terms and Conditions</span>
                             </a>
                         </li>
                     @endcan
                 </ul>
-                <div class="site-menubar-section">
-                    <h5>
-                        Milestone
-                        <span class="float-right">30%</span>
-                    </h5>
-                    <div class="progress progress-xs">
-                        <div class="progress-bar active" style="width: 30%;" role="progressbar"></div>
-                    </div>
-                    <h5>
-                        Release
-                        <span class="float-right">60%</span>
-                    </h5>
-                    <div class="progress progress-xs">
-                        <div class="progress-bar progress-bar-warning" style="width: 60%;" role="progressbar"></div>
-                    </div>
-                </div>
+{{--                <div class="site-menubar-section">--}}
+{{--                    <h5>--}}
+{{--                        Milestone--}}
+{{--                        <span class="float-right">30%</span>--}}
+{{--                    </h5>--}}
+{{--                    <div class="progress progress-xs">--}}
+{{--                        <div class="progress-bar active" style="width: 30%;" role="progressbar"></div>--}}
+{{--                    </div>--}}
+{{--                    <h5>--}}
+{{--                        Release--}}
+{{--                        <span class="float-right">60%</span>--}}
+{{--                    </h5>--}}
+{{--                    <div class="progress progress-xs">--}}
+{{--                        <div class="progress-bar progress-bar-warning" style="width: 60%;" role="progressbar"></div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
             </div>
         </div>
     </div>
 
-    <div class="site-menubar-footer">
-        <a href="javascript: void(0);" class="fold-show" data-placement="top" data-toggle="tooltip"
-           data-original-title="Settings">
-            <span class="icon wb-settings" aria-hidden="true"></span>
-        </a>
-        <a href="javascript: void(0);" data-placement="top" data-toggle="tooltip" data-original-title="Lock">
-            <span class="icon wb-eye-close" aria-hidden="true"></span>
-        </a>
-        <a href="javascript: void(0);" data-placement="top" data-toggle="tooltip" data-original-title="Logout">
-            <span class="icon wb-power" aria-hidden="true"></span>
-        </a>
-    </div>
+{{--    <div class="site-menubar-footer">--}}
+{{--        <a href="javascript: void(0);" class="fold-show" data-placement="top" data-toggle="tooltip"--}}
+{{--           data-original-title="Settings">--}}
+{{--            <span class="icon wb-settings" aria-hidden="true"></span>--}}
+{{--        </a>--}}
+{{--        <a href="javascript: void(0);" data-placement="top" data-toggle="tooltip" data-original-title="Lock">--}}
+{{--            <span class="icon wb-eye-close" aria-hidden="true"></span>--}}
+{{--        </a>--}}
+{{--        <a href="javascript: void(0);" data-placement="top" data-toggle="tooltip" data-original-title="Logout">--}}
+{{--            <span class="icon wb-power" aria-hidden="true"></span>--}}
+{{--        </a>--}}
+{{--    </div>--}}
 </div>
