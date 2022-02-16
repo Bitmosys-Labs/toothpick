@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateReceiptTable extends Migration
+class CreateRatingTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,11 @@ class CreateReceiptTable extends Migration
      */
     public function up()
     {
-        Schema::create('receipt', function (Blueprint $table) {
+        Schema::create('rating', function (Blueprint $table) {
             $table->id();
-            $table->integer('timesheet_id')->nullable();
-            $table->string('slug')->nullable();
-            $table->string('working_hours')->nullable();
-            $table->float('rate')->nullable();
-            $table->float('total')->nullable();
-            $table->boolean('status')->nullable();
+            $table->integer('practice_id')->nullable();
+            $table->integer('dcp_id')->nullable();
+            $table->float('rating')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
@@ -33,6 +30,6 @@ class CreateReceiptTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('receipt');
+        Schema::dropIfExists('rating');
     }
 }
