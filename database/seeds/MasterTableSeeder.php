@@ -38,7 +38,7 @@ class MasterTableSeeder extends Seeder
         $user = User::create([
             'name' => 'Superadmin',
             'username' => 'superadmin',
-            'control' => 1,
+//            'control' => 1,
             'last_visit' => date('Y-m-d H:m:s'),
             'status' => 0,
             'email' => 'superadmin@system.co',
