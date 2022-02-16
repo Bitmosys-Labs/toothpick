@@ -1,0 +1,24 @@
+<?php
+
+
+
+Route::group(array('prefix'=>'admin/','module'=>'Dcp','middleware' => ['web','auth', 'can:dcps'], 'namespace' => 'App\Modules\Dcp\Controllers'), function() {
+    //Your routes belong to this module.
+    Route::get('dcps/','AdminDcpController@index')->name('admin.dcps');
+    Route::post('dcps/getdcpsJson','AdminDcpController@getdcpsJson')->name('admin.dcps.getdatajson');
+    Route::get('dcps/create','AdminDcpController@create')->name('admin.dcps.create');
+    Route::post('dcps/store','AdminDcpController@store')->name('admin.dcps.store');
+    Route::get('dcps/show/{id}','AdminDcpController@show')->name('admin.dcps.show');
+    Route::get('dcps/edit/{id}','AdminDcpController@edit')->name('admin.dcps.edit');
+    Route::match(['put', 'patch'], 'dcps/update','AdminDcpController@update')->name('admin.dcps.update');
+    Route::get('dcps/delete/{id}', 'AdminDcpController@destroy')->name('admin.dcps.edit');
+});
+
+
+
+
+Route::group(array('module'=>'Dcp','namespace' => 'App\Modules\Dcp\Controllers'), function() {
+    //Your routes belong to this module.
+    Route::get('dcps/','DcpController@index')->name('dcps');
+
+});
