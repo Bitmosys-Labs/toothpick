@@ -20,4 +20,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(['name' => 'Home'], function (){
     Route::get('register', 'Api\UserApiController@register');
     Route::post('registerUser', 'Api\UserApiController@registerUser');
+    Route::post('message', 'Api\MessageApiController@message');
 });
