@@ -15,6 +15,7 @@ return [
         "Privacy",
         "Term",
         "Booking",
+        "Staff",
 
     ),
 ];

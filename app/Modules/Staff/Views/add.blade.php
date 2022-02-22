@@ -1,6 +1,6 @@
 @extends('admin.layout.main')
 @section('content')
-    
+
     <div class="page-content container-fluid">
         <div class="page-header">
             <h1 class="page-title">Add Staff </h1>
@@ -18,12 +18,12 @@
             <div class="panel-body">
                 <div class="table-responsive">
                     <form role="form" action="{{ route('admin.staff.store') }}"  method="post">
-                        <div class="box-body">                
+                        <div class="box-body">
                             <div class="form-group">
                                     <label for="type">Type</label><input type="text" name="type" id="type" class="form-control" ></div><div class="form-group">
-                                    <label for="deleted_at">Deleted_at</label><input type="text" name="deleted_at" id="deleted_at" class="form-control" ></div><div class="form-group">
-                                    <label for="created_at">Created_at</label><input type="text" name="created_at" id="created_at" class="form-control" ></div><div class="form-group">
-                                    <label for="updated_at">Updated_at</label><input type="text" name="updated_at" id="updated_at" class="form-control" ></div>
+{{--                                    <label for="deleted_at">Deleted_at</label><input type="text" name="deleted_at" id="deleted_at" class="form-control" ></div><div class="form-group">--}}
+{{--                                    <label for="created_at">Created_at</label><input type="text" name="created_at" id="created_at" class="form-control" ></div><div class="form-group">--}}
+{{--                                    <label for="updated_at">Updated_at</label><input type="text" name="updated_at" id="updated_at" class="form-control" ></div>--}}
 <input type="hidden" name="id" id="id"/>
                         </div>
                         {{ csrf_field() }}

@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class UserApiController extends Controller
 {
     public function register(){
-        $staff = Staff::all();
+        $staff = Staff::select('id', 'type')->get();
         return json_encode($staff);
     }
 
