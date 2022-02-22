@@ -13,9 +13,8 @@
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index')->name('home');
 
 Route::group(['name' => 'Home'], function (){
-    Route::get('/', 'FrontController@index')->name('frontend.home');
-
+    Route::get('/home', 'FrontController@index')->name('frontend.home');
 });

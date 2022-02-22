@@ -56,7 +56,6 @@ class AdminBookingController extends Controller
         //To count the total values present
         $total = $booking->get();
 
-
         echo json_encode(['draw'=>$request['draw'],'recordsTotal'=>count($total),'recordsFiltered'=>count($filterTotal),'data'=>$rows]);
 
 

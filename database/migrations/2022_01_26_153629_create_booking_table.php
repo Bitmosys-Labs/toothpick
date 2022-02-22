@@ -13,7 +13,7 @@ class CreateBookingTable extends Migration
      */
     public function up()
     {
-        Schema::create('booking', function (Blueprint $table) {
+        Schema::create('Booking', function (Blueprint $table) {
             $table->id();
             $table->integer('practice_id')->nullable();
             $table->integer('staff_id')->nullable();
@@ -36,6 +36,6 @@ class CreateBookingTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('booking');
+        Schema::dropIfExists('Booking');
     }
 }
