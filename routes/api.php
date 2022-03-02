@@ -21,4 +21,5 @@ Route::group(['name' => 'Home'], function (){
     Route::get('register', 'Api\UserApiController@register');
     Route::post('registerUser', 'Api\UserApiController@registerUser');
     Route::post('message', 'Api\MessageApiController@message');
+    Route::post('checkMail', 'Api\UserApiController@emailCheck');
 });
