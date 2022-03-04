@@ -87,8 +87,12 @@ class UserApiController extends Controller
     public function userLogin(Request $request)
     {
         $user = User::where('email', $request->email)->first();
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return response('Credentials Mismatch!', 404);
+        if($user->email_verified_at != null){
+            if (!$user || !Hash::check($request->password, $user->password)) {
+                return response('Credentials Mismatch!', 404);
+            }
+        }else{
+            return response('Email Not Verified!', 404);
         }
         $token = $user->createToken('my-app-token')->plainTextToken;
         $response = [
