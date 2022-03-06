@@ -18,76 +18,57 @@ class UserApiController extends Controller
     }
 
     public function registerUser(Request $request){
-//         if(User::where('email', '=', $request->email)->whereNotNull('email_verified_at')->exists()) {
-//             return response('Email already exists!');
-//         }
-//         $user = new User();
-//         if($request->role == 1){
-//             $request->validate([
-//                 'full_name' => 'required',
-//                 'email' => 'required',
-//                 'contact' => 'required',
-//                 'password' => 'required|min:6',
-//                 'confirm_password' => 'required|min:6|same:password',
-//                 'role' => 'required',
-//             ]);
-//             $data = [
-//                 'name' => $request->fullname,
-//                 'email' => $request->email,
-//                 'contact' => $request->contact,
-//                 'password' => Hash::make($request->password),
-//                 'role' => $request->role,
-//             ];
-//             $newUser = $user->save($data);
-//             $practice = new Practice();
-//             $practice_data = [
-//                 'user_id' => $newUser->id,
-//             ];
-//
-//             try{
-//                 $practice->save($practice_data);
-//                 return response('Success');
-//             }
-//             catch (\Exception $e){
-//                 $user->where('id', $newUser->id)->delete();
-//                 return response('Registration Failed!', 404);
-//             }
-//         }elseif ($request->role == 2){
-//             $request->validate([
-//                 'full_name' => 'required',
-//                 'email' => 'required',
-//                 'contact' => 'required',
-//                 'password' => 'required|min:6',
-//                 'confirm_password' => 'required|min:6|same:password',
-//                 'role' => 'required',
-//                 'staff_id' => 'required',
-//             ]);
-//             $data = [
-//                 'name' => $request->fullname,
-//                 'email' => $request->email,
-//                 'contact' => $request->contact,
-//                 'password' => Hash::make($request->password),
-//                 'role' => $request->role,
-//             ];
-//             $newUser = $user->save($data);
-//             $dcp = new Dcp();
-//             $dcp_data = [
-//                 'user_id' => $newUser->id,
-//                 'staff_id' => $request->staff_id,
-//             ];
-//             try{
-//                 $dcp->save($dcp_data);
-//                 return response('Success');
-//             }
-//             catch (\Exception $e){
-//                 $user->where('id', $newUser->id)->delete();
-//                 return response('Registration Failed!', 404);
-//             }
-//         }
+         if(User::where('email', '=', $request->email)->whereNotNull('email_verified_at')->exists()) {
+             return response('Email already exists!');
+         }
+         $user = new User();
+         if($request->role == 1){
+             $data = [
+                 'name' => $request->name,
+                 'email' => $request->email,
+                 'contact' => $request->contact,
+                 'password' => Hash::make($request->password),
+                 'role' => 1,
+                 'status' => 1,
+             ];
+             $newUser = $user->create($data);
+             $practice = new Practice();
+             $practice_data = [
+                 'user_id' => $newUser->id,
+             ];
 
-        if($request->all()){
-            return response('Success');
-        }
+             try{
+                 $practice->save($practice_data);
+                 return response('Success');
+             }
+             catch (\Exception $e){
+                 $user->where('id', $newUser->id)->delete();
+                 return response('Registration Failed!', 404);
+             }
+         }elseif ($request->role == 2){
+             $data = [
+                 'name' => $request->fullname,
+                 'email' => $request->email,
+                 'contact' => $request->contact,
+                 'password' => Hash::make($request->password),
+                 'role' => 2,
+                 'status' => 1,
+             ];
+             $newUser = $user->create($data);
+             $dcp = new Dcp();
+             $dcp_data = [
+                 'user_id' => $newUser->id,
+                 'staff_id' => $request->staff_id,
+             ];
+             try{
+                 $dcp->save($dcp_data);
+                 return response('Success');
+             }
+             catch (\Exception $e){
+                 $user->where('id', $newUser->id)->delete();
+                 return response('Registration Failed!', 404);
+             }
+         }
     }
 
     public function emailCheck(Request $request){
