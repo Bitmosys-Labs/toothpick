@@ -17,6 +17,7 @@ class CreateMessageTable extends Migration
             $table->id();
             $table->string('full_name');
             $table->string('email');
+            $table->string('subject');
             $table->longText('message');
             $table->boolean('status')->default(0);
             $table->softDeletes();

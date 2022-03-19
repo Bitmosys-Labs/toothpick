@@ -185,6 +185,7 @@ return [
         Yajra\DataTables\DataTablesServiceProvider::class,
         NunoMaduro\Collision\Adapters\Laravel\CollisionServiceProvider::class,
         Cviebrock\EloquentSluggable\ServiceProvider::class,
+        Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
     ],
 
     /*

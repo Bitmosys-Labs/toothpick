@@ -12,10 +12,10 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
 
 Route::group(['name' => 'Home'], function (){
     Route::get('register', 'Api\UserApiController@register');
@@ -23,5 +23,10 @@ Route::group(['name' => 'Home'], function (){
     Route::post('message', 'Api\MessageApiController@message');
     Route::post('checkMail', 'Api\UserApiController@emailCheck');
     Route::post('userLogin', 'Api\UserApiController@userLogin');
+    Route::get('sendVerifyEmail', 'Api\UserApiController@emailVerification');
+    Route::post('verifyMail', 'Api\UserApiController@emailVerify');
+});
+
+Route::group(['name' => 'Home', 'middleware' => 'auth:api'], function (){
     Route::post('userDetails', 'Api\UserApiController@userDetails');
 });

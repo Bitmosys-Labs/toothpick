@@ -3,18 +3,28 @@
 namespace App\Http\Controllers\Api;
 
 use App\Core_modules\User\Model\User;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\Controller;
+use App\Mail\tokenMail;
 use App\Modules\Dcp\Model\Dcp;
 use App\Modules\Practice\Model\Practice;
 use App\Modules\Staff\Model\Staff;
+use App\Modules\Token\Model\Token;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class UserApiController extends Controller
 {
     public function register(){
-        $staff = Staff::select('id', 'type')->get();
-        return json_encode($staff);
+        $data = Staff::select('id', 'type')->get();
+
+        $response = [
+            'success' => true,
+            'message' => 'List of staff type for DCP registration',
+            'result' => $data
+        ];
+        return response($response, 200);
     }
 
     public function registerUser(Request $request){
@@ -39,11 +49,22 @@ class UserApiController extends Controller
 
              try{
                  $practice->save($practice_data);
-                 return response('Success');
+
+                 $response = [
+                     'success' => true,
+                     'message' => 'Successfully registered!',
+                     'result' => null
+                 ];
+                 return response($response, 201);
              }
              catch (\Exception $e){
                  $user->where('id', $newUser->id)->delete();
-                 return response('Registration Failed!', 404);
+                 $response = [
+                     'success' => false,
+                     'message' => 'Registration failed!',
+                     'result' => null
+                 ];
+                 return response($response, 400);
              }
          }elseif ($request->role == 2){
              $data = [
@@ -52,7 +73,7 @@ class UserApiController extends Controller
                  'contact' => $request->contact,
                  'password' => Hash::make($request->password),
                  'role' => 2,
-                 'status' => 1,
+                 'status' => 0,
              ];
              $newUser = $user->create($data);
              $dcp = new Dcp();
@@ -62,38 +83,183 @@ class UserApiController extends Controller
              ];
              try{
                  $dcp->save($dcp_data);
-                 return response('Success');
+                 $response = [
+                     'success' => true,
+                     'message' => 'Successfully registered!',
+                     'result' => null
+                 ];
+                 return response($response, 201);
              }
              catch (\Exception $e){
                  $user->where('id', $newUser->id)->delete();
-                 return response('Registration Failed!', 404);
+                 $response = [
+                     'success' => false,
+                     'message' => 'Registration failed!',
+                     'result' => null
+                 ];
+                 return response($response, 400);
              }
          }
     }
 
     public function emailCheck(Request $request){
         if(User::where('email', '=', $request->email)->whereNotNull('email_verified_at')->exists()) {
-            return json_encode(false);
+            $response = [
+                'success' => false,
+                'message' => 'Email already exists!',
+                'result' => null
+            ];
+            return response($response, 403);
         }else{
-            return json_encode(true);
+            $response = [
+                'success' => true,
+                'message' => 'Email is unique!',
+                'result' => null
+            ];
+            return response($response, 200);
         }
     }
 
     public function userLogin(Request $request)
     {
-        $user = User::where('email', $request->email)->first();
-        if($user->email_verified_at != null){
-            if (!$user || !Hash::check($request->password, $user->password)) {
-                return response('Credentials Mismatch!', 404);
+        $user = User::where('email', $request->email)->orderBy('created_at', 'DESC')->first();
+        if($user){
+            if($user->email_verified_at != null){
+                if (!$user || !Hash::check($request->password, $user->password)) {
+                    $response = [
+                        'success' => false,
+                        'message' => 'Wrong credentials!',
+                        'result' => null
+                    ];
+                    return response($response, 401);
+                }
+            }else{
+                return response('Email Not Verified!', 403);
+            }
+            $token = auth()->attempt($request->only(['email', 'password']));
+//        $token = $user->createToken('my-app-token')->plainTextToken;
+            $data = [
+                'user' => $user,
+                'token' => $token,
+            ];
+            $response = [
+                'success' => true,
+                'message' => 'Login successful!',
+                'result' => $data
+            ];
+            return response($response, 200);
+        }
+        $response = [
+            'success' => false,
+            'message' => 'Wrong credentials!',
+            'result' => null
+        ];
+        return response($response, 401);
+    }
+
+    public function userDetails(Request $request){
+//        return json_encode(auth()->user());
+            return response(auth()->user());
+//        if(auth()->user()->role == 1){
+//            $practice = new Practice();
+//            $data = [
+//                'owners_name' => $request->owners_name,
+//                'postcode' => $request->postcode,
+//                'address' => $request->address,
+//                'emergency_contact' => $request->emergency_contact,
+//                'gdc_no' => $request->gdc_no,
+//                'contact' => $request->contact,
+//            ];
+//            if($practice->where('user_id', auth()->user()->id)->update($data)){
+//                $response = [
+//                    'success' => true,
+//                    'message' => 'Data successfully registered',
+//                    'result' => null
+//                ];
+//                return response($response, 201);
+//            }
+//        }
+//        elseif (auth()->user()->role == 2){
+//            $dcp = new Dcp();
+//            $data = [
+//                'owners_name' => $request->owners_name,
+//                'postcode' => $request->postcode,
+//                'address' => $request->address,
+//                'emergency_contact' => $request->emergency_contact,
+//                'relation_to_emergency_contact' => $request->emergency_contact,
+//                'gdc_no' => $request->gdc_no,
+//                'travel' => $request->travel,
+//            ];
+//            if($dcp->where('user_id', auth()->user()->id)->update($data)){
+//                $response = [
+//                    'success' => true,
+//                    'message' => 'Data successfully registered',
+//                    'result' => null
+//                ];
+//                return response($response, 201);
+//            }
+//        }
+    }
+
+    public function emailVerification(Request $request){
+        if($request->email){
+            if(User::where('email',$request->email)->whereNotNull('email_verified_at')->exists()){
+                return response('Verified');
+            }
+            $token = substr(uniqid(), 7, 11);
+            $user = User::where('email', $request->email)->orderBy('created_at', 'DESC')->first();
+            $record = new Token();
+            $data = [
+                'user_id' => $user->id,
+                'token' => $token,
+            ];
+            $record->where('user_id', $user->id)->delete();
+            if($record->create($data)){
+                $details = [
+                  'token' => $token
+                ];
+                Mail::to($user->email)->send(new tokenMail($details));
+
+                $response = [
+                    'success' => true,
+                    'message' => 'Email sent',
+                    'result' => null
+                ];
+                return response($response, 201);
             }
         }else{
-            return response('Email Not Verified!', 404);
+            $response = [
+                'success' => false,
+                'message' => 'Something went wrong',
+                'result' => null
+            ];
+            return response($response, 400);
         }
-        $token = $user->createToken('my-app-token')->plainTextToken;
-        $response = [
-            'user' => $user,
-            'token' => $token,
-        ];
-        return response($response, 200);
+    }
+
+    public function emailVerify(Request $request){
+        $user = User::where('email', $request->email)->orderBy('created_at', 'DESC')->first();
+        $token = $request->token;
+
+        if(Token::where('user_id', $user->id)->where('token', $token)
+            ->where('created_at', '>=', Carbon::now()->subMinutes(20)->toDateTimeString())->exists()){
+            $data = [
+              'email_verified_at' => Carbon::now()->toDateTimeString()
+            ];
+            User::where('id', $user->id)->update($data);
+            $response = [
+                'success' => true,
+                'message' => 'Verified',
+                'result' => null
+            ];
+            return response($response, 200);
+        }else{
+            $response = [
+                'success' => false,
+                'message' => 'Token Expired',
+                'result' => null
+            ];
+            return response($response, 401);
+        }
     }
 }

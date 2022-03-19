@@ -20,6 +20,7 @@
         "laravel/ui": "^3.0",
         "paypal/rest-api-sdk-php": "^1.14",
         "spatie/laravel-permission": "^3.17",
+        "tymon/jwt-auth": "^1.0",
         "yajra/laravel-datatables": "^1.5"
     },
     "require-dev": {
