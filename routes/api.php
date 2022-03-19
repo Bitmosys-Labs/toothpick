@@ -28,5 +28,6 @@ Route::group(['name' => 'Home'], function (){
 });
 
 Route::group(['name' => 'Home', 'middleware' => 'auth:api'], function (){
-    Route::post('userDetails', 'Api\UserApiController@userDetails');
+    Route::post('userDetails', 'Api\RegistrationController@userDetails');
+    Route::post('refreshLogin', 'Api\RegistrationController@refreshLogin');
 });
