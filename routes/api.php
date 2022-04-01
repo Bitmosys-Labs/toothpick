@@ -25,9 +25,14 @@ Route::group(['name' => 'Home'], function (){
     Route::post('userLogin', 'Api\UserApiController@userLogin');
     Route::get('sendVerifyEmail', 'Api\UserApiController@emailVerification');
     Route::post('verifyMail', 'Api\UserApiController@emailVerify');
+    Route::get('careerOpportunities', 'CareerApiController@job');
+    Route::post('apply', 'CareerApiController@jobApplication');
+    Route::get('me', 'Api\RegistrationController@me');
 });
 
 Route::group(['name' => 'Home', 'middleware' => 'auth:api'], function (){
     Route::post('userDetails', 'Api\RegistrationController@userDetails');
     Route::post('refreshLogin', 'Api\RegistrationController@refreshLogin');
+    Route::get('staffType', 'Api\BookingApiController@staffType');
+    Route::post('bookStaff', 'Api\BookingApiController@BookingCreate');
 });

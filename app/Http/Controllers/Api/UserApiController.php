@@ -34,12 +34,12 @@ class UserApiController extends Controller
          $user = new User();
          if($request->role == 1){
              $data = [
-                 'name' => $request->name,
+                 'name' => $request->full_name,
                  'email' => $request->email,
                  'contact' => $request->contact,
                  'password' => Hash::make($request->password),
                  'role' => 1,
-                 'status' => 1,
+                 'status' => 0,
              ];
              $newUser = $user->create($data);
              $practice = new Practice();
@@ -68,7 +68,7 @@ class UserApiController extends Controller
              }
          }elseif ($request->role == 2){
              $data = [
-                 'name' => $request->fullname,
+                 'name' => $request->full_name,
                  'email' => $request->email,
                  'contact' => $request->contact,
                  'password' => Hash::make($request->password),

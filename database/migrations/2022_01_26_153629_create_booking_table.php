@@ -23,6 +23,7 @@ class CreateBookingTable extends Migration
             $table->time('to')->nullable();
             $table->float('hourly_rate')->nullable();
             $table->string('parking')->nullable();
+            $table->text('additional')->nullable();
             $table->boolean('status')->nullable();
             $table->softDeletes();
             $table->timestamps();

@@ -14,7 +14,7 @@ class User extends Authenticatable implements JWTSubject
     use HasRoles, HasApiTokens, SoftDeletes;
     public  $table = 'users';
 
-    protected $fillable = ['id','name','username','control','last_visit','status','email','password','deleted_at','created_at','updated_at',];
+    protected $fillable = ['id','name','username','control','last_visit','status','email','password', 'contact', 'role', 'deleted_at','created_at','updated_at',];
 
     protected $hidden = [
       'remember_token'
