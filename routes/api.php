@@ -25,8 +25,8 @@ Route::group(['name' => 'Home'], function (){
     Route::post('userLogin', 'Api\UserApiController@userLogin');
     Route::get('sendVerifyEmail', 'Api\UserApiController@emailVerification');
     Route::post('verifyMail', 'Api\UserApiController@emailVerify');
-    Route::get('careerOpportunities', 'CareerApiController@job');
-    Route::post('apply', 'CareerApiController@jobApplication');
+    Route::get('careerOpportunities', 'Api\CareerApiController@job');
+    Route::post('apply', 'Api\CareerApiController@jobApplication');
     Route::get('me', 'Api\RegistrationController@me');
 });
 

@@ -36,6 +36,47 @@
                             </ul>
                         </li>
                     @endcan
+                    <li class="site-menu-category">booking</li>
+                    @can('dcps')
+                        <li class="site-menu-item">
+                            <a href="{{ route('admin.dcps') }}">
+                                <i class="site-menu-icon fa fa-user-nurse" aria-hidden="true"></i>
+                                <span class="site-menu-title">Create DCP</span>
+                            </a>
+                        </li>
+                    @endcan
+                    @can('practices')
+                        <li class="site-menu-item">
+                            <a href="{{ route('admin.practices') }}">
+                                <i class="site-menu-icon fa fa-hospital" aria-hidden="true"></i>
+                                <span class="site-menu-title">Create Practice</span>
+                            </a>
+                        </li>
+                    @endcan
+                    @can('bookings')
+                        <li class="site-menu-item">
+                            <a href="{{ route('admin.bookings') }}">
+                                <i class="site-menu-icon fa fa-address-card" aria-hidden="true"></i>
+                                <span class="site-menu-title">Booking</span>
+                            </a>
+                        </li>
+                    @endcan
+                    @can('receipts')
+                        <li class="site-menu-item">
+                            <a href="{{ route('admin.receipts') }}">
+                                <i class="site-menu-icon fa fa-credit-card" aria-hidden="true"></i>
+                                <span class="site-menu-title">Billing</span>
+                            </a>
+                        </li>
+                    @endcan
+                    @can('timesheets')
+                        <li class="site-menu-item">
+                            <a href="{{ route('admin.timesheets') }}">
+                                <i class="site-menu-icon fa fa-clipboard-list" aria-hidden="true"></i>
+                                <span class="site-menu-title">Time Sheet</span>
+                            </a>
+                        </li>
+                    @endcan
                     <li class="site-menu-category">Job</li>
                     @can('jobs')
                         <li class="site-menu-item">
@@ -54,6 +95,22 @@
                         </li>
                     @endcan
                     <li class="site-menu-category">CMS</li>
+                    @can('staff')
+                        <li class="site-menu-item">
+                            <a href="{{ route('admin.staff') }}">
+                                <i class="site-menu-icon fa fa-user" aria-hidden="true"></i>
+                                <span class="site-menu-title">Staff Type</span>
+                            </a>
+                        </li>
+                    @endcan
+                    @can('parkings')
+                        <li class="site-menu-item">
+                            <a href="{{ route('admin.parkings') }}">
+                                <i class="site-menu-icon fa fa-car" aria-hidden="true"></i>
+                                <span class="site-menu-title">Parking Type</span>
+                            </a>
+                        </li>
+                    @endcan
                     @can('messages')
                         <li class="site-menu-item">
                             <a href="{{ route('admin.messages') }}">

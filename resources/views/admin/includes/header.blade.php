@@ -11,7 +11,10 @@
             <i class="icon wb-more-horizontal" aria-hidden="true"></i>
         </button>
         <div class="navbar-brand navbar-brand-center" >
-            <img class="navbar-brand-logo" src="" title="Remark">
+            <span>
+                <img class="navbar-brand-logo" src="{{ asset('admin_assets/photos/logo.png') }}" title="Toothpick" style="float: left">
+                <p style="float: right">Toothpick</p>
+            </span>
         </div>
     </div>
 
@@ -41,11 +44,11 @@
 
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="javascript:void(0)" title="Notifications"
-                       aria-expanded="false" data-animation="scale-up" role="button">
-                        <i class="icon wb-bell" aria-hidden="true"></i>
-                        <span class="badge badge-pill badge-danger up">5</span>
-                    </a>
+{{--                    <a class="nav-link" data-toggle="dropdown" href="javascript:void(0)" title="Notifications"--}}
+{{--                       aria-expanded="false" data-animation="scale-up" role="button">--}}
+{{--                        <i class="icon wb-bell" aria-hidden="true"></i>--}}
+{{--                        <span class="badge badge-pill badge-danger up">5</span>--}}
+{{--                    </a>--}}
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-media" role="menu">
                         <div class="dropdown-menu-header">
                             <h5>NOTIFICATIONS</h5>
@@ -124,23 +127,24 @@
                     </div>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link navbar-avatar" data-toggle="dropdown" href="#" aria-expanded="false"
+                    <a class="nav-link navbar-avatar fa fa-user" data-toggle="dropdown" href="#" aria-expanded="false"
                        data-animation="scale-up" role="button">
-                <span class="avatar avatar-online">
-                  <img src="../../global/portraits/5.jpg" alt="...">
-                  <i></i>
-                </span>
+{{--                <span class="avatar avatar-online">--}}
+{{--                  <img src="../../global/portraits/5.jpg" alt="...">--}}
+{{--                  <i class="fa fa-user"></i>--}}
+{{--                </span>--}}
                     </a>
                     <div class="dropdown-menu" role="menu">
                         <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon wb-user" aria-hidden="true"></i> Profile</a>
-                        <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon wb-payment" aria-hidden="true"></i> Billing</a>
-                        <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon wb-settings" aria-hidden="true"></i> Settings</a>
+{{--                        <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon wb-payment" aria-hidden="true"></i> Billing</a>--}}
+{{--                        <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon wb-settings" aria-hidden="true"></i> Settings</a>--}}
                         <div class="dropdown-divider" role="presentation"></div>
-                        <a >
+                        <a>
                         <a  class="dropdown-item" role="menuitem" href="" class="btn btn-default btn-flat" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="icon wb-power" aria-hidden="true"></i> Logout</a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             {{ csrf_field() }}
                         </form>
+                        </a>
                     </div>
                 </li>
             </ul>
