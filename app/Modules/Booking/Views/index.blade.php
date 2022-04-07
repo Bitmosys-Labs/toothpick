@@ -30,13 +30,17 @@
                             <th>SN</th>
 							<th >Practice_id</th>
 <th >Staff_id</th>
-<th >Slug</th>
-<th >Date</th>
-<th >From</th>
-<th >To</th>
-<th >Hourly_rate</th>
-<th >Parking</th>
+{{--<th >Slug</th>--}}
+{{--<th >Date</th>--}}
+{{--<th >From</th>--}}
+{{--<th >To</th>--}}
+{{--<th >Hourly_rate</th>--}}
+{{--<th >Parking</th>--}}
+{{--<th >Additional</th>--}}
 <th >Status</th>
+{{--<th >Deleted_at</th>--}}
+{{--<th >Created_at</th>--}}
+{{--<th >Updated_at</th>--}}
 
                             <th>Action</th>
                         </tr>
@@ -57,7 +61,7 @@
     var site_url = window.location.href;
 
     $(function(){
-        dataTable = $('#Booking-datatable').DataTable({
+        dataTable = $('#booking-datatable').DataTable({
         dom: 'Bfrtip',
         "serverSide": true,
         buttons: [
@@ -69,9 +73,10 @@
                 { data: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 },name: "sn", searchable: false },
-                { data: "practice_id",name: "practice_id"},{ data: "staff_id",name: "staff_id"},{ data: "slug",name: "slug"},{ data: "date",name: "date"},{ data: "from",name: "from"},{ data: "to",name: "to"},{ data: "hourly_rate",name: "hourly_rate"},{ data: "parking",name: "parking"},{ data: "status",name: "status"},
+                { data: "practice_id",name: "practice_id"},{ data: "staff_id",name: "staff_id"},
+                // { data: "slug",name: "slug"},{ data: "date",name: "date"},{ data: "from",name: "from"},{ data: "to",name: "to"},{ data: "hourly_rate",name: "hourly_rate"},{ data: "parking",name: "parking"},{ data: "additional",name: "additional"},
+                { data: "status",name: "status"},
                 // { data: "deleted_at",name: "deleted_at"},{ data: "created_at",name: "created_at"},{ data: "updated_at",name: "updated_at"},
-
                 { data: function(data,b,c,table) {
                 var buttons = '';
 

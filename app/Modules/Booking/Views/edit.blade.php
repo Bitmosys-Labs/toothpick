@@ -28,10 +28,11 @@
                                     <label for="to">To</label><input type="text" value = "{{$booking->to}}"  name="to" id="to" class="form-control" ></div><div class="form-group">
                                     <label for="hourly_rate">Hourly_rate</label><input type="text" value = "{{$booking->hourly_rate}}"  name="hourly_rate" id="hourly_rate" class="form-control" ></div><div class="form-group">
                                     <label for="parking">Parking</label><input type="text" value = "{{$booking->parking}}"  name="parking" id="parking" class="form-control" ></div><div class="form-group">
+                                    <label for="additional">Additional</label><input type="text" value = "{{$booking->additional}}"  name="additional" id="additional" class="form-control" ></div><div class="form-group">
                                     <label for="status">Status</label><input type="text" value = "{{$booking->status}}"  name="status" id="status" class="form-control" ></div><div class="form-group">
-                                    <label for="deleted_at">Deleted_at</label><input type="text" value = "{{$booking->deleted_at}}"  name="deleted_at" id="deleted_at" class="form-control" ></div><div class="form-group">
-                                    <label for="created_at">Created_at</label><input type="text" value = "{{$booking->created_at}}"  name="created_at" id="created_at" class="form-control" ></div><div class="form-group">
-                                    <label for="updated_at">Updated_at</label><input type="text" value = "{{$booking->updated_at}}"  name="updated_at" id="updated_at" class="form-control" ></div>
+{{--                                    <label for="deleted_at">Deleted_at</label><input type="text" value = "{{$booking->deleted_at}}"  name="deleted_at" id="deleted_at" class="form-control" ></div><div class="form-group">--}}
+{{--                                    <label for="created_at">Created_at</label><input type="text" value = "{{$booking->created_at}}"  name="created_at" id="created_at" class="form-control" ></div><div class="form-group">--}}
+{{--                                    <label for="updated_at">Updated_at</label><input type="text" value = "{{$booking->updated_at}}"  name="updated_at" id="updated_at" class="form-control" ></div>--}}
 <input type="hidden" name="id" id="id" value = "{{$booking->id}}" />
                             {{ csrf_field() }}
                         </div>

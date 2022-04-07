@@ -34,9 +34,9 @@
                                     <label for="hourly_rate">Hourly_rate</label><input type="text" value = "{{$dcp->hourly_rate}}"  name="hourly_rate" id="hourly_rate" class="form-control" ></div><div class="form-group">
                                     <label for="status">Status</label><input type="text" value = "{{$dcp->status}}"  name="status" id="status" class="form-control" ></div><div class="form-group">
                                     <label for="employment_history">Employment_history</label><input type="text" value = "{{$dcp->employment_history}}"  name="employment_history" id="employment_history" class="form-control" ></div><div class="form-group">
-                                    <label for="deleted_at">Deleted_at</label><input type="text" value = "{{$dcp->deleted_at}}"  name="deleted_at" id="deleted_at" class="form-control" ></div><div class="form-group">
-                                    <label for="created_at">Created_at</label><input type="text" value = "{{$dcp->created_at}}"  name="created_at" id="created_at" class="form-control" ></div><div class="form-group">
-                                    <label for="updated_at">Updated_at</label><input type="text" value = "{{$dcp->updated_at}}"  name="updated_at" id="updated_at" class="form-control" ></div>
+{{--                                    <label for="deleted_at">Deleted_at</label><input type="text" value = "{{$dcp->deleted_at}}"  name="deleted_at" id="deleted_at" class="form-control" ></div><div class="form-group">--}}
+{{--                                    <label for="created_at">Created_at</label><input type="text" value = "{{$dcp->created_at}}"  name="created_at" id="created_at" class="form-control" ></div><div class="form-group">--}}
+{{--                                    <label for="updated_at">Updated_at</label><input type="text" value = "{{$dcp->updated_at}}"  name="updated_at" id="updated_at" class="form-control" ></div>--}}
 <input type="hidden" name="id" id="id" value = "{{$dcp->id}}" />
                             {{ csrf_field() }}
                         </div>

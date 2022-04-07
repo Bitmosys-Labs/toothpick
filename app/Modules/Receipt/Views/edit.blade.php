@@ -26,9 +26,9 @@
                                     <label for="rate">Rate</label><input type="text" value = "{{$receipt->rate}}"  name="rate" id="rate" class="form-control" ></div><div class="form-group">
                                     <label for="total">Total</label><input type="text" value = "{{$receipt->total}}"  name="total" id="total" class="form-control" ></div><div class="form-group">
                                     <label for="status">Status</label><input type="text" value = "{{$receipt->status}}"  name="status" id="status" class="form-control" ></div><div class="form-group">
-                                    <label for="deleted_at">Deleted_at</label><input type="text" value = "{{$receipt->deleted_at}}"  name="deleted_at" id="deleted_at" class="form-control" ></div><div class="form-group">
-                                    <label for="created_at">Created_at</label><input type="text" value = "{{$receipt->created_at}}"  name="created_at" id="created_at" class="form-control" ></div><div class="form-group">
-                                    <label for="updated_at">Updated_at</label><input type="text" value = "{{$receipt->updated_at}}"  name="updated_at" id="updated_at" class="form-control" ></div>
+{{--                                    <label for="deleted_at">Deleted_at</label><input type="text" value = "{{$receipt->deleted_at}}"  name="deleted_at" id="deleted_at" class="form-control" ></div><div class="form-group">--}}
+{{--                                    <label for="created_at">Created_at</label><input type="text" value = "{{$receipt->created_at}}"  name="created_at" id="created_at" class="form-control" ></div><div class="form-group">--}}
+{{--                                    <label for="updated_at">Updated_at</label><input type="text" value = "{{$receipt->updated_at}}"  name="updated_at" id="updated_at" class="form-control" ></div>--}}
 <input type="hidden" name="id" id="id" value = "{{$receipt->id}}" />
                             {{ csrf_field() }}
                         </div>

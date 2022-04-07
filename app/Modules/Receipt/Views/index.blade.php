@@ -29,14 +29,14 @@
                         <tr>
                             <th>SN</th>
 							<th >Timesheet_id</th>
-<th >Slug</th>
-<th >Working_hours</th>
-<th >Rate</th>
+{{--<th >Slug</th>--}}
+{{--<th >Working_hours</th>--}}
+{{--<th >Rate</th>--}}
 <th >Total</th>
-<th >Status</th>
-<th >Deleted_at</th>
-<th >Created_at</th>
-<th >Updated_at</th>
+{{--<th >Status</th>--}}
+{{--<th >Deleted_at</th>--}}
+{{--<th >Created_at</th>--}}
+{{--<th >Updated_at</th>--}}
 
                             <th>Action</th>
                         </tr>
@@ -69,7 +69,10 @@
                 { data: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 },name: "sn", searchable: false },
-                { data: "timesheet_id",name: "timesheet_id"},{ data: "slug",name: "slug"},{ data: "working_hours",name: "working_hours"},{ data: "rate",name: "rate"},{ data: "total",name: "total"},{ data: "status",name: "status"},{ data: "deleted_at",name: "deleted_at"},{ data: "created_at",name: "created_at"},{ data: "updated_at",name: "updated_at"},
+                { data: "timesheet_id",name: "timesheet_id"},
+                // { data: "slug",name: "slug"},{ data: "working_hours",name: "working_hours"},{ data: "rate",name: "rate"},
+                { data: "total",name: "total"},
+                // { data: "status",name: "status"},{ data: "deleted_at",name: "deleted_at"},{ data: "created_at",name: "created_at"},{ data: "updated_at",name: "updated_at"},
 
                 { data: function(data,b,c,table) {
                 var buttons = '';

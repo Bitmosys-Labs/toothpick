@@ -30,9 +30,9 @@
                                     <label for="payable_amount">Payable_amount</label><input type="text" value = "{{$timesheet->payable_amount}}"  name="payable_amount" id="payable_amount" class="form-control" ></div><div class="form-group">
                                     <label for="vat">Vat</label><input type="text" value = "{{$timesheet->vat}}"  name="vat" id="vat" class="form-control" ></div><div class="form-group">
                                     <label for="status">Status</label><input type="text" value = "{{$timesheet->status}}"  name="status" id="status" class="form-control" ></div><div class="form-group">
-                                    <label for="deleted_at">Deleted_at</label><input type="text" value = "{{$timesheet->deleted_at}}"  name="deleted_at" id="deleted_at" class="form-control" ></div><div class="form-group">
-                                    <label for="created_at">Created_at</label><input type="text" value = "{{$timesheet->created_at}}"  name="created_at" id="created_at" class="form-control" ></div><div class="form-group">
-                                    <label for="updated_at">Updated_at</label><input type="text" value = "{{$timesheet->updated_at}}"  name="updated_at" id="updated_at" class="form-control" ></div>
+{{--                                    <label for="deleted_at">Deleted_at</label><input type="text" value = "{{$timesheet->deleted_at}}"  name="deleted_at" id="deleted_at" class="form-control" ></div><div class="form-group">--}}
+{{--                                    <label for="created_at">Created_at</label><input type="text" value = "{{$timesheet->created_at}}"  name="created_at" id="created_at" class="form-control" ></div><div class="form-group">--}}
+{{--                                    <label for="updated_at">Updated_at</label><input type="text" value = "{{$timesheet->updated_at}}"  name="updated_at" id="updated_at" class="form-control" ></div>--}}
 <input type="hidden" name="id" id="id" value = "{{$timesheet->id}}" />
                             {{ csrf_field() }}
                         </div>

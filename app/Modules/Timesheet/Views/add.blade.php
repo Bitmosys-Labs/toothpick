@@ -1,6 +1,6 @@
 @extends('admin.layout.main')
 @section('content')
-    
+
     <div class="page-content container-fluid">
         <div class="page-header">
             <h1 class="page-title">Add Timesheets </h1>
@@ -18,7 +18,7 @@
             <div class="panel-body">
                 <div class="table-responsive">
                     <form role="form" action="{{ route('admin.timesheets.store') }}"  method="post">
-                        <div class="box-body">                
+                        <div class="box-body">
                             <div class="form-group">
                                     <label for="booking_id">Booking_id</label><input type="text" name="booking_id" id="booking_id" class="form-control" ></div><div class="form-group">
                                     <label for="slug">Slug</label><input type="text" name="slug" id="slug" class="form-control" ></div><div class="form-group">
@@ -30,9 +30,9 @@
                                     <label for="payable_amount">Payable_amount</label><input type="text" name="payable_amount" id="payable_amount" class="form-control" ></div><div class="form-group">
                                     <label for="vat">Vat</label><input type="text" name="vat" id="vat" class="form-control" ></div><div class="form-group">
                                     <label for="status">Status</label><input type="text" name="status" id="status" class="form-control" ></div><div class="form-group">
-                                    <label for="deleted_at">Deleted_at</label><input type="text" name="deleted_at" id="deleted_at" class="form-control" ></div><div class="form-group">
-                                    <label for="created_at">Created_at</label><input type="text" name="created_at" id="created_at" class="form-control" ></div><div class="form-group">
-                                    <label for="updated_at">Updated_at</label><input type="text" name="updated_at" id="updated_at" class="form-control" ></div>
+{{--                                    <label for="deleted_at">Deleted_at</label><input type="text" name="deleted_at" id="deleted_at" class="form-control" ></div><div class="form-group">--}}
+{{--                                    <label for="created_at">Created_at</label><input type="text" name="created_at" id="created_at" class="form-control" ></div><div class="form-group">--}}
+{{--                                    <label for="updated_at">Updated_at</label><input type="text" name="updated_at" id="updated_at" class="form-control" ></div>--}}
 <input type="hidden" name="id" id="id"/>
                         </div>
                         {{ csrf_field() }}

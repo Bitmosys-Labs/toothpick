@@ -29,18 +29,18 @@
                         <tr>
                             <th>SN</th>
 							<th >Booking_id</th>
-<th >Slug</th>
+{{--<th >Slug</th>--}}
 <th >Start_time</th>
 <th >End_time</th>
-<th >Lunch_time</th>
-<th >Approved_by</th>
-<th >Signature</th>
+{{--<th >Lunch_time</th>--}}
+{{--<th >Approved_by</th>--}}
+{{--<th >Signature</th>--}}
 <th >Payable_amount</th>
-<th >Vat</th>
-<th >Status</th>
-<th >Deleted_at</th>
-<th >Created_at</th>
-<th >Updated_at</th>
+{{--<th >Vat</th>--}}
+{{--<th >Status</th>--}}
+{{--<th >Deleted_at</th>--}}
+{{--<th >Created_at</th>--}}
+{{--<th >Updated_at</th>--}}
 
                             <th>Action</th>
                         </tr>
@@ -73,7 +73,12 @@
                 { data: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 },name: "sn", searchable: false },
-                { data: "booking_id",name: "booking_id"},{ data: "slug",name: "slug"},{ data: "start_time",name: "start_time"},{ data: "end_time",name: "end_time"},{ data: "lunch_time",name: "lunch_time"},{ data: "approved_by",name: "approved_by"},{ data: "signature",name: "signature"},{ data: "payable_amount",name: "payable_amount"},{ data: "vat",name: "vat"},{ data: "status",name: "status"},{ data: "deleted_at",name: "deleted_at"},{ data: "created_at",name: "created_at"},{ data: "updated_at",name: "updated_at"},
+                { data: "booking_id",name: "booking_id"},
+                // { data: "slug",name: "slug"},
+                { data: "start_time",name: "start_time"},{ data: "end_time",name: "end_time"},
+                // { data: "lunch_time",name: "lunch_time"},{ data: "approved_by",name: "approved_by"},{ data: "signature",name: "signature"},
+                { data: "payable_amount",name: "payable_amount"},
+                // { data: "vat",name: "vat"},{ data: "status",name: "status"},{ data: "deleted_at",name: "deleted_at"},{ data: "created_at",name: "created_at"},{ data: "updated_at",name: "updated_at"},
 
                 { data: function(data,b,c,table) {
                 var buttons = '';
