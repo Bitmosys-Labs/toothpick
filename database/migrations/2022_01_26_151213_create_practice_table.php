@@ -22,6 +22,8 @@ class CreatePracticeTable extends Migration
             $table->string('address')->nullable();
             $table->string('emergency_contact')->nullable();
             $table->string('gdc_no')->nullable();
+            $table->string('latitude')->nullable();
+            $table->string('longitude')->nullable();
             $table->string('contact')->nullable();
             $table->softDeletes();
             $table->timestamps();

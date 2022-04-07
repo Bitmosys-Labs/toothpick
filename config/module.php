@@ -29,6 +29,6 @@ return [
         "Receipt",
         "Timesheet",
         "Token",
-
+        "Kin",
     ),
 ];

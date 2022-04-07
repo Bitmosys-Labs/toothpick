@@ -23,8 +23,6 @@ class CreateDcpTable extends Migration
             $table->string('latitude', 255)->nullable();
             $table->string('longitude', 255)->nullable();
             $table->string('country')->nullable();
-            $table->string('emergency_contact')->nullable();
-            $table->string('relation_to_emergency_contact')->nullable();
             $table->integer('travel')->nullable();
             $table->float('hourly_rate')->nullable();
             $table->boolean('status')->nullable();
