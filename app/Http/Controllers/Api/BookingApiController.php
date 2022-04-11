@@ -4,14 +4,17 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Modules\Booking\Model\Booking;
+use App\Modules\Parking\Model\Parking;
 use App\Modules\Staff\Model\Staff;
 use Illuminate\Http\Request;
 
 class BookingApiController extends Controller
 {
     public function staffType(){
-        $data = Staff::select('id', 'type')->get();
+        $staff = Staff::select('id', 'type')->get();
+        $parking = Parking::select('id', 'type')->get();
 
+        $data = ['staff' => $staff, 'parking' => $parking];
         $response = [
             'success' => true,
             'message' => 'List of staff type for DCP registration',

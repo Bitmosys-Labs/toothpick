@@ -3,6 +3,7 @@
 namespace App\Modules\Immunization\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Staff\Model\Staff;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
@@ -99,7 +100,8 @@ class AdminImmunizationController extends Controller
     public function create()
     {
         $page['title'] = 'Immunization | Create';
-        return view("Immunization::add",compact('page'));
+        $staffs = Staff::select('type', 'id')->get();
+        return view("Immunization::add",compact('page', 'staffs'));
         //
     }
 

@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 
 class UserApiController extends Controller
 {
@@ -137,16 +138,14 @@ class UserApiController extends Controller
                 return response('Email Not Verified!', 403);
             }
             $token = auth()->attempt($request->only(['email', 'password']));
-//        $token = $user->createToken('my-app-token')->plainTextToken;
-            $data = [
-                'token' => $token,
-            ];
-            $response = [
-                'success' => true,
-                'message' => 'Login successful!',
-                'result' => $data
-            ];
-            return response($response, 200);
+            if($user->role == 1){
+                Session::put('token', $token);
+                return redirect(url('http://practice.toothpickdentalstaff.com/apps/dashboards/analytics'));
+            }
+            if($user->role == 1){
+                Session::put('token', $token);
+                return redirect(url('http://dcp.toothpickdentalstaff.com/apps/dashboards/analytics'));
+            }
         }
         $response = [
             'success' => false,
@@ -154,6 +153,15 @@ class UserApiController extends Controller
             'result' => null
         ];
         return response($response, 401);
+    }
+
+    public function fetchToken(){
+        if(Session::get('token')){
+            return json_encode(Session::get('token'));
+        }
+        else{
+            return redirect(url('https://confident-hugle-261d64.netlify.app/signin'));
+        }
     }
 
     public function emailVerification(Request $request){

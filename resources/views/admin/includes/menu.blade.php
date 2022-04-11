@@ -103,6 +103,30 @@
                             </a>
                         </li>
                     @endcan
+                    @can('compliances')
+                        <li class="site-menu-item">
+                            <a href="{{ route('admin.compliances') }}">
+                                <i class="site-menu-icon fa fa-id-card" aria-hidden="true"></i>
+                                <span class="site-menu-title">Compliance</span>
+                            </a>
+                        </li>
+                    @endcan
+                    @can('immunizations')
+                        <li class="site-menu-item">
+                            <a href="{{ route('admin.immunizations') }}">
+                                <i class="site-menu-icon fa fa-file-medical" aria-hidden="true"></i>
+                                <span class="site-menu-title">Immunization</span>
+                            </a>
+                        </li>
+                    @endcan
+                    @can('experiences')
+                        <li class="site-menu-item">
+                            <a href="{{ route('admin.experiences') }}">
+                                <i class="site-menu-icon fa fa-file-signature" aria-hidden="true"></i>
+                                <span class="site-menu-title">Experience</span>
+                            </a>
+                        </li>
+                    @endcan
                     @can('parkings')
                         <li class="site-menu-item">
                             <a href="{{ route('admin.parkings') }}">

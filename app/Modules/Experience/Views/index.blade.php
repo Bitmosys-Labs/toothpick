@@ -30,9 +30,9 @@
                             <th>SN</th>
 							<th >Staff_id</th>
 <th >Type</th>
-<th >Deleted_at</th>
-<th >Created_at</th>
-<th >Updated_at</th>
+{{--<th >Deleted_at</th>--}}
+{{--<th >Created_at</th>--}}
+{{--<th >Updated_at</th>--}}
 
                             <th>Action</th>
                         </tr>
@@ -65,7 +65,8 @@
                 { data: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 },name: "sn", searchable: false },
-                { data: "staff_id",name: "staff_id"},{ data: "type",name: "type"},{ data: "deleted_at",name: "deleted_at"},{ data: "created_at",name: "created_at"},{ data: "updated_at",name: "updated_at"},
+                { data: "staff_id",name: "staff_id"},{ data: "type",name: "type"},
+                // { data: "deleted_at",name: "deleted_at"},{ data: "created_at",name: "created_at"},{ data: "updated_at",name: "updated_at"},
 
                 { data: function(data,b,c,table) {
                 var buttons = '';

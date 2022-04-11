@@ -3,6 +3,7 @@
 namespace App\Modules\Compliance\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Staff\Model\Staff;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
@@ -99,7 +100,8 @@ class AdminComplianceController extends Controller
     public function create()
     {
         $page['title'] = 'Compliance | Create';
-        return view("Compliance::add",compact('page'));
+        $staffs = Staff::select('id', 'type')->get();
+        return view("Compliance::add",compact('page', 'staffs'));
         //
     }
 
@@ -137,8 +139,9 @@ class AdminComplianceController extends Controller
     public function edit($id)
     {
         $compliance = Compliance::findOrFail($id);
+        $staffs = Staff::select('id', 'type')->get();
         $page['title'] = 'Compliance | Update';
-        return view("Compliance::edit",compact('page','compliance'));
+        return view("Compliance::edit",compact('page','compliance', 'staffs'));
 
         //
     }

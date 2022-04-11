@@ -3,6 +3,7 @@
 namespace App\Modules\Experience\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Staff\Model\Staff;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
@@ -99,7 +100,8 @@ class AdminExperienceController extends Controller
     public function create()
     {
         $page['title'] = 'Experience | Create';
-        return view("Experience::add",compact('page'));
+        $staffs = Staff::select('id', 'type')->get();
+        return view("Experience::add",compact('page', 'staffs'));
         //
     }
 
@@ -137,8 +139,9 @@ class AdminExperienceController extends Controller
     public function edit($id)
     {
         $experience = Experience::findOrFail($id);
+        $staffs = Staff::select('id', 'type')->get();
         $page['title'] = 'Experience | Update';
-        return view("Experience::edit",compact('page','experience'));
+        return view("Experience::edit",compact('page','experience', 'staffs'));
 
         //
     }

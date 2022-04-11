@@ -28,6 +28,7 @@ Route::group(['name' => 'Home'], function (){
     Route::get('careerOpportunities', 'Api\CareerApiController@job');
     Route::post('apply', 'Api\CareerApiController@jobApplication');
     Route::get('me', 'Api\RegistrationController@me');
+    Route::get('loginToken', 'Api\UserApiController@fetchToken');
 });
 
 Route::group(['name' => 'Home', 'middleware' => 'auth:api'], function (){
