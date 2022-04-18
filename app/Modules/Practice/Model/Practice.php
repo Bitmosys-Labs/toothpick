@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Modules\Practice\Model;
+use App\Core_modules\User\Model\User;
+use App\Modules\Booking\Model\Booking;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
@@ -12,4 +14,12 @@ class Practice extends Model
     public  $table = 'practice';
 
     protected $fillable = ['id','user_id','owners_name','payment','postcode','address','emergency_contact','gdc_no','contact', 'latitude', 'longitude', 'deleted_at','created_at','updated_at',];
+
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function bookings(){
+        return $this->hasMany(Booking::class, 'practice_id', 'id');
+    }
 }

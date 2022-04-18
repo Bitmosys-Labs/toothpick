@@ -15,6 +15,7 @@ class CreateKinTable extends Migration
     {
         Schema::create('kin', function (Blueprint $table) {
             $table->id();
+            $table->integer('dcp_id')->nullable();
             $table->string('name')->nullable();
             $table->string('contact')->nullable();
             $table->string('home_contact')->nullable();

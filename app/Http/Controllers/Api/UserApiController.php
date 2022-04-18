@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 
 class UserApiController extends Controller
@@ -133,26 +134,26 @@ class UserApiController extends Controller
                         'result' => null
                     ];
                     return response($response, 401);
+                }else{
+                    $token = auth()->attempt($request->only(['email', 'password']));
+                    if($user->role == 1){
+                        Session::put('token', $token);
+                        return response('https://practice.toothpickdentalstaff.com', 200);
+                    }
+                    if($user->role == 2){
+                        Session::put('token', $token);
+                        return response('https://dcp.toothpickdentalstaff.com', 200);
+                    }
                 }
             }else{
-                return response('Email Not Verified!', 403);
-            }
-            $token = auth()->attempt($request->only(['email', 'password']));
-            if($user->role == 1){
-                Session::put('token', $token);
-                return redirect(url('http://practice.toothpickdentalstaff.com/apps/dashboards/analytics'));
-            }
-            if($user->role == 1){
-                Session::put('token', $token);
-                return redirect(url('http://dcp.toothpickdentalstaff.com/apps/dashboards/analytics'));
+                $response = [
+                    'success' => false,
+                    'message' => 'Email Not Verified!',
+                    'result' => null
+                ];
+                return response($response, 403);
             }
         }
-        $response = [
-            'success' => false,
-            'message' => 'Wrong credentials!',
-            'result' => null
-        ];
-        return response($response, 401);
     }
 
     public function fetchToken(){
@@ -160,7 +161,7 @@ class UserApiController extends Controller
             return json_encode(Session::get('token'));
         }
         else{
-            return redirect(url('https://confident-hugle-261d64.netlify.app/signin'));
+            return Redirect::to('https://test.toothpickdentalstaff.com/signin');
         }
     }
 

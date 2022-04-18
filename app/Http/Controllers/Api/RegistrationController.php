@@ -13,8 +13,6 @@ class RegistrationController extends Controller
     }
 
     public function userDetails(Request $request){
-//        return json_encode(auth()->user());
-//        return response(auth()->user());
         if(auth()->user()->role == 1){
             $practice = new Practice();
             $data = [

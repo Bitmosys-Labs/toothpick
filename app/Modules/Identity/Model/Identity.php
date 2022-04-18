@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Modules\Identity\Model;
+use App\Core_modules\User\Model\User;
+use App\Modules\Document\Model\Document;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
@@ -12,4 +14,12 @@ class Identity extends Model
     public  $table = 'identity';
 
     protected $fillable = ['id','type','staff_id','requirement','deleted_at','created_at','updated_at',];
+
+    public function documents(){
+        return $this->belongsToMany(Document::class, 'ide_doc', 'doc_id');
+    }
+
+    public function users(){
+        return $this->belongsToMany(User::class, 'ide_doc', 'user_id');
+    }
 }

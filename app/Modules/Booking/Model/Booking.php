@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Modules\Booking\Model;
+use App\Modules\Practice\Model\Practice;
+use App\Modules\Staff\Model\Staff;
+use App\Modules\Timesheet\Model\Timesheet;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
@@ -12,4 +15,16 @@ class Booking extends Model
     public  $table = 'booking';
 
     protected $fillable = ['id','practice_id','staff_id','slug','date','from','to','hourly_rate','parking','additional','status','deleted_at','created_at','updated_at',];
+
+    public function practice(){
+        return $this->belongsTo(Practice::class, 'practice_id', 'id');
+    }
+
+    public function staff(){
+        return $this->belongsTo(Staff::class, 'staff_id', 'id');
+    }
+
+    public function timesheet(){
+        return $this->hasOne(Timesheet::class, 'booking_id', 'id');
+    }
 }

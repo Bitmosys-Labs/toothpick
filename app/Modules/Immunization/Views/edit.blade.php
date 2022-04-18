@@ -20,7 +20,8 @@
                         <div class="box-body">
                             {{method_field('PATCH')}}
                             <div class="form-group">
-                                    <label for="staff_id">Staff_id</label>
+                                <label for="type">Type</label><input type="text" value="{{$immunization->type}}" name="type" id="type" class="form-control" ></div><div class="form-group">
+                            <label for="staff_id">Staff_id</label>
                                         <select type="text" name="staff_id" id="staff_id" class="form-control" >
                                             @foreach($staffs as $staff)
                                                 @if($staff->id == $immunization->staff_id )

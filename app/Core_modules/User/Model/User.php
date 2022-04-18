@@ -2,6 +2,14 @@
 
 namespace App\Core_modules\User\Model;
 
+use App\Modules\Availability\Model\Availability;
+use App\Modules\Compliance\Model\Compliance;
+use App\Modules\Dcp\Model\Dcp;
+use App\Modules\Document\Model\Document;
+use App\Modules\Experience\Model\Experience;
+use App\Modules\Identity\Model\Identity;
+use App\Modules\Immunization\Model\Immunization;
+use App\Modules\Practice\Model\Practice;
 use Illuminate\Database\Eloquent\Model;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -32,6 +40,50 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function dcp(){
+        return $this->hasOne(Dcp::class, 'user_id', 'id');
+    }
+
+    public function practice(){
+        return $this->hasOne(Practice::class, 'user_id', 'id');
+    }
+
+    public function availability(){
+        return $this->hasMany(Availability::class, 'user_id', 'id');
+    }
+
+    public function bank_details(){
+        return $this->hasMany();
+    }
+
+    public function experiences(){
+        return $this->belongsToMany(Experience::class, 'experience_user', 'experience_id');
+    }
+
+    public function immunization_documents(){
+        return $this->belongsToMany(Document::class, 'imm_doc', 'doc_id');
+    }
+
+    public function immunizations(){
+        return $this->belongsToMany(Immunization::class, 'imm_doc', 'imm_id');
+    }
+
+    public function compliances(){
+        return $this->belongsToMany(Compliance::class, 'comp_doc', 'comp_id');
+    }
+
+    public function compliance_documents(){
+        return $this->belongsToMany(Document::class, 'comp_doc', 'doc_id');
+    }
+
+    public function identities(){
+        return $this->belongsToMany(Identity::class, 'ide_doc', 'ide_id');
+    }
+
+    public function identity_documents(){
+        return $this->belongsToMany(Document::class, 'ide_doc', 'doc_id');
     }
 
 }

@@ -139,8 +139,9 @@ class AdminImmunizationController extends Controller
     public function edit($id)
     {
         $immunization = Immunization::findOrFail($id);
+        $staffs = Staff::select('type', 'id')->get();
         $page['title'] = 'Immunization | Update';
-        return view("Immunization::edit",compact('page','immunization'));
+        return view("Immunization::edit",compact('page','immunization', 'staffs'));
 
         //
     }

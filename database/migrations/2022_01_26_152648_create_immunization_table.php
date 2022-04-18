@@ -16,6 +16,7 @@ class CreateImmunizationTable extends Migration
         Schema::create('immunization', function (Blueprint $table) {
             $table->id();
             $table->integer('staff_id')->nullable();
+            $table->string('type')->nullable();
             $table->boolean('requirement')->nullable();
             $table->softDeletes();
             $table->timestamps();

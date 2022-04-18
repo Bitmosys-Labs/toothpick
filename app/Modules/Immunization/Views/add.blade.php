@@ -20,7 +20,8 @@
                     <form role="form" action="{{ route('admin.immunizations.store') }}"  method="post">
                         <div class="box-body">
                             <div class="form-group">
-                                    <label for="staff_id">Staff</label>
+                                <label for="type">Type</label><input type="text" name="type" id="type" class="form-control" ></div><div class="form-group">
+                            <label for="staff_id">Staff</label>
                                         <select type="text" name="staff_id" id="staff_id" class="form-control" required>
                                             <option value="" selected disabled>Please Select A Staff Type</option>
                                             @foreach($staffs as $staff)
