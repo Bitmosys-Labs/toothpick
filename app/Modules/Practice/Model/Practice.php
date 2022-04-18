@@ -3,6 +3,7 @@
 namespace App\Modules\Practice\Model;
 use App\Core_modules\User\Model\User;
 use App\Modules\Booking\Model\Booking;
+use App\Modules\Rating\Model\Rating;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
@@ -22,4 +23,9 @@ class Practice extends Model
     public function bookings(){
         return $this->hasMany(Booking::class, 'practice_id', 'id');
     }
+
+    public function ratings(){
+        return $this->hasMany(Rating::class, 'practice_id', 'id');
+    }
+
 }

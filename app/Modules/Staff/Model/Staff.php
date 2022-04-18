@@ -5,6 +5,7 @@ use App\Modules\Booking\Model\Booking;
 use App\Modules\Dcp\Model\Dcp;
 use App\Modules\Experience\Model\Experience;
 use App\Modules\Immunization\Model\Immunization;
+use App\Modules\Rate\Model\Rate;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
@@ -33,6 +34,10 @@ class Staff extends Model
 
     public function bookings(){
         return $this->hasMany(Booking::class, 'staff_id', 'id');
+    }
+
+    public function rates(){
+        return $this->hasMany(Rate::class, 'staff_id', 'id');
     }
 
 }

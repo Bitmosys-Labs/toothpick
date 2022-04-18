@@ -30,5 +30,10 @@ return [
         "Timesheet",
         "Token",
         "Kin",
+        "Day",
+        "Bank_detail",
+        "Booking_status",
+        "Rate",
+        "Rating",
     ),
 ];

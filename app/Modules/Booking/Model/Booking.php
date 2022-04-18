@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Modules\Booking\Model;
+use App\Modules\Booking_status\Model\Booking_status;
 use App\Modules\Practice\Model\Practice;
 use App\Modules\Staff\Model\Staff;
 use App\Modules\Timesheet\Model\Timesheet;
@@ -27,4 +28,10 @@ class Booking extends Model
     public function timesheet(){
         return $this->hasOne(Timesheet::class, 'booking_id', 'id');
     }
+
+    public function booking_status(){
+        return $this->hasOne(Booking_status::class, 'id', 'id');
+    }
+
+
 }

@@ -2,6 +2,7 @@
 
 namespace App\Modules\Availability\Model;
 use App\Core_modules\User\Model\User;
+use App\Modules\Day\Model\Day;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
@@ -16,5 +17,9 @@ class Availability extends Model
 
     public function user(){
         $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function days(){
+        $this->belongsTo(Day::class, 'days_id', 'id');
     }
 }

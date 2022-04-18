@@ -3,6 +3,7 @@
 namespace App\Modules\Dcp\Model;
 use App\Core_modules\User\Model\User;
 use App\Modules\Kin\Model\Kin;
+use App\Modules\Rating\Model\Rating;
 use App\Modules\Staff\Model\Staff;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -26,5 +27,9 @@ class Dcp extends Model
 
     public function kin(){
         return $this->hasMany(Kin::class, 'dcp_id', 'id');
+    }
+
+    public function rating(){
+        return $this->hasMany(Rating::class, 'dcp_id', 'id');
     }
 }

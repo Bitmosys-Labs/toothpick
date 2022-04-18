@@ -3,6 +3,8 @@
 namespace App\Core_modules\User\Model;
 
 use App\Modules\Availability\Model\Availability;
+use App\Modules\Bank_detail\Model\Bank_detail;
+use App\Modules\Booking_status\Model\Booking_status;
 use App\Modules\Compliance\Model\Compliance;
 use App\Modules\Dcp\Model\Dcp;
 use App\Modules\Document\Model\Document;
@@ -46,6 +48,10 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasOne(Dcp::class, 'user_id', 'id');
     }
 
+    public function booking_status(){
+        return $this->hasMany(Booking_status::class, 'user_id', 'id');
+    }
+
     public function practice(){
         return $this->hasOne(Practice::class, 'user_id', 'id');
     }
@@ -55,7 +61,7 @@ class User extends Authenticatable implements JWTSubject
     }
 
     public function bank_details(){
-        return $this->hasMany();
+        return $this->hasMany(Bank_detail::class, 'user_id', 'id');
     }
 
     public function experiences(){
