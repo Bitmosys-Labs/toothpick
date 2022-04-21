@@ -3,6 +3,7 @@
 namespace App\Modules\Identity\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Staff\Model\Staff;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
@@ -99,7 +100,8 @@ class AdminIdentityController extends Controller
     public function create()
     {
         $page['title'] = 'Identity | Create';
-        return view("Identity::add",compact('page'));
+        $staffs = Staff::select('id', 'type')->get();
+        return view("Identity::add",compact('page', 'staffs'));
         //
     }
 
@@ -137,8 +139,9 @@ class AdminIdentityController extends Controller
     public function edit($id)
     {
         $identity = Identity::findOrFail($id);
+        $staffs = Staff::select('id', 'type')->get();
         $page['title'] = 'Identity | Update';
-        return view("Identity::edit",compact('page','identity'));
+        return view("Identity::edit",compact('page','identity', 'staffs'));
 
         //
     }

@@ -21,11 +21,31 @@
                             {{method_field('PATCH')}}
                             <div class="form-group">
                                     <label for="type">Type</label><input type="text" value = "{{$identity->type}}"  name="type" id="type" class="form-control" ></div><div class="form-group">
-                                    <label for="staff_id">Staff_id</label><input type="text" value = "{{$identity->staff_id}}"  name="staff_id" id="staff_id" class="form-control" ></div><div class="form-group">
-                                    <label for="requirement">Requirement</label><input type="text" value = "{{$identity->requirement}}"  name="requirement" id="requirement" class="form-control" ></div><div class="form-group">
-                                    <label for="deleted_at">Deleted_at</label><input type="text" value = "{{$identity->deleted_at}}"  name="deleted_at" id="deleted_at" class="form-control" ></div><div class="form-group">
-                                    <label for="created_at">Created_at</label><input type="text" value = "{{$identity->created_at}}"  name="created_at" id="created_at" class="form-control" ></div><div class="form-group">
-                                    <label for="updated_at">Updated_at</label><input type="text" value = "{{$identity->updated_at}}"  name="updated_at" id="updated_at" class="form-control" ></div>
+                                    <label for="staff_id">Staff</label>
+                                        <select type="text" name="staff_id" id="staff_id" class="form-control" >
+                                            @foreach($staffs as $staff)
+                                                @if($staff->id == $identity->staff_id )
+                                                    <option value="{{$staff->id}}" selected>{{$staff->type}}</option>
+                                                @else
+                                                    <option value="{{$staff->id}}">{{$staff->type}}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                    </div><div class="form-group">
+                                    <label for="requirement">Required?</label>
+                                        <select type="text"  name="requirement" id="requirement" class="form-control" required>
+                                            @if($identity->requirement == 1)
+                                                <option value="1" selected>Yes</option>
+                                                <option value="0">no</option>
+                                            @else
+                                                <option value="1">Yes</option>
+                                                <option value="0" selected>no</option>
+                                            @endif
+                                        </select>
+                                    </div><div class="form-group">
+                                {{--                                    <label for="deleted_at">Deleted_at</label><input type="text" value = "{{$identity->deleted_at}}"  name="deleted_at" id="deleted_at" class="form-control" ></div><div class="form-group">--}}
+{{--                                    <label for="created_at">Created_at</label><input type="text" value = "{{$identity->created_at}}"  name="created_at" id="created_at" class="form-control" ></div><div class="form-group">--}}
+{{--                                    <label for="updated_at">Updated_at</label><input type="text" value = "{{$identity->updated_at}}"  name="updated_at" id="updated_at" class="form-control" ></div>--}}
 <input type="hidden" name="id" id="id" value = "{{$identity->id}}" />
                             {{ csrf_field() }}
                         </div>
