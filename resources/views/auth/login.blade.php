@@ -12,7 +12,7 @@
                 <p class="alert {{ Session::get('alert-class', 'alert-danger') }}">{{ Session::get('message') }}</p>
             @endif
             <form method="POST" action="{{ route('login') }}">
-                        @csrf
+                @csrf
             <div class="form-group">
               <label class="sr-only" for="email">{{ __('E-Mail Address') }}</label>
               <input id="username" type="username" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>

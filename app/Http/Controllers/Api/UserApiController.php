@@ -11,10 +11,9 @@ use App\Modules\Staff\Model\Staff;
 use App\Modules\Token\Model\Token;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Session;
 
 class UserApiController extends Controller
 {
@@ -137,12 +136,32 @@ class UserApiController extends Controller
                 }else{
                     $token = auth()->attempt($request->only(['email', 'password']));
                     if($user->role == 1){
-                        Session::put('token', $token);
-                        return response('https://practice.toothpickdentalstaff.com', 200);
+                        session(['token' => $token]);
+                        session()->save();
+                        $data = [
+                          'token' => $token,
+                          'url' => "https://practice.toothpickdentalstaff.com",
+                        ];
+                        $response = [
+                            'success' => true,
+                            'message' => 'Login Successful!',
+                            'result' => $data
+                        ];
+                        return response($response, 200);
                     }
                     if($user->role == 2){
-                        Session::put('token', $token);
-                        return response('https://dcp.toothpickdentalstaff.com', 200);
+                        session(['token' => $token]);
+                        session()->save();
+                        $data = [
+                            'token' => $token,
+                            'url' => "https://dcp.toothpickdentalstaff.com",
+                        ];
+                        $response = [
+                            'success' => true,
+                            'message' => 'Login Successful!',
+                            'result' => $data
+                        ];
+                        return response($response, 200);
                     }
                 }
             }else{
@@ -157,12 +176,7 @@ class UserApiController extends Controller
     }
 
     public function fetchToken(){
-        if(Session::get('token')){
-            return json_encode(Session::get('token'));
-        }
-        else{
-            return Redirect::to('https://test.toothpickdentalstaff.com/signin');
-        }
+            return json_encode(session('token'));
     }
 
     public function emailVerification(Request $request){
