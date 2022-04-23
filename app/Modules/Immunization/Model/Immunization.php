@@ -25,6 +25,6 @@ class Immunization extends Model
     }
 
     public function documents(){
-        return $this->belongsToMany(Document::class, 'imm_doc', 'doc_id');
+        return $this->belongsToMany(Document::class, 'imm_doc', 'doc_id', 'imm_id');
     }
 }

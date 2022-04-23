@@ -73,7 +73,7 @@ class User extends Authenticatable implements JWTSubject
     }
 
     public function immunizations(){
-        return $this->belongsToMany(Immunization::class, 'imm_doc', 'imm_id');
+        return $this->belongsToMany(Immunization::class, 'imm_doc', 'user_id', 'imm_id');
     }
 
     public function compliances(){

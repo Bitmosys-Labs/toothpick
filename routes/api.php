@@ -36,4 +36,5 @@ Route::group(['name' => 'Home', 'middleware' => 'auth:api'], function (){
     Route::get('staffType', 'Api\BookingApiController@staffType');
     Route::post('bookStaff', 'Api\BookingApiController@BookingCreate');
     Route::get('me', 'Api\RegistrationController@me');
+    Route::get('dcpProfile', 'Api\DcpController@profile');
 });

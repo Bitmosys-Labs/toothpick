@@ -40,7 +40,7 @@ class RegistrationController extends Controller
                 $dcp = new Dcp();
                 $kin = new Kin();
                 $data = [
-                    'postcode' => $request->postCode,
+                    'postcode' => $request->postcode,
                     'address' => $request->address,
                     'gdc_no' => $request->gdc,
                     'travel' => $request->travel,
@@ -49,11 +49,11 @@ class RegistrationController extends Controller
                 $save_dcp = $dcp->where('user_id', auth()->user()->id)->first();
                 if ($save_dcp->update($data)) {
                     $kin_data = [
-                        'name' => $request->emergencyContact,
-                        'contact' => $request->homeContact,
-                        'home_contact' => $request->homeContact,
+                        'name' => $request->emergencycontactname,
+                        'contact' => $request->emergencycontact,
+                        'home_contact' => $request->homecontact,
                         'relation' => $request->relation,
-                        'address' => $request->addressEmergency,
+                        'address' => $request->addressemergency,
                         'dcp_id' => $save_dcp->id,
                     ];
                     $kin->create($kin_data);
