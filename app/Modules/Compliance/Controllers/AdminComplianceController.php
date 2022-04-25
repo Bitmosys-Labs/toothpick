@@ -43,7 +43,7 @@ class AdminComplianceController extends Controller
                     $query->orWhere($val[0],$val[1],$val[2]);
                 }
             }
-        })->orderBy('id', 'DESC')->get();
+        })->orderBy('compliance.id', 'DESC')->get();
 
         // Display limited list
         $rows = $compliance->where( function($query) use ($where) {
@@ -52,7 +52,7 @@ class AdminComplianceController extends Controller
                     $query->orWhere($val[0],$val[1],$val[2]);
                 }
             }
-        })->limit($request->length)->offset($request->start)->orderBy('id', 'DESC')->get();
+        })->limit($request->length)->offset($request->start)->orderBy('compliance.id', 'DESC')->with('staff')->get();
 
         //To count the total values present
         $total = $compliance->get();
@@ -114,9 +114,20 @@ class AdminComplianceController extends Controller
     public function store(Request $request)
     {
         $data = $request->except('_token');
-        $success = Compliance::Create($data);
+        if($request->staff_id == "everyone"){
+            $staffs = Staff::all();
+            foreach ($staffs as $staff){
+                $everyone = [
+                    'staff_id' => $staff->id,
+                    'type' => $request->type,
+                    'requirement' => $request->requirement,
+                ];
+                Compliance::Create($everyone);
+            }
+        }else{
+            $success = Compliance::Create($data);
+        }
         return redirect()->route('admin.compliances');
-        //
     }
 
     /**

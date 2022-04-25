@@ -52,7 +52,7 @@ class AdminExperienceController extends Controller
                     $query->orWhere($val[0],$val[1],$val[2]);
                 }
             }
-        })->limit($request->length)->offset($request->start)->orderBy('id', 'DESC')->get();
+        })->limit($request->length)->offset($request->start)->orderBy('id', 'DESC')->with('staff')->get();
 
         //To count the total values present
         $total = $experience->get();
@@ -114,7 +114,18 @@ class AdminExperienceController extends Controller
     public function store(Request $request)
     {
         $data = $request->except('_token');
-        $success = Experience::Create($data);
+        if($request->staff_id == "everyone"){
+            $staffs = Staff::all();
+            foreach ($staffs as $staff){
+                $everyone = [
+                    'staff_id' => $staff->id,
+                    'type' => $request->type,
+                ];
+                Experience::Create($everyone);
+            }
+        }else{
+            $success = Experience::Create($data);
+        }
         return redirect()->route('admin.experiences');
         //
     }

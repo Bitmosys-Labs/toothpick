@@ -34,7 +34,7 @@ class DcpController extends Controller
                     $q->where('users.id', auth()->user()->id);
                 })->with('documents')->get(),
             ];
-            return json_encode($data);
+            return response($data);
         }else{
             return response('unauthorized', 401);
         }

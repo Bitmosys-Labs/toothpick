@@ -20,6 +20,6 @@ class Experience extends Model
     }
 
     public function users(){
-        return $this->belongsToMany(User::class, 'experience_user', 'user_id');
+        return $this->belongsToMany(User::class, 'experience_user', 'experience_id', 'user_id');
     }
 }

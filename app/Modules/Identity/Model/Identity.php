@@ -3,6 +3,7 @@
 namespace App\Modules\Identity\Model;
 use App\Core_modules\User\Model\User;
 use App\Modules\Document\Model\Document;
+use App\Modules\Staff\Model\Staff;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
@@ -21,5 +22,9 @@ class Identity extends Model
 
     public function users(){
         return $this->belongsToMany(User::class, 'ide_doc', 'user_id');
+    }
+
+    public function staff(){
+        return $this->belongsTo(Staff::class, 'staff_id', 'id');
     }
 }

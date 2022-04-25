@@ -3,6 +3,7 @@
 namespace App\Modules\Dcp\Model;
 use App\Core_modules\User\Model\User;
 use App\Modules\Kin\Model\Kin;
+use App\Modules\Practice\Model\Practice;
 use App\Modules\Rating\Model\Rating;
 use App\Modules\Staff\Model\Staff;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -18,7 +19,11 @@ class Dcp extends Model
     protected $fillable = ['id','user_id','staff_id','gdc_no','postcode','address','latitude','longitude','country', 'travel','hourly_rate','status','employment_history','deleted_at','created_at','updated_at',];
 
     public function staff(){
-        return $this->belongsTo(Staff::class, 'user_id', 'id');
+        return $this->belongsTo(Staff::class, 'staff_id', 'id');
+    }
+
+    public function practice(){
+        return $this->belongsTo(Practice::class, 'employment_history', 'id');
     }
 
     public function user(){

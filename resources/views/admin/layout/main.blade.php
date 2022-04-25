@@ -94,6 +94,7 @@
 @include('admin.includes.header')
 @include('admin.includes.menu')
 <div class="page">
+    @include('admin.includes.message')
     @yield('content')
 </div>
 @include('admin.includes.footer')

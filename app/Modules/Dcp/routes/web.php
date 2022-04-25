@@ -12,6 +12,7 @@ Route::group(array('prefix'=>'admin/','module'=>'Dcp','middleware' => ['web','au
     Route::get('dcps/edit/{id}','AdminDcpController@edit')->name('admin.dcps.edit');
     Route::match(['put', 'patch'], 'dcps/update','AdminDcpController@update')->name('admin.dcps.update');
     Route::get('dcps/delete/{id}', 'AdminDcpController@destroy')->name('admin.dcps.edit');
+    Route::get('dcpEmployemntHistory', 'AdminDcpController@history')->name('admin.dcps.employmentHistory');
 });
 
 

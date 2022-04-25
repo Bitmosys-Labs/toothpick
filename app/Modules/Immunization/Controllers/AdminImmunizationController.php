@@ -52,7 +52,7 @@ class AdminImmunizationController extends Controller
                     $query->orWhere($val[0],$val[1],$val[2]);
                 }
             }
-        })->limit($request->length)->offset($request->start)->orderBy('id', 'DESC')->get();
+        })->limit($request->length)->offset($request->start)->orderBy('id', 'DESC')->with('staff')->get();
 
         //To count the total values present
         $total = $immunization->get();
@@ -114,7 +114,19 @@ class AdminImmunizationController extends Controller
     public function store(Request $request)
     {
         $data = $request->except('_token');
-        $success = Immunization::Create($data);
+        if($request->staff_id == "everyone"){
+            $staffs = Staff::all();
+            foreach ($staffs as $staff){
+                $everyone = [
+                    'staff_id' => $staff->id,
+                    'type' => $request->type,
+                    'requirement' => $request->requirement,
+                ];
+                Immunization::Create($everyone);
+            }
+        }else{
+            $success = Immunization::Create($data);
+        }
         return redirect()->route('admin.immunizations');
         //
     }

@@ -65,11 +65,11 @@ class User extends Authenticatable implements JWTSubject
     }
 
     public function experiences(){
-        return $this->belongsToMany(Experience::class, 'experience_user', 'experience_id');
+        return $this->belongsToMany(Experience::class, 'experience_user', 'user_id', 'experience_id');
     }
 
     public function immunization_documents(){
-        return $this->belongsToMany(Document::class, 'imm_doc', 'doc_id');
+        return $this->belongsToMany(Document::class, 'imm_doc', 'user_id','doc_id');
     }
 
     public function immunizations(){
@@ -77,11 +77,11 @@ class User extends Authenticatable implements JWTSubject
     }
 
     public function compliances(){
-        return $this->belongsToMany(Compliance::class, 'comp_doc', 'comp_id');
+        return $this->belongsToMany(Compliance::class, 'comp_doc', 'user_id', 'comp_id');
     }
 
     public function compliance_documents(){
-        return $this->belongsToMany(Document::class, 'comp_doc', 'doc_id');
+        return $this->belongsToMany(Document::class, 'comp_doc', 'user_id','doc_id');
     }
 
     public function identities(){

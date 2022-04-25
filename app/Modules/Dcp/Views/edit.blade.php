@@ -20,24 +20,46 @@
                         <div class="box-body">
                             {{method_field('PATCH')}}
                             <div class="form-group">
-                                    <label for="user_id">User_id</label><input type="text" value = "{{$dcp->user_id}}"  name="user_id" id="user_id" class="form-control" ></div><div class="form-group">
-                                    <label for="staff_id">Staff_id</label><input type="text" value = "{{$dcp->staff_id}}"  name="staff_id" id="staff_id" class="form-control" ></div><div class="form-group">
-                                    <label for="gdc_no">Gdc_no</label><input type="text" value = "{{$dcp->gdc_no}}"  name="gdc_no" id="gdc_no" class="form-control" ></div><div class="form-group">
-                                    <label for="postcode">Postcode</label><input type="text" value = "{{$dcp->postcode}}"  name="postcode" id="postcode" class="form-control" ></div><div class="form-group">
-                                    <label for="address">Address</label><input type="text" value = "{{$dcp->address}}"  name="address" id="address" class="form-control" ></div><div class="form-group">
-                                    <label for="latitude">Latitude</label><input type="text" value = "{{$dcp->latitude}}"  name="latitude" id="latitude" class="form-control" ></div><div class="form-group">
-                                    <label for="longitude">Longitude</label><input type="text" value = "{{$dcp->longitude}}"  name="longitude" id="longitude" class="form-control" ></div><div class="form-group">
-                                    <label for="country">Country</label><input type="text" value = "{{$dcp->country}}"  name="country" id="country" class="form-control" ></div><div class="form-group">
-                                    <label for="emergency_contact">Emergency_contact</label><input type="text" value = "{{$dcp->emergency_contact}}"  name="emergency_contact" id="emergency_contact" class="form-control" ></div><div class="form-group">
-                                    <label for="relation_to_emergency_contact">Relation_to_emergency_contact</label><input type="text" value = "{{$dcp->relation_to_emergency_contact}}"  name="relation_to_emergency_contact" id="relation_to_emergency_contact" class="form-control" ></div><div class="form-group">
-                                    <label for="travel">Travel</label><input type="text" value = "{{$dcp->travel}}"  name="travel" id="travel" class="form-control" ></div><div class="form-group">
-                                    <label for="hourly_rate">Hourly_rate</label><input type="text" value = "{{$dcp->hourly_rate}}"  name="hourly_rate" id="hourly_rate" class="form-control" ></div><div class="form-group">
-                                    <label for="status">Status</label><input type="text" value = "{{$dcp->status}}"  name="status" id="status" class="form-control" ></div><div class="form-group">
-                                    <label for="employment_history">Employment_history</label><input type="text" value = "{{$dcp->employment_history}}"  name="employment_history" id="employment_history" class="form-control" ></div><div class="form-group">
-{{--                                    <label for="deleted_at">Deleted_at</label><input type="text" value = "{{$dcp->deleted_at}}"  name="deleted_at" id="deleted_at" class="form-control" ></div><div class="form-group">--}}
-{{--                                    <label for="created_at">Created_at</label><input type="text" value = "{{$dcp->created_at}}"  name="created_at" id="created_at" class="form-control" ></div><div class="form-group">--}}
-{{--                                    <label for="updated_at">Updated_at</label><input type="text" value = "{{$dcp->updated_at}}"  name="updated_at" id="updated_at" class="form-control" ></div>--}}
-<input type="hidden" name="id" id="id" value = "{{$dcp->id}}" />
+                                <label for="staff_id">Staff Type</label>
+                                    <select type="text" name="staff_id" id="staff_id" class="form-control" required>
+                                        @foreach($staffs as $staff)
+                                            @if($staff->id == $dcp->staff_id)
+                                                <option value="{{$staff->id}}" selected>{{$staff->type}}</option>
+                                            @else
+                                                <option value="{{$staff->id}}">{{$staff->type}}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                </div><div class="form-group">
+                                    <label for="full_name">Full Name</label>
+                                    <input type="text" name="full_name" id="full_name" value="{{$dcp->user->name}}" class="form-control" required>
+                                </div><div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" name="email" id="email" value="{{$dcp->user->email}}" class="form-control" required>
+                                </div><div class="form-group">
+                                    <label for="email">Phone</label>
+                                    <input type="tel" name="phone" id="phone" value="{{$dcp->user->contact}}" class="form-control" required>
+                                </div><div class="form-group">
+                                <label for="role">Availability</label>
+                                <select type="text" name="role" id="role" class="form-control" required>
+                                    @if($dcp->user->role == 3)
+                                        <option value="3" selected>Full Time</option>
+                                        <option value="2">Part Time</option>
+                                    @else
+                                        <option value="3">Full Time</option>
+                                        <option value="2" selected>Part Time</option>
+                                    @endif
+                                </select>
+                                </div><div class="form-group">
+                                    <label for="employment_history">Employment History</label>
+                                    <select type="text" name="employment_history" id="employment_history" class="form-control" style="width: 100%">
+                                        @if($dcp->practice)
+                                            <option value="{{$dcp->employment_history}}">{{$dcp->practice->user->name}}</option>
+                                        @endif
+                                    </select>
+                                </div><div class="form-group">
+                                <input type="hidden" name="id" id="id" value = "{{$dcp->id}}" />
+                                <input type="hidden" name="user_id" id="user_id" value = "{{$dcp->user->id}}" />
                             {{ csrf_field() }}
                         </div>
                         <div class="box-footer">
@@ -49,4 +71,29 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function(){
+            $("#employment_history").select2({
+                placeholder: "Select Practice",
+                minimumInputLength: 2,
+                ajax: {
+                    url: '{{route('admin.dcps.employmentHistory')}}',
+                    dataType: 'json',
+                    type: "GET",
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term,
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+            });
+        });
+    </script>
 @endsection

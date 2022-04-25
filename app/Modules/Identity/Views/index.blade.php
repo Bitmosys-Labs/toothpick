@@ -66,7 +66,17 @@
                 { data: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 },name: "sn", searchable: false },
-                { data: "type",name: "type"},{ data: "staff_id",name: "staff_id"},{ data: "requirement",name: "requirement"},
+                { data: "type",name: "type"},
+                { data: function (data){
+                        return data.staff.type
+                    },name: "staff_id"},
+                { data: function (data) {
+                        if(data.requirement == 1){
+                            return 'Yes'
+                        }else{
+                            return 'No'
+                        }
+                    }, name: 'requirement'},
                 // { data: "deleted_at",name: "deleted_at"},{ data: "created_at",name: "created_at"},{ data: "updated_at",name: "updated_at"},
 
                 { data: function(data,b,c,table) {

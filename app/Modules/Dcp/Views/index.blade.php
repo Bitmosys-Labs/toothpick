@@ -28,8 +28,10 @@
                     <thead>
                         <tr>
                             <th>SN</th>
-							<th >User_id</th>
-<th >Staff_id</th>
+							<th >Name</th>
+							<th >Email</th>
+                            <th >Staff</th>
+                            <th >Type</th>
 {{--<th >Gdc_no</th>--}}
 {{--<th >Postcode</th>--}}
 {{--<th >Address</th>--}}
@@ -77,7 +79,26 @@
                 { data: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 },name: "sn", searchable: false },
-                { data: "user_id",name: "user_id"},{ data: "staff_id",name: "staff_id"},
+                { data: function(data){
+                    return data.user.name
+                    },name: "users.name"},
+                { data: function(data){
+                        return data.user.email
+                    },name: "users.email"},
+                { data: function(data){
+                    return data.staff.type
+                    },name: "staff.type"},
+                { data: function(data){
+                        if(data.user.role == 2){
+                           return "Part Time"
+                        }
+                        else if(data.user.role == 3){
+                           return "Full Time"
+                        }
+                        else{
+                            return "Undefined"
+                        }
+                    },name: "role", searchable: false },
                 // { data: "gdc_no",name: "gdc_no"},{ data: "postcode",name: "postcode"},{ data: "address",name: "address"},{ data: "latitude",name: "latitude"},{ data: "longitude",name: "longitude"},{ data: "country",name: "country"},{ data: "emergency_contact",name: "emergency_contact"},{ data: "relation_to_emergency_contact",name: "relation_to_emergency_contact"},{ data: "travel",name: "travel"},{ data: "hourly_rate",name: "hourly_rate"},{ data: "status",name: "status"},{ data: "employment_history",name: "employment_history"},{ data: "deleted_at",name: "deleted_at"},{ data: "created_at",name: "created_at"},{ data: "updated_at",name: "updated_at"},
 
                 { data: function(data,b,c,table) {

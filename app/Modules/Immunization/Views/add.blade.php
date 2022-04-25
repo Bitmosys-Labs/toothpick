@@ -24,7 +24,8 @@
                             <label for="staff_id">Staff</label>
                                         <select type="text" name="staff_id" id="staff_id" class="form-control" required>
                                             <option value="" selected disabled>Please Select A Staff Type</option>
-                                            @foreach($staffs as $staff)
+                                            <option value="everyone">Everyone</option>
+                                        @foreach($staffs as $staff)
                                                 <option value="{{$staff->id}}">{{$staff->type}}</option>
                                             @endforeach
                                         </select>
