@@ -10,6 +10,7 @@
                             <span class="site-menu-title">Dashboard</span>
                         </a>
                     </li>
+
                     @can('control_panel')
                         <li class="site-menu-item has-sub">
                             <a href="javascript:void(0)">
