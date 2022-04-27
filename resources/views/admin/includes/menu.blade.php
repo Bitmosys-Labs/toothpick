@@ -115,7 +115,7 @@
                         <li class="site-menu-item">
                             <a href="{{ route('admin.identities') }}">
                                 <i class="site-menu-icon fa fa-id-card" aria-hidden="true"></i>
-                                <span class="site-menu-title">Identity</span>
+                                <span class="site-menu-title">Document</span>
                             </a>
                         </li>
                     @endcan
