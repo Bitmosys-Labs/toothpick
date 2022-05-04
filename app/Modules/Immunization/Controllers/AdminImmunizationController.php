@@ -113,19 +113,14 @@ class AdminImmunizationController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->except('_token');
-        if($request->staff_id == "everyone"){
-            $staffs = Staff::all();
-            foreach ($staffs as $staff){
-                $everyone = [
-                    'staff_id' => $staff->id,
-                    'type' => $request->type,
-                    'requirement' => $request->requirement,
-                ];
-                Immunization::Create($everyone);
-            }
-        }else{
-            $success = Immunization::Create($data);
+        $count = count($request->staff_id);
+        for ($i = 0; $i < $count; $i++) {
+            $data = [
+                'staff_id' => $request->staff_id[$i]  ,
+                'type' => $request->type,
+                'requirement' => $request->requirement,
+            ];
+            Immunization::Create($data);
         }
         return redirect()->route('admin.immunizations');
         //

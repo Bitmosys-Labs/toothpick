@@ -12,6 +12,7 @@ Route::group(array('prefix'=>'admin/','module'=>'Booking','middleware' => ['web'
     Route::get('bookings/edit/{id}','AdminBookingController@edit')->name('admin.bookings.edit');
     Route::match(['put', 'patch'], 'bookings/update','AdminBookingController@update')->name('admin.bookings.update');
     Route::get('bookings/delete/{id}', 'AdminBookingController@destroy')->name('admin.bookings.edit');
+    Route::get('bookings/assignNurse', 'AdminBookingController@assignNurse')->name('admin.booking.assignNurse');
 });
 
 

@@ -12,8 +12,11 @@ use App\Modules\Token\Model\Token;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Response;
+use function Symfony\Component\VarDumper\Dumper\esc;
 
 class UserApiController extends Controller
 {
@@ -126,32 +129,23 @@ class UserApiController extends Controller
         $user = User::where('email', $request->email)->orderBy('created_at', 'DESC')->first();
         if($user){
             if($user->email_verified_at != null){
-                if (!$user || !Hash::check($request->password, $user->password)) {
-                    $response = [
-                        'success' => false,
-                        'message' => 'Wrong credentials!',
-                        'result' => null
-                    ];
-                    return response($response, 401);
-                }else{
-                    $token = auth()->attempt($request->only(['email', 'password']));
+                if (Auth::attempt($request->only('email', 'password'))) {
+                    $users = Auth::user();
+                    $token = $users->createToken('token')->plainTextToken;
+                    $cookie = cookie('jwt', $token, 60 * 24);
                     if($user->role == 1){
-                        session(['token' => $token]);
-                        session()->save();
                         $data = [
-                          'token' => $token,
-                          'url' => "https://practice.toothpickdentalstaff.com",
+                            'token' => $token,
+                            'url' => "https://practice.toothpickdentalstaff.com",
                         ];
                         $response = [
                             'success' => true,
                             'message' => 'Login Successful!',
                             'result' => $data
                         ];
-                        return response($response, 200);
+                        return response($response, 200)->withCookie($cookie);
                     }
-                    if($user->role == 2){
-                        session(['token' => $token]);
-                        session()->save();
+                    elseif($user->role == 2){
                         $data = [
                             'token' => $token,
                             'url' => "https://dcp.toothpickdentalstaff.com",
@@ -161,8 +155,23 @@ class UserApiController extends Controller
                             'message' => 'Login Successful!',
                             'result' => $data
                         ];
-                        return response($response, 200);
+                        return response($response, 200)->withCookie($cookie);
                     }
+                    else{
+                        $response = [
+                            'success' => false,
+                            'message' => 'Unauthorized!',
+                            'result' => null
+                        ];
+                        return response($response, 401);
+                    }
+                }else{
+                    $response = [
+                        'success' => false,
+                        'message' => 'Wrong credentials!',
+                        'result' => null
+                    ];
+                    return response($response, 401);
                 }
             }else{
                 $response = [

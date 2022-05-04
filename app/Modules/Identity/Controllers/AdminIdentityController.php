@@ -113,19 +113,14 @@ class AdminIdentityController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->except('_token');
-        if($request->staff_id == "everyone"){
-            $staffs = Staff::all();
-            foreach ($staffs as $staff){
-                $everyone = [
-                    'staff_id' => $staff->id,
-                    'type' => $request->type,
-                    'requirement' => $request->requirement,
-                ];
-                Identity::Create($everyone);
-            }
-        }else{
-            $success = Identity::Create($data);
+        $count = count($request->staff_id);
+        for ($i = 0; $i < $count; $i++) {
+            $data = [
+                'staff_id' => $request->staff_id[$i]  ,
+                'type' => $request->type,
+                'requirement' => $request->requirement,
+            ];
+            Identity::Create($data);
         }
         return redirect()->route('admin.identities');
         //

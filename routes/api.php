@@ -30,11 +30,21 @@ Route::group(['name' => 'Home'], function (){
     Route::get('loginToken', 'Api\UserApiController@fetchToken');
 });
 
-Route::group(['name' => 'Home', 'middleware' => 'auth:api'], function (){
+Route::group(['name' => 'common', 'middleware' => 'auth:sanctum'], function (){
+    Route::get('me', 'Api\RegistrationController@me');
     Route::post('userDetails', 'Api\RegistrationController@userDetails');
     Route::post('refreshLogin', 'Api\RegistrationController@refreshLogin');
+});
+
+Route::group(['name' => 'dcp', 'middleware' => 'auth:sanctum'], function () {
+    Route::get('dcpProfile', 'Api\DcpController@profile');
+});
+
+Route::group(['name' => 'practice', 'middleware' => 'auth:sanctum'], function () {
     Route::get('staffType', 'Api\BookingApiController@staffType');
     Route::post('bookStaff', 'Api\BookingApiController@BookingCreate');
-    Route::get('me', 'Api\RegistrationController@me');
-    Route::get('dcpProfile', 'Api\DcpController@profile');
+    Route::get('practiceProfile', 'Api\PracticeController@profile');
+    Route::post('updatePracticeProfile', 'Api\PracticeController@updateProfile');
+    Route::post('changePassword', 'Api\PracticeController@updatePassword');
+    Route::get('bookings', 'Api\PracticeController@listBooking');
 });

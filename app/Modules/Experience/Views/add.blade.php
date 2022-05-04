@@ -21,13 +21,16 @@
                         <div class="box-body">
                             <div class="form-group">
                                 <label for="staff_id">Staff</label>
-                                    <select type="text" name="staff_id" id="staff_id" class="form-control" required>
-                                        <option value="" selected disabled>Please Select A Staff Type</option>
-                                        <option value="everyone">Everyone</option>
-                                    @foreach($staffs as $staff)
-                                            <option value="{{$staff->id}}">{{$staff->type}}</option>
+                                <div class="container">
+                                    <div class="row">
+                                        @foreach($staffs as $staff)
+                                            <div class="col-sm">
+                                                <lable>{{$staff->type}}</lable>
+                                                <input type="checkbox" name="staff_id[]" value="{{$staff->id}}" id="staff_id">
+                                            </div>
                                         @endforeach
-                                    </select>
+                                    </div>
+                                </div>
                                 </div><div class="form-group">
                                 <label for="type">Type</label><input type="text" name="type" id="type" class="form-control" ></div><div class="form-group">
 {{--                                    <label for="deleted_at">Deleted_at</label><input type="text" name="deleted_at" id="deleted_at" class="form-control" ></div><div class="form-group">--}}

@@ -3,6 +3,10 @@
 namespace App\Modules\Booking\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Booking_status\Model\Booking_status;
+use App\Modules\Parking\Model\Parking;
+use App\Modules\Staff\Model\Staff;
+use App\User;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
@@ -36,22 +40,32 @@ class AdminBookingController extends Controller
         $where = $this->_get_search_param($request);
 
         // For pagination
-        $filterTotal = $booking->where( function($query) use ($where) {
+        $filterTotal = $booking
+            ->join('practice', 'booking.practice_id', 'booking.id')
+            ->join('staff', 'booking.staff_id', 'staff.id')
+            ->join('users', 'practice.user_id', 'users.id')
+            ->where( function($query) use ($where) {
             if($where !== null) {
                 foreach($where as $val) {
                     $query->orWhere($val[0],$val[1],$val[2]);
                 }
             }
-        })->orderBy('id', 'DESC')->get();
+        })->select('users.name', 'staff.type', 'booking.id', 'booking.status')
+            ->orderBy('booking.id', 'DESC')->get();
 
         // Display limited list
-        $rows = $booking->where( function($query) use ($where) {
+        $rows = $booking
+            ->join('practice', 'booking.practice_id', 'booking.id')
+            ->join('staff', 'booking.staff_id', 'staff.id')
+            ->join('users', 'practice.user_id', 'users.id')
+            ->where( function($query) use ($where) {
             if($where !== null) {
                 foreach($where as $val) {
                     $query->orWhere($val[0],$val[1],$val[2]);
                 }
             }
-        })->limit($request->length)->offset($request->start)->orderBy('id', 'DESC')->get();
+        })->select('users.name', 'staff.type', 'booking.id', 'booking.status')
+            ->limit($request->length)->offset($request->start)->orderBy('booking.id', 'DESC')->get();
 
         //To count the total values present
         $total = $booking->get();
@@ -99,7 +113,9 @@ class AdminBookingController extends Controller
     public function create()
     {
         $page['title'] = 'Booking | Create';
-        return view("Booking::add",compact('page'));
+        $staffs = Staff::all();
+        $parkings = Parking::all();
+        return view("Booking::add",compact('page', 'staffs', 'parkings'));
         //
     }
 
@@ -138,7 +154,9 @@ class AdminBookingController extends Controller
     {
         $booking = Booking::findOrFail($id);
         $page['title'] = 'Booking | Update';
-        return view("Booking::edit",compact('page','booking'));
+        $staffs = Staff::all();
+        $parkings = Parking::all();
+        return view("Booking::edit",compact('page','booking', 'staffs', 'parkings'));
 
         //
     }
@@ -152,7 +170,19 @@ class AdminBookingController extends Controller
      */
     public function update(Request $request)
     {
-        $data = $request->except('_token', '_method');
+        $data = $request->except('_token', '_method', 'files', 'nurse');
+        if($request->nurse){
+            $data['status'] = 1;
+            $assign_data = [
+                'id' => $request->id,
+                'user_id' => $request->nurse,
+            ];
+            if(Booking_status::where('id', $request->id)->exists()){
+                Booking_status::where('id',$request->id)->update($assign_data);
+            }else{
+                Booking_status::create($assign_data);
+            }
+        }
         $success = Booking::where('id', $request->id)->update($data);
         return redirect()->route('admin.bookings');
 
@@ -171,5 +201,71 @@ class AdminBookingController extends Controller
         return redirect()->route('admin.bookings');
 
         //
+    }
+
+    public function assignNurse(Request $request){
+        if(!isset($request->searchTerm)){
+            $full = $request->full_time;
+            $part = $request->part_time;
+            $fetchData = User::where(function ($query) use($full, $part){
+                if($full){
+                    $query->Where('role', 3);
+                }
+                elseif($part){
+                    $query->where('role', 2);
+                }
+                else{
+                    $query->where('role', 2)
+                        ->orWhere('role', 3);
+                }
+            })->where('status', 2)->limit(7)->get();
+            $data = array();
+            foreach ($fetchData as  $row){
+                if(Booking_status::where('user_id', $row->id)->exists()){
+                    continue;
+                }else{
+                    $data[] = array(
+                        'id' => $row->id,
+                        'text' => $row->name
+                    );
+                }
+            }
+        }
+        else{
+            $search = $request->searchTerm;
+            $full = $request->full_time;
+            $part = $request->part_time;
+
+//            $fetchData = City::with('state')->where('name', 'like', '%'. $search .'%')->whereHas('state', function($q) use($search, $country_id){
+//                $q->where('country_id', $country_id)->orWhere('name', 'like', '%'. $search .'%');
+//            })
+//            ->limit(5)
+//            ->get();
+//            $fetchData = \Illuminate\Support\Facades\DB::select('SELECT cities.name AS city, cities.id, states.name AS state FROM cities JOIN states ON states.id = cities.state_id WHERE (cities.name LIKE "%'.$search.'%" OR states.name LIKE "%'.$search.'%") AND states.country_id = '.$country_id.' LIMIT 5');
+            $fetchData = User::where('name', 'like', '%'.$search.'%' )->where(function ($query) use($full, $part){
+                if($full){
+                    $query->Where('role', 3);
+                }
+                elseif($part){
+                    $query->where('role', 2);
+                }
+                else{
+                    $query->where('role', 2)
+                        ->orWhere('role', 3);
+                }
+            })->where('status', 2)->limit(7)->get();
+            $data = array();
+            foreach ($fetchData as  $row){
+                if(Booking_status::where('user_id', $row->id)->exists()){
+                    continue;
+                }else{
+                    $data[] = array(
+                        'id' => $row->id,
+                        'text' => $row->name
+                    );
+                }
+            }
+        }
+        echo json_encode($data);
     }
 }

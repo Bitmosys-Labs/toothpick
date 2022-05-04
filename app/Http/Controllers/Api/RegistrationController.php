@@ -7,6 +7,8 @@ use App\Modules\Dcp\Model\Dcp;
 use App\Modules\Kin\Model\Kin;
 use App\Modules\Practice\Model\Practice;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class RegistrationController extends Controller
 {
@@ -70,12 +72,19 @@ class RegistrationController extends Controller
         }
     }
 
-    public function me(){
-        if(auth()->check()){
-            return response(auth()->user());
-        }
-        else{
-            return response('Unauthorized', 401);
-        }
+    public function me(Request $request){
+//        if(session('token')){
+            return Auth::user();
+//        }
+//        else{
+//            return response('token session failed');
+//        }
+//        $request->headers->set('authorization', session('token'));
+//        if(auth()->check()){
+//            return response(auth()->user());
+//        }
+//        else{
+//            return response('Unauthorized', 401);
+//        }
     }
 }

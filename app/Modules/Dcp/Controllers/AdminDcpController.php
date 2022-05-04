@@ -223,7 +223,7 @@ class AdminDcpController extends Controller
 
     public function history(Request $request){
         if(!isset($request->searchTerm)){
-            $fetchData = User::select('*')->where('role', 1)->orderBy('name')->limit(5)->get();
+            $fetchData = User::select('*')->where('role', 1)->where('status', 1)->orderBy('name')->limit(5)->get();
             $data = array();
             foreach ($fetchData as  $row){
                 $data[] = array(
