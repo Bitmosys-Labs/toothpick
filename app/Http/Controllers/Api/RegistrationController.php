@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Modules\Dcp\Model\Dcp;
 use App\Modules\Kin\Model\Kin;
 use App\Modules\Practice\Model\Practice;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -73,18 +74,9 @@ class RegistrationController extends Controller
     }
 
     public function me(Request $request){
-//        if(session('token')){
-            return Auth::user();
-//        }
-//        else{
-//            return response('token session failed');
-//        }
-//        $request->headers->set('authorization', session('token'));
-//        if(auth()->check()){
-//            return response(auth()->user());
-//        }
-//        else{
-//            return response('Unauthorized', 401);
-//        }
+            $data = User::where('id', auth()->user()->id)
+                ->select('id','name', 'email', 'status', 'role')
+                ->first();
+            return $data;
     }
 }

@@ -34,10 +34,14 @@ Route::group(['name' => 'common', 'middleware' => 'auth:sanctum'], function (){
     Route::get('me', 'Api\RegistrationController@me');
     Route::post('userDetails', 'Api\RegistrationController@userDetails');
     Route::post('refreshLogin', 'Api\RegistrationController@refreshLogin');
+    Route::get('logout', 'Api\UserApiController@logoutUser');
 });
 
 Route::group(['name' => 'dcp', 'middleware' => 'auth:sanctum'], function () {
     Route::get('dcpProfile', 'Api\DcpController@profile');
+    Route::get('bookingList', 'Api\DcpController@booking');
+    Route::get('timesheetList', 'Api\DcpController@timesheet');
+    Route::get('dcpDetails', 'Api\PracticeController@profile');
 });
 
 Route::group(['name' => 'practice', 'middleware' => 'auth:sanctum'], function () {
@@ -47,4 +51,6 @@ Route::group(['name' => 'practice', 'middleware' => 'auth:sanctum'], function ()
     Route::post('updatePracticeProfile', 'Api\PracticeController@updateProfile');
     Route::post('changePassword', 'Api\PracticeController@updatePassword');
     Route::get('bookings', 'Api\PracticeController@listBooking');
+    Route::post('cancelBookings', 'Api\PracticeController@bookingCancel');
+    Route::get('invoiceList', 'Api\PracticeController@invoice');
 });

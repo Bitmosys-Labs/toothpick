@@ -13,7 +13,7 @@ class Timesheet extends Model
     use SoftDeletes;
     public  $table = 'timesheet';
 
-    protected $fillable = ['id','booking_id','slug','start_time','end_time','lunch_time','approved_by','signature','payable_amount','vat','status','deleted_at','created_at','updated_at',];
+    protected $fillable = ['id','booking_id','slug','start_time','end_time','lunch_time','approved_by','signature','payable_amount','vat','status', 'due_date', 'deleted_at','created_at','updated_at',];
 
     public function booking(){
         return $this->belongsTo(Booking::class, 'booking_id', 'id');

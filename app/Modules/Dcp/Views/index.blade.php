@@ -80,19 +80,19 @@
                     return meta.row + meta.settings._iDisplayStart + 1;
                 },name: "sn", searchable: false },
                 { data: function(data){
-                    return data.user.name
+                    return data.name
                     },name: "users.name"},
                 { data: function(data){
-                        return data.user.email
+                        return data.email
                     },name: "users.email"},
                 { data: function(data){
-                    return data.staff.type
+                    return data.type
                     },name: "staff.type"},
                 { data: function(data){
-                        if(data.user.role == 2){
+                        if(data.role == 2){
                            return "Part Time"
                         }
-                        else if(data.user.role == 3){
+                        else if(data.role == 3){
                            return "Full Time"
                         }
                         else{

@@ -4,7 +4,7 @@ namespace App\Modules\Dcp\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Modules\Staff\Model\Staff;
-use App\User;
+use App\Core_modules\User\Model\User;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
@@ -47,7 +47,7 @@ class AdminDcpController extends Controller
                 }
             }
         })->whereHas('user', function($q){
-            return $q->whereNotNull('email_verified_at');
+            return $q->whereNotNull('email_verified_at')->Where('role', 2)->orWhere('role', 3);
         })->orderBy('dcp.id', 'DESC')->get();
 
         // Display limited list
@@ -58,8 +58,10 @@ class AdminDcpController extends Controller
                 }
             }
         })->whereHas('user', function($q){
-            return $q->whereNotNull('email_verified_at');
-    })->limit($request->length)->offset($request->start)->orderBy('dcp.id', 'DESC')->with('user')->with('staff')->get();
+            return $q->whereNotNull('email_verified_at')->Where('role', 2)->orWhere('role', 3);
+    })->limit($request->length)->offset($request->start)
+            ->select('users.name', 'users.email', 'staff.type', 'users.role', 'dcp.id')
+            ->orderBy('dcp.id', 'DESC')->with('user')->with('staff')->get();
 
         //To count the total values present
         $total = $dcp->get();
@@ -187,19 +189,15 @@ class AdminDcpController extends Controller
 //        $data = $request->except('_token', '_method');
         $user_data = [
             'name' => $request->full_name,
-            'email' => $request->email,
             'contact' => $request->phone,
-            'password' => Hash::make($request->password),
             'role' => $request->role,
             'email_verified_at' => Carbon::now()->toDateTimeString(),
-            'status' => 0,
         ];
         $user = User::where('id', $request->user_id)->update($user_data);
         $data = [
             'user_id' => $request->user_id,
             'staff_id' => $request->staff_id,
             'employment_history' => $request->employment_history,
-            'status' => 0,
         ];
         $success = Dcp::where('id', $request->id)->update($data);
         return redirect()->route('admin.dcps');

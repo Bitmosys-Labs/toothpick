@@ -28,8 +28,9 @@
                     <thead>
                         <tr>
                             <th>SN</th>
-							<th >User_id</th>
-<th >Owners_name</th>
+							<th >Name</th>
+							<th >Email</th>
+<th >Owners Name</th>
 {{--<th >Payment</th>--}}
 {{--<th >Postcode</th>--}}
 {{--<th >Address</th>--}}
@@ -71,7 +72,15 @@
                 { data: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 },name: "sn", searchable: false },
-                { data: "user_id",name: "user_id"},{ data: "owners_name",name: "owners_name"},
+                { data: function(data){
+                        return data.name
+                    },name: "users.name"},
+                { data: function(data){
+                        return data.email
+                    },name: "users.email"},
+                { data: function(data){
+                        return data.owners_name
+                    },name: "practice.owners_name"},
                 // { data: "payment",name: "payment"},{ data: "postcode",name: "postcode"},{ data: "address",name: "address"},{ data: "emergency_contact",name: "emergency_contact"},{ data: "gdc_no",name: "gdc_no"},{ data: "contact",name: "contact"},{ data: "deleted_at",name: "deleted_at"},{ data: "created_at",name: "created_at"},{ data: "updated_at",name: "updated_at"},
                 { data: function(data,b,c,table) {
                 var buttons = '';

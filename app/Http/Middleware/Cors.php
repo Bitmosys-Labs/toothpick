@@ -32,7 +32,6 @@ class Cors
                 ->header('Access-Control-Allow-Methods', "GET, POST, OPTIONS")
                 ->header('Access-Control-Allow-Headers', "Accept,Authorization,Content-Type,Cookie")
                 ->header('Access-Control-Allow-Credentials', 'true');
-//                ->header('Access-Control-Exposed-Headers', 'set-cookie');
         }
         return $next($request);
     }

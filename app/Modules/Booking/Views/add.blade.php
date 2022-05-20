@@ -45,7 +45,7 @@
                                             @endforeach
                                         </select>
                                     </div><div class="form-group">
-                                <label for="additional">Additional Parking Information</label><textarea type="text" name="additional" id="additional" class="form-control"></textarea></div><div class="form-group">
+                                <label for="additional">Additional Parking Information</label><textarea type="text" name="other" id="other" class="form-control"></textarea></div><div class="form-group">
                                 <label for="parking">Is there anyone specific you like to work with?</label>
                                     <select type="text" name="work_with" id="work_with" class="form-control" required>
                                         <option value="Any" selected>Any</option>
@@ -60,7 +60,10 @@
                                         <option value="Invisalign">Invisalign</option>
                                         <option value="Reception">Reception</option>
                                     </select>
-                                </div><div class="form-group">
+                                    </div><div class="form-group">
+                                        <label for="additional">Additional Information</label>
+                                        <textarea type="text" name="additional" id="additional" class="form-control"></textarea>
+                                    </div><div class="form-group">
 {{--                                    <label for="status">Status</label><input type="text" name="status" id="status" class="form-control" ></div><div class="form-group">--}}
 {{--                                    <label for="deleted_at">Deleted_at</label><input type="text" name="deleted_at" id="deleted_at" class="form-control" ></div><div class="form-group">--}}
 {{--                                    <label for="created_at">Created_at</label><input type="text" name="created_at" id="created_at" class="form-control" ></div><div class="form-group">--}}
@@ -104,7 +107,7 @@
     </script>
 
     <script>
-        $('#additional').summernote({
+        $('#other').summernote({
             height: 100
         });
     </script>

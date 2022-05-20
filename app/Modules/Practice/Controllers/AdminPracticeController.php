@@ -3,9 +3,13 @@
 namespace App\Modules\Practice\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Dcp\Model\Dcp;
+use App\Core_modules\User\Model\User;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Schema;
 use App\Modules\Practice\Model\Practice;
@@ -36,22 +40,27 @@ class AdminPracticeController extends Controller
         $where = $this->_get_search_param($request);
 
         // For pagination
-        $filterTotal = $practice->where( function($query) use ($where) {
+        $filterTotal = $practice->join('users', 'users.id', '=', 'practice.user_id')->where( function($query) use ($where) {
             if($where !== null) {
                 foreach($where as $val) {
                     $query->orWhere($val[0],$val[1],$val[2]);
                 }
             }
-        })->orderBy('id', 'DESC')->get();
+        })->whereHas('user', function($q){
+            return $q->whereNotNull('email_verified_at')->where('role', 1);
+        })->orderBy('practice.id', 'DESC')->get();
 
         // Display limited list
-        $rows = $practice->where( function($query) use ($where) {
+        $rows = $practice->join('users', 'users.id', '=', 'practice.user_id')->where( function($query) use ($where) {
             if($where !== null) {
                 foreach($where as $val) {
                     $query->orWhere($val[0],$val[1],$val[2]);
                 }
             }
-        })->limit($request->length)->offset($request->start)->orderBy('id', 'DESC')->get();
+        })->whereHas('user', function($q){
+            return $q->whereNotNull('email_verified_at')->where('role', 1);
+        })->limit($request->length)->offset($request->start)->with('user')->orderBy('practice.id', 'DESC')
+            ->select('users.name', 'users.email', 'practice.owners_name', 'practice.id')->get();
 
         //To count the total values present
         $total = $practice->get();
@@ -111,7 +120,29 @@ class AdminPracticeController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->except('_token');
+        $request->validate([
+            'password' => 'required|confirmed|min:6'
+        ]);
+        if(User::where('email', $request->email)->whereNotNull('email_verified_at')->exists()){
+            return redirect()->back()->with('error', 'Email already exists');
+        }
+//        dd($request->all());
+        $user_data = [
+            'name' => $request->full_name,
+            'email' => $request->email,
+            'contact' => $request->phone,
+            'password' => Hash::make($request->password),
+            'role' => 1,
+            'email_verified_at' => Carbon::now()->toDateTimeString(),
+            'status' => 0,
+        ];
+        $user = User::create($user_data);
+        $data = [
+            'user_id' => $user->id,
+            'payment' => $request->payment,
+            'status' => 0,
+            'owners_name' => $request->owners_name,
+        ];
         $success = Practice::Create($data);
         return redirect()->route('admin.practices');
         //
@@ -136,7 +167,7 @@ class AdminPracticeController extends Controller
      */
     public function edit($id)
     {
-        $practice = Practice::findOrFail($id);
+        $practice = Practice::where('id',$id)->with('user')->first();
         $page['title'] = 'Practice | Update';
         return view("Practice::edit",compact('page','practice'));
 
@@ -152,7 +183,17 @@ class AdminPracticeController extends Controller
      */
     public function update(Request $request)
     {
-        $data = $request->except('_token', '_method');
+        $user_data = [
+            'name' => $request->full_name,
+            'contact' => $request->phone,
+            'email_verified_at' => Carbon::now()->toDateTimeString(),
+        ];
+        $user = User::where('id', $request->user_id)->update($user_data);
+        $data = [
+            'user_id' => $request->user_id,
+            'owners_name' => $request->owners_name,
+            'payment' => $request->payment,
+        ];
         $success = Practice::where('id', $request->id)->update($data);
         return redirect()->route('admin.practices');
 

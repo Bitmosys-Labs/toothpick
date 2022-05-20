@@ -54,7 +54,7 @@
                                             @endforeach
                                         </select>
                                     </div><div class="form-group">
-                                    <label for="additional">Additional Parking Information</label><textarea type="text" name="additional" id="additional" class="form-control" >{!! $booking->additional !!}</textarea></div><div class="form-group">
+                                    <label for="other">Additional Parking Information</label><textarea type="text" name="other" id="other" class="form-control" >{!! $booking->other !!}</textarea></div><div class="form-group">
                                     <label for="parking">Is there anyone specific you like to work with?</label>
                                         <select type="text" name="work_with" id="work_with" class="form-control" required>
                                             @if($booking->work_with)
@@ -72,6 +72,9 @@
                                                 <option value="Invisalign">Invisalign</option>
                                                 <option value="Reception">Reception</option>
                                         </select>
+                                    </div><div class="form-group">
+                                        <label for="other">Additional Information</label>
+                                        <textarea type="text" name="additional" id="additional" class="form-control">{{$booking->additional}}</textarea>
                                     </div><div class="form-group">
                                 <h5>Assign Staff</h5>
 
@@ -156,7 +159,7 @@
     </script>
 
     <script>
-        $('#additional').summernote({
+        $('#other').summernote({
             height: 100
         });
     </script>

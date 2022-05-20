@@ -24,6 +24,7 @@ class CreateTimesheetTable extends Migration
             $table->string('signature', 255)->nullable();
             $table->float('payable_amount')->nullable();
             $table->float('vat')->nullable();
+            $table->date('due_date')->nullable();
             $table->boolean('status')->nullable();
             $table->softDeletes();
             $table->timestamps();

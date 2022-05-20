@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Modules\Booking\Model\Booking;
+use App\Modules\Booking_status\Model\Booking_status;
 use App\Modules\Practice\Model\Practice;
+use App\Modules\Timesheet\Model\Timesheet;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -89,11 +91,60 @@ class PracticeController extends Controller
     }
 
     public function listBooking(){
-        $booking = Booking::where('practice_id', auth()->user()->id)->with('booking_status.user')->get();
+        $booking = Booking::where('practice_id', auth()->user()->id)->with('booking_status.user', 'parking', 'staff')->get();
         $response = [
             'success' => true,
             'message' => 'Data successfully registered',
             'result' => $booking
+        ];
+        return response($response, 200);
+    }
+
+    public function bookingCancel(Request $request){
+        $booking = Booking::where('practice_id', auth()->user()->id)->where('id', $request->booking_id)->first();
+        $booking_status = Booking_status::where('id', $booking['id'])->first();
+        $data = [
+          'status' => 4
+        ];
+        $booking->update($data);
+        if($request->other){
+            $data = [
+                'canceled_by' => 'By Practice',
+                'reason_for_cancel' => $request->other,
+            ];
+        }else{
+            $data = [
+                'canceled_by' => 'By Practice',
+                'reason_for_cancel' => $request->reason_for_cancel,
+            ];
+        }
+        if($booking_status){
+            $booking_status->update($data);
+        }
+        else{
+            $status = [
+                'id' => $booking->id
+            ];
+            $booking_status->create($status);
+            $booking_status->update($data);
+        }
+        $response = [
+            'success' => true,
+            'message' => 'Booking Canceled',
+            'result' => null
+        ];
+        return response($response, 200);
+    }
+
+    public function invoice(){
+        $invoice = Timesheet::wherehas('booking', function($q){
+            $q->where('practice_id', auth()->user()->id);
+        })->with('booking')->get();
+
+        $response = [
+            'success' => true,
+            'message' => 'Invoice List',
+            'result' => $invoice
         ];
         return response($response, 200);
     }

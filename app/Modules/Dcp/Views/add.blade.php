@@ -39,7 +39,7 @@
                                         <input type="tel" name="phone" id="phone" class="form-control" required>
                                     </div><div class="form-group">
                                     <label for="email">Password</label>
-                                        <input type="password" name="password" id="password" class="form-control">
+                                        <input type="password" name="password" id="password" class="form-control" required>
                                     </div><div class="form-group">
                                     <label for="email">Confirm Password</label>
                                         <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" required>

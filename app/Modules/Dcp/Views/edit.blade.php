@@ -34,9 +34,9 @@
                                     <label for="full_name">Full Name</label>
                                     <input type="text" name="full_name" id="full_name" value="{{$dcp->user->name}}" class="form-control" required>
                                 </div><div class="form-group">
-                                    <label for="email">Email</label>
-                                    <input type="email" name="email" id="email" value="{{$dcp->user->email}}" class="form-control" required>
-                                </div><div class="form-group">
+{{--                                    <label for="email">Email</label>--}}
+{{--                                    <input type="email" name="email" id="email" value="{{$dcp->user->email}}" class="form-control" required>--}}
+{{--                                </div><div class="form-group">--}}
                                     <label for="email">Phone</label>
                                     <input type="tel" name="phone" id="phone" value="{{$dcp->user->contact}}" class="form-control" required>
                                 </div><div class="form-group">

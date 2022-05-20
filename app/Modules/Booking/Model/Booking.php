@@ -2,6 +2,7 @@
 
 namespace App\Modules\Booking\Model;
 use App\Modules\Booking_status\Model\Booking_status;
+use App\Modules\Parking\Model\Parking;
 use App\Modules\Practice\Model\Practice;
 use App\Modules\Staff\Model\Staff;
 use App\Modules\Timesheet\Model\Timesheet;
@@ -16,7 +17,7 @@ class Booking extends Model
     use SoftDeletes;
     public  $table = 'booking';
 
-    protected $fillable = ['id','practice_id','staff_id','slug','date','from','to','hourly_rate','parking','additional', 'work_with','status','deleted_at','created_at','updated_at',];
+    protected $fillable = ['id','practice_id','staff_id','slug','date','from','to','hourly_rate','parking','additional', 'work_with', 'other','status','deleted_at','created_at','updated_at',];
 
     public function practice(){
         return $this->belongsTo(Practice::class, 'practice_id', 'id');
@@ -28,6 +29,10 @@ class Booking extends Model
 
     public function timesheet(){
         return $this->hasOne(Timesheet::class, 'booking_id', 'id');
+    }
+
+    public function parking(){
+        return $this->belongsTo(Parking::class, 'parking', 'id');
     }
 
     public function booking_status(){

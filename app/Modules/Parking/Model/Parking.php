@@ -15,6 +15,6 @@ class Parking extends Model
     protected $fillable = ['id','type','deleted_at','created_at','updated_at',];
 
     public function booking(){
-        return $this->belongsTo(Booking::class, 'id', 'parking_id');
+        return $this->hasOne(Booking::class, 'parking', 'id');
     }
 }
