@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Receipt\Controllers;
+namespace App\Modules\Invoice\Controllers;
 
 use App\Http\Controllers\Controller;
 use Auth;
@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Schema;
 
-class ReceiptController extends Controller
+class InvoiceController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,7 +18,7 @@ class ReceiptController extends Controller
      */
     public function index()
     {
-        $page['title'] = 'receipts';
+        $page['title'] = 'invoices';
         //
     }
 

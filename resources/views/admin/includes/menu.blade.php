@@ -62,9 +62,9 @@
                             </a>
                         </li>
                     @endcan
-                    @can('receipts')
+                    @can('invoices')
                         <li class="site-menu-item">
-                            <a href="{{ route('admin.receipts') }}">
+                            <a href="{{ route('admin.invoices') }}">
                                 <i class="site-menu-icon fa fa-credit-card" aria-hidden="true"></i>
                                 <span class="site-menu-title">Billing</span>
                             </a>

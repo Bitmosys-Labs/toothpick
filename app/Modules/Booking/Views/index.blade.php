@@ -30,6 +30,7 @@
                             <th>SN</th>
 							<th >Practice_id</th>
 <th >Staff_id</th>
+<th >Date</th>
 {{--<th >Slug</th>--}}
 {{--<th >Date</th>--}}
 {{--<th >From</th>--}}
@@ -71,14 +72,17 @@
 
             columns: [
                 { data: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
-                },name: "sn", searchable: false },
+                    return data.slug
+                },name: "booking.slug"},
                 { data: function(data){
                     return data.name;
                     },name: "users.name"},
                 { data: function(data){
                     return data.type
                     },name: "staff.type"},
+                { data: function(data){
+                        return data.date
+                    },name: "booking.date"},
                 // { data: "slug",name: "slug"},{ data: "date",name: "date"},{ data: "from",name: "from"},{ data: "to",name: "to"},{ data: "hourly_rate",name: "hourly_rate"},{ data: "parking",name: "parking"},{ data: "additional",name: "additional"},
                 { data: function(data){
                     if(data.status == 0){

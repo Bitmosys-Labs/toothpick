@@ -5,14 +5,15 @@ namespace App\Modules\Booking\Controllers;
 use App\Http\Controllers\Controller;
 use App\Modules\Booking_status\Model\Booking_status;
 use App\Modules\Parking\Model\Parking;
+use App\Modules\Practice\Model\Practice;
 use App\Modules\Staff\Model\Staff;
 use App\User;
 use Auth;
-use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Schema;
 use App\Modules\Booking\Model\Booking;
+use Illuminate\Support\Str;
 
 class AdminBookingController extends Controller
 {
@@ -36,35 +37,35 @@ class AdminBookingController extends Controller
 
     public function getbookingsJson(Request $request)
     {
-        $booking = new Booking;
+        $booking = new Booking();
         $where = $this->_get_search_param($request);
 
         // For pagination
         $filterTotal = $booking
-            ->join('practice', 'booking.practice_id', 'booking.id')
-            ->join('staff', 'booking.staff_id', 'staff.id')
-            ->join('users', 'practice.user_id', 'users.id')
             ->where( function($query) use ($where) {
             if($where !== null) {
                 foreach($where as $val) {
                     $query->orWhere($val[0],$val[1],$val[2]);
                 }
             }
-        })->select('users.name', 'staff.type', 'booking.id', 'booking.status')
+        })
+            ->join('staff', 'booking.staff_id', 'staff.id')
+            ->join('users', 'booking.practice_id', 'users.id')
+            ->select('users.name', 'staff.type', 'booking.id', 'booking.status', 'booking.date', 'booking.slug')
             ->orderBy('booking.id', 'DESC')->get();
 
         // Display limited list
         $rows = $booking
-            ->join('practice', 'booking.practice_id', 'booking.id')
-            ->join('staff', 'booking.staff_id', 'staff.id')
-            ->join('users', 'practice.user_id', 'users.id')
             ->where( function($query) use ($where) {
             if($where !== null) {
                 foreach($where as $val) {
                     $query->orWhere($val[0],$val[1],$val[2]);
                 }
             }
-        })->select('users.name', 'staff.type', 'booking.id', 'booking.status')
+        })
+            ->join('staff', 'booking.staff_id', 'staff.id')
+            ->join('users', 'booking.practice_id', 'users.id')
+            ->select('users.name', 'staff.type', 'booking.id', 'booking.status', 'booking.date', 'booking.slug')
             ->limit($request->length)->offset($request->start)->orderBy('booking.id', 'DESC')->get();
 
         //To count the total values present
@@ -128,6 +129,12 @@ class AdminBookingController extends Controller
     public function store(Request $request)
     {
         $data = $request->except('_token');
+        $practice = \App\Core_modules\User\Model\User::where('id', $request->practice_id)->first();
+        do{
+            $slug = str::slug(substr($practice->name, 0, 2).' '.substr(str_shuffle("0123456789abcdefghijklmnopqrstvwxyz"), 0, 6), '-');
+        }while(Booking::where('slug', $slug)->exists());
+        $data['slug'] = $slug;
+        $data['status'] = 0;
         $success = Booking::Create($data);
         return redirect()->route('admin.bookings');
         //

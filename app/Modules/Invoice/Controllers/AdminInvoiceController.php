@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Receipt\Controllers;
+namespace App\Modules\Invoice\Controllers;
 
 use App\Http\Controllers\Controller;
 use Auth;
@@ -8,9 +8,9 @@ use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Schema;
-use App\Modules\Receipt\Model\Receipt;
+use App\Modules\Invoice\Model\Invoice;
 
-class AdminReceiptController extends Controller
+class AdminInvoiceController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,8 +19,8 @@ class AdminReceiptController extends Controller
      */
     public function index()
     {
-        $page['title'] = 'Receipt';
-        return view("Receipt::index",compact('page'));
+        $page['title'] = 'Invoice';
+        return view("Invoice::index",compact('page'));
 
         //
     }
@@ -30,31 +30,35 @@ class AdminReceiptController extends Controller
      *
      */
 
-    public function getreceiptsJson(Request $request)
+    public function getinvoicesJson(Request $request)
     {
-        $receipt = new Receipt;
+        $invoice = new Invoice;
         $where = $this->_get_search_param($request);
 
         // For pagination
-        $filterTotal = $receipt->where( function($query) use ($where) {
+        $filterTotal = $invoice->where( function($query) use ($where) {
             if($where !== null) {
                 foreach($where as $val) {
                     $query->orWhere($val[0],$val[1],$val[2]);
                 }
             }
-        })->orderBy('id', 'DESC')->get();
+        })->join('users', 'invoice.practice_id', 'users.id')
+            ->select('users.name', 'invoice.id', 'invoice.slug', 'invoice.issue_date', 'invoice.due_date', 'invoice.total', 'invoice.status')
+            ->orderBy('invoice.id', 'DESC')->get();
 
         // Display limited list
-        $rows = $receipt->where( function($query) use ($where) {
+        $rows = $invoice->where( function($query) use ($where) {
             if($where !== null) {
                 foreach($where as $val) {
                     $query->orWhere($val[0],$val[1],$val[2]);
                 }
             }
-        })->limit($request->length)->offset($request->start)->orderBy('id', 'DESC')->get();
+        })->join('users', 'invoice.practice_id', 'users.id')
+            ->select('users.name', 'invoice.id', 'invoice.slug', 'invoice.issue_date', 'invoice.due_date', 'invoice.total', 'invoice.status')
+            ->limit($request->length)->offset($request->start)->orderBy('invoice.id', 'DESC')->get();
 
         //To count the total values present
-        $total = $receipt->get();
+        $total = $invoice->get();
 
 
         echo json_encode(['draw'=>$request['draw'],'recordsTotal'=>count($total),'recordsFiltered'=>count($filterTotal),'data'=>$rows]);
@@ -98,8 +102,8 @@ class AdminReceiptController extends Controller
      */
     public function create()
     {
-        $page['title'] = 'Receipt | Create';
-        return view("Receipt::add",compact('page'));
+        $page['title'] = 'Invoice | Create';
+        return view("Invoice::add",compact('page'));
         //
     }
 
@@ -112,8 +116,8 @@ class AdminReceiptController extends Controller
     public function store(Request $request)
     {
         $data = $request->except('_token');
-        $success = Receipt::Create($data);
-        return redirect()->route('admin.receipts');
+        $success = Invoice::Create($data);
+        return redirect()->route('admin.invoices');
         //
     }
 
@@ -136,9 +140,9 @@ class AdminReceiptController extends Controller
      */
     public function edit($id)
     {
-        $receipt = Receipt::findOrFail($id);
-        $page['title'] = 'Receipt | Update';
-        return view("Receipt::edit",compact('page','receipt'));
+        $invoice = Invoice::where('id',$id)->with('practice', 'timesheet.booking.staff')->first();
+        $page['title'] = 'Invoice | Update';
+        return view("Invoice::edit",compact('page','invoice'));
 
         //
     }
@@ -153,8 +157,8 @@ class AdminReceiptController extends Controller
     public function update(Request $request)
     {
         $data = $request->except('_token', '_method');
-        $success = Receipt::where('id', $request->id)->update($data);
-        return redirect()->route('admin.receipts');
+        $success = Invoice::where('id', $request->id)->update($data);
+        return redirect()->route('admin.invoices');
 
         //
     }
@@ -167,8 +171,8 @@ class AdminReceiptController extends Controller
      */
     public function destroy($id)
     {
-        $success = Receipt::where('id', $id)->delete();
-        return redirect()->route('admin.receipts');
+        $success = Invoice::where('id', $id)->delete();
+        return redirect()->route('admin.invoices');
 
         //
     }

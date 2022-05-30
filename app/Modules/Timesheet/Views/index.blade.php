@@ -11,10 +11,10 @@
         </ol>
         <div class="page-header-actions">
 
-            <a href="{{ route('admin.timesheets.create') }}"  class="btn btn-sm btn-primary btn-outline btn-round"  title="create">
-                <i class="icon wb-plus" aria-hidden="true"></i>
-                <span class="hidden-sm-down">Create</span>
-            </a>
+{{--            <a href="{{ route('admin.timesheets.create') }}"  class="btn btn-sm btn-primary btn-outline btn-round"  title="create">--}}
+{{--                <i class="icon wb-plus" aria-hidden="true"></i>--}}
+{{--                <span class="hidden-sm-down">Create</span>--}}
+{{--            </a>--}}
 
         </div>
     </div>
@@ -70,11 +70,11 @@
         'ajax' : { url: "{{ route('admin.timesheets.getdatajson') }}",type: 'POST', data: {'_token': '{{ csrf_token() }}' } },
 
             columns: [
-                { data: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
-                },name: "sn", searchable: false },
+                // { data: function (data, type, row, meta) {
+                //     return meta.row + meta.settings._iDisplayStart + 1;
+                // },name: "sn", searchable: false },
+                { data: "slug",name: "slug"},
                 { data: "booking_id",name: "booking_id"},
-                // { data: "slug",name: "slug"},
                 { data: "start_time",name: "start_time"},{ data: "end_time",name: "end_time"},
                 // { data: "lunch_time",name: "lunch_time"},{ data: "approved_by",name: "approved_by"},{ data: "signature",name: "signature"},
                 { data: "payable_amount",name: "payable_amount"},

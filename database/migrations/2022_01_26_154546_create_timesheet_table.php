@@ -16,15 +16,16 @@ class CreateTimesheetTable extends Migration
         Schema::create('timesheet', function (Blueprint $table) {
             $table->id();
             $table->integer('booking_id')->nullable();
+            $table->integer('invoice_id')->nullable();
             $table->string('slug')->nullable();
             $table->time('start_time')->nullable();
             $table->time('end_time')->nullable();
             $table->integer('lunch_time')->nullable();
+            $table->integer('total_hours')->nullable();
             $table->string('approved_by')->nullable();
             $table->string('signature', 255)->nullable();
             $table->float('payable_amount')->nullable();
             $table->float('vat')->nullable();
-            $table->date('due_date')->nullable();
             $table->boolean('status')->nullable();
             $table->softDeletes();
             $table->timestamps();

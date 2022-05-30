@@ -11,6 +11,7 @@ use App\Modules\Document\Model\Document;
 use App\Modules\Experience\Model\Experience;
 use App\Modules\Identity\Model\Identity;
 use App\Modules\Immunization\Model\Immunization;
+use App\Modules\Invoice\Model\Invoice;
 use App\Modules\Practice\Model\Practice;
 use Illuminate\Database\Eloquent\Model;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -90,6 +91,10 @@ class User extends Authenticatable implements JWTSubject
 
     public function identity_documents(){
         return $this->belongsToMany(Document::class, 'ide_doc', 'doc_id');
+    }
+
+    public function invoice(){
+        return $this->hasMany(Invoice::class, 'practice_id', 'id');
     }
 
 }

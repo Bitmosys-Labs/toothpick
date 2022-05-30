@@ -20,16 +20,16 @@
                         <div class="box-body">
                             {{method_field('PATCH')}}
                             <div class="form-group">
-                                    <label for="booking_id">Booking_id</label><input type="text" value = "{{$timesheet->booking_id}}"  name="booking_id" id="booking_id" class="form-control" ></div><div class="form-group">
-                                    <label for="slug">Slug</label><input type="text" value = "{{$timesheet->slug}}"  name="slug" id="slug" class="form-control" ></div><div class="form-group">
-                                    <label for="start_time">Start_time</label><input type="text" value = "{{$timesheet->start_time}}"  name="start_time" id="start_time" class="form-control" ></div><div class="form-group">
-                                    <label for="end_time">End_time</label><input type="text" value = "{{$timesheet->end_time}}"  name="end_time" id="end_time" class="form-control" ></div><div class="form-group">
-                                    <label for="lunch_time">Lunch_time</label><input type="text" value = "{{$timesheet->lunch_time}}"  name="lunch_time" id="lunch_time" class="form-control" ></div><div class="form-group">
-                                    <label for="approved_by">Approved_by</label><input type="text" value = "{{$timesheet->approved_by}}"  name="approved_by" id="approved_by" class="form-control" ></div><div class="form-group">
-                                    <label for="signature">Signature</label><input type="text" value = "{{$timesheet->signature}}"  name="signature" id="signature" class="form-control" ></div><div class="form-group">
-                                    <label for="payable_amount">Payable_amount</label><input type="text" value = "{{$timesheet->payable_amount}}"  name="payable_amount" id="payable_amount" class="form-control" ></div><div class="form-group">
-                                    <label for="vat">Vat</label><input type="text" value = "{{$timesheet->vat}}"  name="vat" id="vat" class="form-control" ></div><div class="form-group">
-                                    <label for="status">Status</label><input type="text" value = "{{$timesheet->status}}"  name="status" id="status" class="form-control" ></div><div class="form-group">
+{{--                                    <label for="booking_id">Booking_id</label><input type="text" value = "{{$timesheet->booking_id}}"  name="booking_id" id="booking_id" class="form-control" ></div><div class="form-group">--}}
+{{--                                    <label for="slug">Slug</label><input type="text" value = "{{$timesheet->slug}}"  name="slug" id="slug" class="form-control" ></div><div class="form-group">--}}
+                                    <label for="start_time">Start_time</label><input type="time" value = "{{$timesheet->start_time}}"  name="start_time" id="start_time" class="form-control" required></div><div class="form-group">
+                                    <label for="end_time">End_time</label><input type="time" value = "{{$timesheet->end_time}}"  name="end_time" id="end_time" class="form-control" required></div><div class="form-group">
+                                    <label for="lunch_time">Lunch_time (in minutes)</label><input type="number" value = "{{$timesheet->lunch_time}}"  name="lunch_time" id="lunch_time" class="form-control" required></div><div class="form-group">
+                                    <label for="approved_by">Approved_by</label><input type="text" value = "{{$timesheet->approved_by}}"  name="approved_by" id="approved_by" class="form-control" required></div><div class="form-group">
+                                    <label for="signature">Signature</label><input type="text" value = "{{$timesheet->signature}}"  name="signature" id="signature" class="form-control"></div><div class="form-group">
+                                    <label for="payable_amount">Payable_amount</label><input type="number" value = "{{$timesheet->payable_amount}}"  name="payable_amount" id="payable_amount" class="form-control" required></div><div class="form-group">
+                                    <label for="vat">Vat</label><input type="number" value = "{{$timesheet->vat}}"  name="vat" id="vat" class="form-control" required></div><div class="form-group">
+                                    <label for="status">Status</label><input type="number" value = "{{$timesheet->status}}"  name="status" id="status" class="form-control" required></div><div class="form-group">
 {{--                                    <label for="deleted_at">Deleted_at</label><input type="text" value = "{{$timesheet->deleted_at}}"  name="deleted_at" id="deleted_at" class="form-control" ></div><div class="form-group">--}}
 {{--                                    <label for="created_at">Created_at</label><input type="text" value = "{{$timesheet->created_at}}"  name="created_at" id="created_at" class="form-control" ></div><div class="form-group">--}}
 {{--                                    <label for="updated_at">Updated_at</label><input type="text" value = "{{$timesheet->updated_at}}"  name="updated_at" id="updated_at" class="form-control" ></div>--}}

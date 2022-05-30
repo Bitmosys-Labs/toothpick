@@ -39,7 +39,7 @@ class RegistrationController extends Controller
                     ];
                     return response($response, 201);
                 }
-            } elseif (auth()->user()->role == 2) {
+            } elseif (auth()->user()->role == 2 || auth()->user()->role == 3) {
                 $dcp = new Dcp();
                 $kin = new Kin();
                 $data = [

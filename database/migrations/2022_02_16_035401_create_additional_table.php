@@ -15,7 +15,7 @@ class CreateAdditionalTable extends Migration
     {
         Schema::create('additional', function (Blueprint $table) {
             $table->id();
-            $table->integer('receipt_id')->nullable();
+            $table->integer('invoice_id')->nullable();
             $table->float('amount')->nullable();
             $table->string('purpose')->nullable();
             $table->string('receipt')->nullable();

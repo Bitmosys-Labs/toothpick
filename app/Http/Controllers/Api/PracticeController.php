@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Modules\Booking\Model\Booking;
 use App\Modules\Booking_status\Model\Booking_status;
+use App\Modules\Invoice\Model\Invoice;
 use App\Modules\Practice\Model\Practice;
 use App\Modules\Timesheet\Model\Timesheet;
 use App\User;
@@ -137,10 +138,7 @@ class PracticeController extends Controller
     }
 
     public function invoice(){
-        $invoice = Timesheet::wherehas('booking', function($q){
-            $q->where('practice_id', auth()->user()->id);
-        })->with('booking')->get();
-
+        $invoice = Invoice::where('practice_id', auth()->user()->id)->with('timesheet.booking.staff')->get();
         $response = [
             'success' => true,
             'message' => 'Invoice List',

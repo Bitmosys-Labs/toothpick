@@ -72,4 +72,14 @@ class DcpController extends Controller
         ];
         return response($response, 200);
     }
+
+    public function details(){
+        $data = User::where('id', auth()->user()->id)->first();
+        $response = [
+            'success' => true,
+            'message' => 'User Data',
+            'result' => $data
+        ];
+        return response($response, 200);
+    }
 }

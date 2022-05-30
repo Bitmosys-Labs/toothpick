@@ -7,8 +7,10 @@ use App\Modules\Booking\Model\Booking;
 use App\Modules\Booking_status\Model\Booking_status;
 use App\Modules\Parking\Model\Parking;
 use App\Modules\Staff\Model\Staff;
+use App\User;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class BookingApiController extends Controller
 {
@@ -29,8 +31,12 @@ class BookingApiController extends Controller
         if (auth()->check()) {
             $count = count($request->staff_id);
             $booking_info = new Booking();
+            do{
+                $slug = str::slug(substr(auth()->user()->name, 0, 2).' '.substr(str_shuffle("0123456789abcdefghijklmnopqrstvwxyz"), 0, 6));
+            }while(Booking::where('slug', $slug)->exists());
             for ($i = 0; $i < $count; $i++) {
                 $booking_info_data['practice_id'] = auth()->user()->id;
+                $booking_info_data['slug'] = $slug;
                 $booking_info_data['staff_id'] = $request->staff_id[$i];
                 $booking_info_data['date'] = $request->date[$i];
                 $booking_info_data['from'] = $request->from[$i];
