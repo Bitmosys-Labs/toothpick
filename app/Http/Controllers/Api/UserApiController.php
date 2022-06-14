@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Response;
 use function Symfony\Component\VarDumper\Dumper\esc;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+
 
 class UserApiController extends Controller
 {
@@ -35,7 +37,19 @@ class UserApiController extends Controller
     public function registerUser(Request $request)
     {
         if (User::where('email', '=', $request->email)->whereNotNull('email_verified_at')->exists()) {
-            return response('Email already exists!');
+            $response = [
+                'success' => false,
+                'message' => 'Email already exists!',
+                'result' => null
+            ];
+            return response($response, 403);
+        }elseif (User::where('email', '=', $request->email)->exists()){
+            $response = [
+                'success' => false,
+                'message' => 'Not Verified!',
+                'result' => null
+            ];
+            return response($response, 403);
         }
         $user = new User();
         if ($request->role == 1) {
@@ -50,28 +64,17 @@ class UserApiController extends Controller
             $newUser = $user->create($data);
             $practice = new Practice();
             $practice_data = [
+                'id' => $newUser->id,
                 'user_id' => $newUser->id,
                 'payment' => 15,
             ];
-
-            try {
-                $practice->save($practice_data);
-
-                $response = [
-                    'success' => true,
-                    'message' => 'Successfully registered!',
-                    'result' => null
-                ];
-                return response($response, 201);
-            } catch (\Exception $e) {
-                $user->where('id', $newUser->id)->delete();
-                $response = [
-                    'success' => false,
-                    'message' => 'Registration failed!',
-                    'result' => null
-                ];
-                return response($response, 400);
-            }
+            $practice->create($practice_data);
+            $response = [
+                'success' => true,
+                'message' => 'Successfully registered!',
+                'result' => null
+            ];
+            return response($response, 201);
         } elseif ($request->role == 2) {
             $data = [
                 'name' => $request->full_name,
@@ -84,26 +87,17 @@ class UserApiController extends Controller
             $newUser = $user->create($data);
             $dcp = new Dcp();
             $dcp_data = [
+                'id' => $newUser->id,
                 'user_id' => $newUser->id,
                 'staff_id' => $request->staff_id,
             ];
-            try {
-                $dcp->save($dcp_data);
-                $response = [
-                    'success' => true,
-                    'message' => 'Successfully registered!',
-                    'result' => null
-                ];
-                return response($response, 201);
-            } catch (\Exception $e) {
-                $user->where('id', $newUser->id)->delete();
-                $response = [
-                    'success' => false,
-                    'message' => 'Registration failed!',
-                    'result' => null
-                ];
-                return response($response, 400);
-            }
+            $dcp->create($dcp_data);
+            $response = [
+                'success' => true,
+                'message' => 'Successfully registered!',
+                'result' => null
+            ];
+            return response($response, 201);
         }
     }
 
@@ -116,7 +110,15 @@ class UserApiController extends Controller
                 'result' => null
             ];
             return response($response, 403);
-        } else {
+        }elseif (User::where('email', '=', $request->email)->exists()){
+            $response = [
+                'success' => false,
+                'message' => 'Not Verified!',
+                'result' => null
+            ];
+            return response($response, 403);
+        }
+        else {
             $response = [
                 'success' => true,
                 'message' => 'Email is unique!',
@@ -128,52 +130,9 @@ class UserApiController extends Controller
 
     public function userLogin(Request $request)
     {
-        $user = User::where('email', $request->email)->orderBy('created_at', 'DESC')->first();
-        if ($user) {
-            if ($user->email_verified_at != null) {
-                if (Auth::attempt($request->only('email', 'password'))) {
-                    $users = Auth::user();
-                    $token = $users->createToken('token')->plainTextToken;
-                    $cookie = cookie('jwt', $token, 60 * 24);
-                    if ($user->role == 1) {
-                        $data = [
-                            'token' => $token,
-                            'url' => "https://practice.toothpickdentalstaff.com",
-                        ];
-                        $response = [
-                            'success' => true,
-                            'message' => 'Login Successful!',
-                            'result' => $data
-                        ];
-                        return response($response, 200)->withCookie($cookie);
-                    } elseif ($user->role == 2) {
-                        $data = [
-                            'token' => $token,
-                            'url' => "https://dcp.toothpickdentalstaff.com",
-                        ];
-                        $response = [
-                            'success' => true,
-                            'message' => 'Login Successful!',
-                            'result' => $data
-                        ];
-                        return response($response, 200)->withCookie($cookie);
-                    } else {
-                        $response = [
-                            'success' => false,
-                            'message' => 'Unauthorized!',
-                            'result' => null
-                        ];
-                        return response($response, 401);
-                    }
-                } else {
-                    $response = [
-                        'success' => false,
-                        'message' => 'Wrong credentials!',
-                        'result' => null
-                    ];
-                    return response($response, 401);
-                }
-            } else {
+        if (Auth::attempt($request->only('email', 'password'))) {
+            $users = Auth::user();
+            if(!$users->hasVerifiedEmail()){
                 $response = [
                     'success' => false,
                     'message' => 'Email Not Verified!',
@@ -181,6 +140,46 @@ class UserApiController extends Controller
                 ];
                 return response($response, 403);
             }
+            $token = $users->createToken('token')->plainTextToken;
+            $cookie = cookie('jwt', $token, 60 * 24);
+            $user = User::where('email', $request->email)->whereNotNull('email_verified_at')->first();
+            if ($user->role == 1) {
+                $data = [
+                    'token' => $token,
+                    'url' => "https://practice.toothpickdentalstaff.com",
+                ];
+                $response = [
+                    'success' => true,
+                    'message' => 'Login Successful!',
+                    'result' => $data
+                ];
+                return response($response, 200)->withCookie($cookie);
+            } elseif ($user->role == 2 || $user->role == 3) {
+                $data = [
+                    'token' => $token,
+                    'url' => "https://dcp.toothpickdentalstaff.com",
+                ];
+                $response = [
+                    'success' => true,
+                    'message' => 'Login Successful!',
+                    'result' => $data
+                ];
+                return response($response, 200)->withCookie($cookie);
+            } else {
+                $response = [
+                    'success' => false,
+                    'message' => 'Unauthorized!',
+                    'result' => null
+                ];
+                return response($response, 401);
+            }
+        }else{
+            $response = [
+                'success' => false,
+                'message' => 'Wrong credentials!',
+                'result' => null
+            ];
+            return response($response, 401);
         }
     }
 
@@ -196,7 +195,7 @@ class UserApiController extends Controller
                 return response('Verified');
             }
             $token = substr(uniqid(), 7, 11);
-            $user = User::where('email', $request->email)->orderBy('created_at', 'DESC')->first();
+            $user = User::where('email', $request->email)->orderBy('id', 'DESC')->first();
             $record = new Token();
             $data = [
                 'user_id' => $user->id,
@@ -228,7 +227,7 @@ class UserApiController extends Controller
 
     public function emailVerify(Request $request)
     {
-        $user = User::where('email', $request->email)->orderBy('created_at', 'DESC')->first();
+        $user = User::where('email', $request->email)->orderBy('id', 'DESC')->first();
         $token = $request->token;
 
         if (Token::where('user_id', $user->id)->where('token', $token)
@@ -236,7 +235,7 @@ class UserApiController extends Controller
             $data = [
                 'email_verified_at' => Carbon::now()->toDateTimeString()
             ];
-            User::where('id', $user->id)->update($data);
+            $user->update($data);
             $response = [
                 'success' => true,
                 'message' => 'Verified',

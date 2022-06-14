@@ -15,7 +15,7 @@ class Document extends Model
     use SoftDeletes;
     public  $table = 'document';
 
-    protected $fillable = ['id','picture', 'validity', 'feedback', 'status','deleted_at','created_at','updated_at',];
+    protected $fillable = ['id','picture', 'title', 'validity', 'feedback', 'status','deleted_at','created_at','updated_at',];
 
     public function immunizations(){
         return $this->belongsToMany(Immunization::class, 'imm_doc', 'imm_id');

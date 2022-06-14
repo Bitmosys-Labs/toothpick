@@ -138,6 +138,7 @@ class AdminPracticeController extends Controller
         ];
         $user = User::create($user_data);
         $data = [
+            'id' => $user->id,
             'user_id' => $user->id,
             'payment' => $request->payment,
             'status' => 0,

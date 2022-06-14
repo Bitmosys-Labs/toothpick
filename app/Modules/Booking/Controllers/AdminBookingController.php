@@ -131,7 +131,7 @@ class AdminBookingController extends Controller
         $data = $request->except('_token');
         $practice = \App\Core_modules\User\Model\User::where('id', $request->practice_id)->first();
         do{
-            $slug = str::slug(substr($practice->name, 0, 2).' '.substr(str_shuffle("0123456789abcdefghijklmnopqrstvwxyz"), 0, 6), '-');
+            $slug = strtoupper(str::slug(substr($practice->name, 0, 2).' '.substr(str_shuffle("0123456789abcdefghijklmnopqrstvwxyz"), 0, 6), '-'));
         }while(Booking::where('slug', $slug)->exists());
         $data['slug'] = $slug;
         $data['status'] = 0;

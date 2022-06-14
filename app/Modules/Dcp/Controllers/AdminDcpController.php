@@ -139,6 +139,7 @@ class AdminDcpController extends Controller
         ];
         $user = User::create($user_data);
         $data = [
+            'id' => $user->id,
             'user_id' => $user->id,
             'staff_id' => $request->staff_id,
             'employment_history' => $request->employment_history,

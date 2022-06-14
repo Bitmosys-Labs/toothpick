@@ -32,7 +32,8 @@ class BookingApiController extends Controller
             $count = count($request->staff_id);
             $booking_info = new Booking();
             do{
-                $slug = str::slug(substr(auth()->user()->name, 0, 2).' '.substr(str_shuffle("0123456789abcdefghijklmnopqrstvwxyz"), 0, 6));
+                $slug = strtoupper(str::slug(substr(auth()->user()->name, 0, 2).' '.substr(str_shuffle("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 6)));
+
             }while(Booking::where('slug', $slug)->exists());
             for ($i = 0; $i < $count; $i++) {
                 $booking_info_data['practice_id'] = auth()->user()->id;

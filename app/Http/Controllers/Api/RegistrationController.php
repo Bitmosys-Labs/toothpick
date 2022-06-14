@@ -29,9 +29,10 @@ class RegistrationController extends Controller
                     'emergency_contact' => $request->emergency_contact,
                     'gdc_no' => $request->gdc_no,
                     'contact' => $request->contact,
-                    'status' => 1,
+//                    'status' => 1,
                 ];
                 if ($practice->where('user_id', auth()->user()->id)->update($data)) {
+                    \App\Core_modules\User\Model\User::where('id', auth()->user()->id)->update(['status' => 1]);
                     $response = [
                         'success' => true,
                         'message' => 'Data successfully registered',
@@ -47,7 +48,7 @@ class RegistrationController extends Controller
                     'address' => $request->address,
                     'gdc_no' => $request->gdc,
                     'travel' => $request->travel,
-                    'status' => 1,
+//                    'status' => 1,
                 ];
                 $save_dcp = $dcp->where('user_id', auth()->user()->id)->first();
                 if ($save_dcp->update($data)) {
@@ -60,6 +61,7 @@ class RegistrationController extends Controller
                         'dcp_id' => $save_dcp->id,
                     ];
                     $kin->create($kin_data);
+                    \App\Core_modules\User\Model\User::where('id', auth()->user()->id)->update(['status' => 1]);
                     $response = [
                         'success' => true,
                         'message' => 'Data successfully registered',

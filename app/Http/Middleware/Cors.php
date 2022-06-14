@@ -20,6 +20,7 @@ class Cors
             'https://practice.toothpickdentalstaff.com',
             'https://dcp.toothpickdentalstaff.com',
             'https://test.toothpickdentalstaff.com',
+            'http://localhost:3000',
         ];
         try {
             $origin = $_SERVER['HTTP_ORIGIN'];
@@ -30,7 +31,7 @@ class Cors
             return $next($request)
                 ->header('Access-Control-Allow-Origin', $origin)
                 ->header('Access-Control-Allow-Methods', "GET, POST, OPTIONS")
-                ->header('Access-Control-Allow-Headers', "Accept,Authorization,Content-Type,Cookie")
+                ->header('Access-Control-Allow-Headers', "Accept,Authorization,Content-Type,x-xsrf-token,Cookie")
                 ->header('Access-Control-Allow-Credentials', 'true');
         }
         return $next($request);

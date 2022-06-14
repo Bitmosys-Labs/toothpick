@@ -4,14 +4,20 @@ namespace App\Http\Controllers\Api;
 
 use App\Core_modules\User\Model\User;
 use App\Http\Controllers\Controller;
+use App\Modules\Availability\Model\Availability;
+use App\Modules\Availability_date\Model\Availability_date;
 use App\Modules\Booking\Model\Booking;
 use App\Modules\Compliance\Model\Compliance;
+use App\Modules\Day\Model\Day;
 use App\Modules\Dcp\Model\Dcp;
 use App\Modules\Experience\Model\Experience;
 use App\Modules\Identity\Model\Identity;
 use App\Modules\Immunization\Model\Immunization;
+use App\Modules\Invoice\Model\Invoice;
 use App\Modules\Timesheet\Model\Timesheet;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class DcpController extends Controller
 {
@@ -73,13 +79,165 @@ class DcpController extends Controller
         return response($response, 200);
     }
 
+    public function recordTimesheet(Request $request){
+        try{
+            $timesheet = new Timesheet();
+            $booking = Booking::where('slug', $request->slug)->whereHas('booking_status', function ($q){
+                return $q->where('user_id', auth()->user->id);
+            })->with('practice.user')->first();
+            $invoice = Invoice::where('practice_id', $booking->practice_id)->whereMonth('issue_date', $booking->date->format('m'))->first();
+            if(!$invoice->id){
+                $cr_in = new Invoice();
+                do{
+                    $slug_inv = strtoupper(str::slug(substr(auth()->user()->name, 0, 2).' '.substr(str_shuffle("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 6)));
+                }while(Invoice::where('slug', $slug_inv)->exists());
+                $due_date = $booking->date->endOfMonth()->toDateString();
+                $data_inv = [
+                    'slug' => $slug_inv,
+                    'practice_id' => $booking->practice_id,
+                    'issue_date' => $booking->date,
+                    'due_date' => $due_date->addDays($booking->practice->payment),
+                    'status' => 0,
+                ];
+
+                $invoice = $cr_in->create($data_inv);
+            }
+
+            do{
+                $slug = str::slug(substr(auth()->user()->name, 0, 2).' '.substr(str_shuffle("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 6));
+            }while(Timesheet::where('slug', $slug)->exists());
+            $total_hours = Carbon::parse($request->total_hours);
+            $payble_amount = (($total_hours->hour * 60) + $total_hours->minute - $request->lunch_time) * ($booking->hourly_rate/60);
+            $data = [
+                'boooking_id' => $booking->booking_id,
+                'slug' => $slug,
+                'invoice_id' => $invoice->id,
+                'start_time' => $request->start_time,
+                'end_time' => $request->end_time,
+                'lunch_time' => $request->lunch_time,
+                'total_hours' => $request->total_hours,
+                'approved_by' => $request->approved_by,
+                'due_date' => $invoice->due_date,
+                'vat' => ($payble_amount*0.2),
+                'payble_amount' => $payble_amount,
+                'status' => 1,
+            ];
+            if($booking->booking_status->id){
+                if ($request->hasFile('signature')) {
+                    $file = $request->file('signature');
+                    $uploadPath = public_path('uploads/signatures/');
+                    $data['signature'] = $this->fileUpload($file, $uploadPath);
+                    $timesheet->create($data);
+                    $booking->update(['status' => 3]);
+                    $response = [
+                        'success' => true,
+                        'message' => 'Timesheet Created Successfully',
+                        'result' => null
+                    ];
+                    return response($response, 200);
+                }
+                $response = [
+                    'success' => false,
+                    'message' => 'Missing Signature!',
+                    'result' => null
+                ];
+                return response($response, 400);
+            }else{
+                $response = [
+                    'success' => false,
+                    'message' => 'Something Went Wrong!',
+                    'result' => null
+                ];
+                return response($response, 400);
+            }
+        }
+        catch (\Exception $e){
+            $response = [
+                'success' => false,
+                'message' => 'Something Went Wrong!',
+                'result' => null
+            ];
+            return response($response, 400);
+        }
+
+    }
+
     public function details(){
-        $data = User::where('id', auth()->user()->id)->first();
+        $data = User::where('id', auth()->user()->id)->with('dcp')->first();
         $response = [
             'success' => true,
             'message' => 'User Data',
             'result' => $data
         ];
         return response($response, 200);
+    }
+
+    public function setAvailability(Request $request){
+        $role = auth()->user()->role;
+        if($role == 3){
+            $availability = new Availability();
+            $availability->where('user_id', auth()->user()->id)->delete();
+            for($i=0;$i<count($request->days);$i++){
+                $days = Day::where('day', $request->days[$i])->first();
+                $data = [
+                    'user_id' => auth()->user()->id,
+                    'days_id' => $days->id
+                ];
+                $availability->create($data);
+            }
+            $response = [
+                'success' => true,
+                'message' => 'Record created successfully!',
+                'result' => null
+            ];
+            return response($response, 200);
+        }elseif ($role == 2){
+            $availability = new Availability_date();
+            $availability->where('user_id', auth()->user()->id)->delete();
+            for($i=0;$i<count($request->days);$i++){
+                $data = [
+                    'user_id' => auth()->user()->id,
+                    'date' => $request->days[$i],
+                ];
+                $availability->create($data);
+            }
+            $response = [
+                'success' => true,
+                'message' => 'Record created successfully!',
+                'result' => null
+            ];
+            return response($response, 200);
+        }
+    }
+
+    public function getAvailability()
+    {
+        $role = auth()->user()->role;
+        if($role == 3){
+            $data = Availability::where('user_id', auth()->user()->id)->get();
+            $response = [
+                'success' => true,
+                'message' => 'Available days!',
+                'result' => $data
+            ];
+            return response($response, 200);
+        }elseif ($role == 2){
+            $data = Availability_date::where('user_id', auth()->user()->id)->get();
+            $response = [
+                'success' => true,
+                'message' => 'Available dates!',
+                'result' => $data
+            ];
+            return response($response, 200);
+        }
+    }
+
+    public function fileUpload($file, $path){
+        $ext = $file->getClientOriginalExtension();
+        $imageName = md5(microtime()) . '.' . $ext;
+        if (!$file->move($path, $imageName)) {
+            return redirect()->back();
+        }
+        return $imageName;
     }
 }
