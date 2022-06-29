@@ -47,7 +47,7 @@ class AdminUserController extends CoreController
                     $query->orWhere($val[0],$val[1],$val[2]);
                 }
             }
-        })->limit($request->length)->offset($request->start)->with("roles");
+        })->limit($request->length)->where('role', 0)->offset($request->start)->with("roles");
 
         return DataTables::of($users)
             ->addColumn('roles', function ($users) {

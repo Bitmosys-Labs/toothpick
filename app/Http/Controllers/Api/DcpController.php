@@ -89,7 +89,7 @@ class DcpController extends Controller
             if(!$invoice->id){
                 $cr_in = new Invoice();
                 do{
-                    $slug_inv = strtoupper(str::slug(substr(auth()->user()->name, 0, 2).' '.substr(str_shuffle("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 6)));
+                    $slug_inv = strtoupper(str::slug($booking->practice->user->name, 0, 2).' '.substr(str_shuffle("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 6));
                 }while(Invoice::where('slug', $slug_inv)->exists());
                 $due_date = $booking->date->endOfMonth()->toDateString();
                 $data_inv = [
@@ -107,7 +107,8 @@ class DcpController extends Controller
                 $slug = str::slug(substr(auth()->user()->name, 0, 2).' '.substr(str_shuffle("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 6));
             }while(Timesheet::where('slug', $slug)->exists());
             $total_hours = Carbon::parse($request->total_hours);
-            $payble_amount = (($total_hours->hour * 60) + $total_hours->minute - $request->lunch_time) * ($booking->hourly_rate/60);
+            $payble_hours = ($total_hours->hour * 60) + $total_hours->minute;
+            $payble_amount = $payble_hours * ($booking->hourly_rate/60);
             $data = [
                 'boooking_id' => $booking->booking_id,
                 'slug' => $slug,

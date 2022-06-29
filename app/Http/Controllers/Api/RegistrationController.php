@@ -43,12 +43,12 @@ class RegistrationController extends Controller
             } elseif (auth()->user()->role == 2 || auth()->user()->role == 3) {
                 $dcp = new Dcp();
                 $kin = new Kin();
+
                 $data = [
                     'postcode' => $request->postcode,
                     'address' => $request->address,
                     'gdc_no' => $request->gdc,
                     'travel' => $request->travel,
-//                    'status' => 1,
                 ];
                 $save_dcp = $dcp->where('user_id', auth()->user()->id)->first();
                 if ($save_dcp->update($data)) {
@@ -60,7 +60,11 @@ class RegistrationController extends Controller
                         'address' => $request->addressemergency,
                         'dcp_id' => $save_dcp->id,
                     ];
-                    $kin->create($kin_data);
+                    if($kin->where('dcp_id', $save_dcp->id)->exists()){
+                        $kin->where('dcp_id', $save_dcp->id)->update($kin_data);
+                    }else{
+                        $kin->create($kin_data);
+                    }
                     \App\Core_modules\User\Model\User::where('id', auth()->user()->id)->update(['status' => 1]);
                     $response = [
                         'success' => true,

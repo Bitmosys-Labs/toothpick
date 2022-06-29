@@ -1,6 +1,6 @@
 <nav class="site-navbar navbar navbar-default navbar-fixed-top navbar-mega" role="navigation">
 
-    <div class="navbar-header">
+    <div class="navbar-header bg-dark">
         <button type="button" class="navbar-toggler hamburger hamburger-close navbar-toggler-left hided"
                 data-toggle="menubar">
             <span class="sr-only">Toggle navigation</span>
