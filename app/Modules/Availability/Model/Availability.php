@@ -16,10 +16,10 @@ class Availability extends Model
     protected $fillable = ['id','user_id','days_id','deleted_at','created_at','updated_at',];
 
     public function user(){
-        $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function days(){
-        $this->belongsTo(Day::class, 'days_id', 'id');
+        return $this->belongsTo(Day::class, 'days_id', 'id');
     }
 }

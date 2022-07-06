@@ -31,11 +31,10 @@ class BookingApiController extends Controller
         if (auth()->check()) {
             $count = count($request->staff_id);
             $booking_info = new Booking();
-            do{
-                $slug = strtoupper(str::slug(substr(auth()->user()->name, 0, 2).' '.substr(str_shuffle("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 6)));
-
-            }while(Booking::where('slug', $slug)->exists());
             for ($i = 0; $i < $count; $i++) {
+                do{
+                    $slug = strtoupper(str::slug(substr(auth()->user()->name, 0, 2).' '.substr(str_shuffle("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 6)));
+                }while(Booking::where('slug', $slug)->exists());
                 $booking_info_data['practice_id'] = auth()->user()->id;
                 $booking_info_data['slug'] = $slug;
                 $booking_info_data['staff_id'] = $request->staff_id[$i];
@@ -50,7 +49,8 @@ class BookingApiController extends Controller
                 try{
                     $booking = $booking_info->create($booking_info_data);
                     $booking_status = [
-                        'id' => $booking->id
+                        'id' => $booking->id,
+                        'date' => $booking->date
                     ];
                     Booking_status::create($booking_status);
                 } catch (\Exception $e) {

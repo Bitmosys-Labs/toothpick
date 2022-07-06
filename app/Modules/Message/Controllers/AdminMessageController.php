@@ -7,6 +7,7 @@ use Auth;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Schema;
 use App\Modules\Message\Model\Message;
 
@@ -192,12 +193,14 @@ class AdminMessageController extends Controller
     public function reply(Request $request, $id)
     {
         $message = Message::findOrFail($id);
-        $data = [
+        $details = [
             'reply' => $request->reply,
             'subject' => $message->subject,
             'to' => $message->email,
+            'token' => 'test',
         ];
-        dd($data);
+        Mail::to('pratikdahal105@gmail.com')->send(new \App\Mail\tokenMail($details));
+
         return redirect()->back();
 
         //

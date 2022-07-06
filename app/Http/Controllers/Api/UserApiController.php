@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Response;
+use Symfony\Component\HttpFoundation\Cookie;
 use function Symfony\Component\VarDumper\Dumper\esc;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 
@@ -69,6 +70,17 @@ class UserApiController extends Controller
                 'payment' => 15,
             ];
             $practice->create($practice_data);
+            $token = new Token();
+            $token_data = [
+                'user_id' => $newUser->id,
+                'token' => substr(rand(), 0, 6)
+            ];
+            $token->create($token_data);
+            $details = [
+                'token' => $token_data['token'],
+            ];
+
+            Mail::to($newUser->email)->send(new \App\Mail\tokenMail($details));
             $response = [
                 'success' => true,
                 'message' => 'Successfully registered!',
@@ -92,6 +104,17 @@ class UserApiController extends Controller
                 'staff_id' => $request->staff_id,
             ];
             $dcp->create($dcp_data);
+            $token = new Token();
+            $token_data = [
+                'user_id' => $newUser->id,
+                'token' => substr(rand(), 0, 6)
+            ];
+            $token->create($token_data);
+            $details = [
+                'token' => $token_data['token'],
+            ];
+
+            Mail::to($newUser->email)->send(new \App\Mail\tokenMail($details));
             $response = [
                 'success' => true,
                 'message' => 'Successfully registered!',
@@ -254,6 +277,6 @@ class UserApiController extends Controller
 
     public function logoutUser()
     {
-        return redirect()->back()->withCookie(cookie('jwt', null, 0));
+        return response('Logged Out', 200)->withCookie(Cookie::foget('jwt'));
     }
 }

@@ -21,6 +21,7 @@ return [
         "Practice",
         "Additional",
         "Availability",
+        "Availability_date",
         "Compliance",
         "Document",
         "Experience",
@@ -36,5 +37,6 @@ return [
         "Booking_status",
         "Rate",
         "Rating",
+        "DCP_Invoice",
     ),
 ];

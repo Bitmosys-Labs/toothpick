@@ -47,7 +47,7 @@ class AdminUserController extends CoreController
                     $query->orWhere($val[0],$val[1],$val[2]);
                 }
             }
-        })->limit($request->length)->where('role', 0)->offset($request->start)->with("roles");
+        })->limit($request->length)->where('role', 0)->offset($request->start);
 
         return DataTables::of($users)
             ->addColumn('roles', function ($users) {
@@ -126,7 +126,7 @@ class AdminUserController extends CoreController
                     'email.required' => 'Email Cannot Be Empty!!',
                 ]);
             $data['status'] = 1;
-            $data['control'] = 0;
+//            $data['control'] = 0;
             $data['last_visit'] = date('Y-m-d H:m:s');
             $data['created_at'] = date('Y-m-d H:m:s');
             $data['updated_at'] = date('Y-m-d H:m:s');
@@ -362,7 +362,7 @@ class AdminUserController extends CoreController
             $data['password'] = Hash::make($request->password);
         }
         $data['status'] = 1;
-        $data['control'] = 0;
+//        $data['control'] = 0;
         $data['last_visit'] = date('Y-m-d H:m:s');
         $data['updated_at'] = date('Y-m-d H:m:s');
 

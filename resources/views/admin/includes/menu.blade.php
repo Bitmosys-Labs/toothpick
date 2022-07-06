@@ -66,7 +66,15 @@
                         <li class="site-menu-item">
                             <a href="{{ route('admin.invoices') }}">
                                 <i class="site-menu-icon fa fa-credit-card" aria-hidden="true"></i>
-                                <span class="site-menu-title">Billing</span>
+                                <span class="site-menu-title">Practice Billing</span>
+                            </a>
+                        </li>
+                    @endcan
+                    @can('dcpInvoices')
+                        <li class="site-menu-item">
+                            <a href="{{ route('admin.dcpInvoice') }}">
+                                <i class="site-menu-icon fa fa-credit-card" aria-hidden="true"></i>
+                                <span class="site-menu-title">DCP Billing</span>
                             </a>
                         </li>
                     @endcan

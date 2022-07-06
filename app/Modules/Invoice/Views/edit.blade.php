@@ -76,7 +76,7 @@
                     ?>
                     @foreach($invoice->timesheet as $timesheet)
                         <tr>
-                            <th scope="row">{{$timesheet->slug}}</th>
+                            <th scope="row"><a href="{{route('admin.timesheets.edit', $timesheet->id)}}">{{$timesheet->slug}}</a></th>
                             <td>{{$timesheet->booking->date}}</td>
                             <td>{{$timesheet->booking->staff->type}}</td>
                             <td>{{$timesheet->total_hours}}</td>

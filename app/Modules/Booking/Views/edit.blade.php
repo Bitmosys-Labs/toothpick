@@ -89,7 +89,7 @@
                                             </div>
                                         </div>
                                 <select name="nurse" id="nurse" class="form-control" style="width: 100%">
-                                    @if($booking->booking_status)
+                                    @if($booking->booking_status->user)
                                         <option value="{{$booking->booking_status->user->id}}">{{$booking->booking_status->user->name}}</option>
                                     @endif
                                 </select></div><div class="form-group"></div><div class="form-group">
@@ -144,7 +144,7 @@
                     delay: 250,
                     data: function (params) {
                         return {
-                            searchTerm: params.term, full_time: $('input[name="fulltime"]:checked').val(), part_time: $('input[name="parttime"]:checked').val()
+                            searchTerm: params.term, full_time: $('input[name="fulltime"]:checked').val(), part_time: $('input[name="parttime"]:checked').val(), booking_date: {{$booking->date}},
                         };
                     },
                     processResults: function (response) {

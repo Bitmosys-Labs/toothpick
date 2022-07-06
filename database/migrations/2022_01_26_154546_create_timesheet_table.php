@@ -23,7 +23,7 @@ class CreateTimesheetTable extends Migration
             $table->integer('lunch_time')->nullable();
             $table->integer('total_hours')->nullable();
             $table->string('approved_by')->nullable();
-            $table->string('signature', 255)->nullable();
+            $table->longText('signature')->nullable();
             $table->float('payable_amount')->nullable();
             $table->float('vat')->nullable();
             $table->boolean('status')->nullable();

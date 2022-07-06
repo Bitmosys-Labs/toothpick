@@ -136,7 +136,7 @@
                     { data: "name",name: "name"},
                     { data: "username",name: "username"},
                     { data: "email",name: "email"},
-                    { data: "roles",name: "roles"},
+                    { data: "roles",name: "roles", searchable: false},
                     // { data: function (data, type, row, meta) {
                     //     a = '';
                     //     if(data.banned == 0){
@@ -154,7 +154,7 @@
                         if(data.id == 1001 || data.id == 1002){
 
                         }else{
-                            buttons += "<a href='javascript::void(0)' data-toggle='modal' data-target='#user-modal' class='btn btn-sm btn-success btn-outline'  title='Edit' onclick='edit("+table.row+")'><i class='icon wb-pencil' aria-hidden='true'></i></a>&nbsp;&nbsp";
+                            buttons += "<a data-target='#user-modal' class='btn btn-sm btn-success btn-outline'  title='Edit' onclick='edit("+table.row+")'><i class='icon wb-pencil' aria-hidden='true'></i></a href='javascript::void(0)'>&nbsp;&nbsp";
 
                             buttons += "<a onclick='removedemo("+data.id+")' href='javascript::void(0)' class='btn btn-sm btn-danger btn-outline'  title='Delete' ><i class='icon wb-trash' aria-hidden='true'></i></a>&nbsp;&nbsp";
 
@@ -182,26 +182,26 @@
     function edit(index){
         var row = dataTable.row(index).data();
 
-        $('#id').val(row.id);
+        $('#id').val(index);
         $("#form-users").find('input:checkbox').prop('checked',false);
         $("#form-users").find('input:text,select,textarea').val(function(i,v){
 
-            /*if(row.gender == 'M')
-            {
-                $('input:radio[name=gender][id=radio_1]').prop('checked',true);
-            }else{
-                $('input:radio[name=gender][id=radio_2]').prop('checked',true);
-            }*/
+            // if(row.gender == 'M')
+            // {
+            //     $('input:radio[name=gender][id=radio_1]').prop('checked',true);
+            // }else{
+            //     $('input:radio[name=gender][id=radio_2]').prop('checked',true);
+            // }
             return row[this.name];
         });
         // $('select').selectpicker('render');
-
 
     }
 
 
     function save()
     {
+        console.log('save');
         $.ajax({
             url: "{{ route('admin.users.store') }}",
             data: $('#form-users').serialize(),

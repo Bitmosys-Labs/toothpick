@@ -21,6 +21,7 @@ class Cors
             'https://dcp.toothpickdentalstaff.com',
             'https://test.toothpickdentalstaff.com',
             'http://localhost:3000',
+            'https://confident-hugle-261d64.netlify.app',
         ];
         try {
             $origin = $_SERVER['HTTP_ORIGIN'];

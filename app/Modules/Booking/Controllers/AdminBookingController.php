@@ -136,6 +136,10 @@ class AdminBookingController extends Controller
         $data['slug'] = $slug;
         $data['status'] = 0;
         $success = Booking::Create($data);
+        $status = Booking_status::Create([
+            'booking_id' => $success->id,
+            'date' => $success->date,
+        ]);
         return redirect()->route('admin.bookings');
         //
     }
@@ -177,7 +181,7 @@ class AdminBookingController extends Controller
      */
     public function update(Request $request)
     {
-        $data = $request->except('_token', '_method', 'files', 'nurse');
+        $data = $request->except('_token', '_method', 'files', 'nurse', 'fulltime', 'parttime');
         if($request->nurse){
             $data['status'] = 1;
             $assign_data = [
@@ -189,6 +193,8 @@ class AdminBookingController extends Controller
             }else{
                 Booking_status::create($assign_data);
             }
+        }else{
+            $data['status'] = 0;
         }
         $success = Booking::where('id', $request->id)->update($data);
         return redirect()->route('admin.bookings');
@@ -214,6 +220,7 @@ class AdminBookingController extends Controller
         if(!isset($request->searchTerm)){
             $full = $request->full_time;
             $part = $request->part_time;
+            $booking_date = $request->booking_date;
             $fetchData = User::where(function ($query) use($full, $part){
                 if($full){
                     $query->Where('role', 3);
@@ -228,7 +235,7 @@ class AdminBookingController extends Controller
             })->where('status', 2)->limit(7)->get();
             $data = array();
             foreach ($fetchData as  $row){
-                if(Booking_status::where('user_id', $row->id)->exists()){
+                if(Booking_status::where('user_id', $row->id)->where('date', $booking_date)->exists()){
                     continue;
                 }else{
                     $data[] = array(
@@ -240,6 +247,7 @@ class AdminBookingController extends Controller
         }
         else{
             $search = $request->searchTerm;
+            $booking_date = $request->booking_date;
             $full = $request->full_time;
             $part = $request->part_time;
 
@@ -263,7 +271,7 @@ class AdminBookingController extends Controller
             })->where('status', 2)->limit(7)->get();
             $data = array();
             foreach ($fetchData as  $row){
-                if(Booking_status::where('user_id', $row->id)->exists()){
+                if(Booking_status::where('user_id', $row->id)->where('date', $booking_date)->exists()){
                     continue;
                 }else{
                     $data[] = array(
@@ -274,5 +282,11 @@ class AdminBookingController extends Controller
             }
         }
         echo json_encode($data);
+    }
+
+    public function getAssignedNurse(Request $request)
+    {
+        $booking_id = $request->id;
+        $booking = Booking::where('id', $request->id)->with('booking_status.user')->first();
     }
 }

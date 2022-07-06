@@ -56,7 +56,7 @@ class DcpController extends Controller
     public function booking(){
         $booking = Booking::whereHas('booking_status', function ($q){
             $q->where('user_id', auth()->user()->id);
-        })->get();
+        })->with('practice.user')->get();
 
         $response = [
             'success' => true,
@@ -80,18 +80,18 @@ class DcpController extends Controller
     }
 
     public function recordTimesheet(Request $request){
-        try{
+//        try{
             $timesheet = new Timesheet();
             $booking = Booking::where('slug', $request->slug)->whereHas('booking_status', function ($q){
-                return $q->where('user_id', auth()->user->id);
+                return $q->where('user_id', auth()->user()->id);
             })->with('practice.user')->first();
-            $invoice = Invoice::where('practice_id', $booking->practice_id)->whereMonth('issue_date', $booking->date->format('m'))->first();
-            if(!$invoice->id){
+            $invoice = Invoice::where('practice_id', $booking->practice_id)->whereMonth('issue_date', Carbon::now()->startOfMonth())->first();
+            if(!$invoice){
                 $cr_in = new Invoice();
                 do{
-                    $slug_inv = strtoupper(str::slug($booking->practice->user->name, 0, 2).' '.substr(str_shuffle("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 6));
+                    $slug_inv = strtoupper(str::slug(substr($booking->practice->user->name, 0, 2).' '.substr(str_shuffle("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 6)));
                 }while(Invoice::where('slug', $slug_inv)->exists());
-                $due_date = $booking->date->endOfMonth()->toDateString();
+                $due_date = Carbon::now()->endOfMonth();
                 $data_inv = [
                     'slug' => $slug_inv,
                     'practice_id' => $booking->practice_id,
@@ -102,40 +102,51 @@ class DcpController extends Controller
 
                 $invoice = $cr_in->create($data_inv);
             }
-
             do{
                 $slug = str::slug(substr(auth()->user()->name, 0, 2).' '.substr(str_shuffle("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 6));
             }while(Timesheet::where('slug', $slug)->exists());
-            $total_hours = Carbon::parse($request->total_hours);
-            $payble_hours = ($total_hours->hour * 60) + $total_hours->minute;
-            $payble_amount = $payble_hours * ($booking->hourly_rate/60);
+            $total_hours = explode('.',$request->total_hours);
+            $payable_hours = ($total_hours[0] * 60) + $total_hours[1];
+            $payable_amount = $payable_hours * ($booking->hourly_rate/60);
             $data = [
-                'boooking_id' => $booking->booking_id,
+                'booking_id' => $booking->booking_id,
                 'slug' => $slug,
                 'invoice_id' => $invoice->id,
                 'start_time' => $request->start_time,
                 'end_time' => $request->end_time,
                 'lunch_time' => $request->lunch_time,
-                'total_hours' => $request->total_hours,
+                'total_hours' => $payable_hours,
                 'approved_by' => $request->approved_by,
                 'due_date' => $invoice->due_date,
-                'vat' => ($payble_amount*0.2),
-                'payble_amount' => $payble_amount,
+                'vat' => ($payable_amount*0.2),
+                'payable_amount' => $payable_amount,
                 'status' => 1,
             ];
             if($booking->booking_status->id){
-                if ($request->hasFile('signature')) {
-                    $file = $request->file('signature');
-                    $uploadPath = public_path('uploads/signatures/');
-                    $data['signature'] = $this->fileUpload($file, $uploadPath);
-                    $timesheet->create($data);
-                    $booking->update(['status' => 3]);
-                    $response = [
-                        'success' => true,
-                        'message' => 'Timesheet Created Successfully',
-                        'result' => null
-                    ];
-                    return response($response, 200);
+//                if ($request->hasFile('signature')) {
+                if ($request->signature) {
+//                    $file = $request->file('signature');
+//                    $uploadPath = public_path('uploads/signatures/');
+//                    $data['signature'] = $this->fileUpload($file, $uploadPath);
+                    $data['signature'] = $request->signature;
+                    if($timesheet->where('booking_id', $booking->booking_id)->exists()){
+                        $response = [
+                            'success' => false,
+                            'message' => 'Timesheet already recorded!',
+                            'result' => null
+                        ];
+                        return response($response, 400);
+                    }
+                    else{
+                        $timesheet->create($data);
+                        $booking->update(['status' => 3]);
+                        $response = [
+                            'success' => true,
+                            'message' => 'Timesheet Created Successfully',
+                            'result' => null
+                        ];
+                        return response($response, 200);
+                    }
                 }
                 $response = [
                     'success' => false,
@@ -151,15 +162,15 @@ class DcpController extends Controller
                 ];
                 return response($response, 400);
             }
-        }
-        catch (\Exception $e){
-            $response = [
-                'success' => false,
-                'message' => 'Something Went Wrong!',
-                'result' => null
-            ];
-            return response($response, 400);
-        }
+//        }
+//        catch (\Exception $e){
+//            $response = [
+//                'success' => false,
+//                'message' => 'Something Went Wrong!',
+//                'result' => null
+//            ];
+//            return response($response, 400);
+//        }
 
     }
 
@@ -215,7 +226,7 @@ class DcpController extends Controller
     {
         $role = auth()->user()->role;
         if($role == 3){
-            $data = Availability::where('user_id', auth()->user()->id)->get();
+            $data = Availability::where('user_id', auth()->user()->id)->with('days')->get();
             $response = [
                 'success' => true,
                 'message' => 'Available days!',

@@ -125,7 +125,7 @@ class AdminDcpController extends Controller
         $request->validate([
             'password' => 'required|confirmed|min:6'
         ]);
-        if(User::where('email', $request->email)->whereNotNull('email_verified_at')->exists()){
+        if(User::where('email', $request->email)->exists()){
             return redirect()->back()->with('error', 'Email already exists');
         }
         $user_data = [
