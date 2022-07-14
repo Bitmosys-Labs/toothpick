@@ -29,7 +29,7 @@ return [
     |
     */
 
-    'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+    'host' => env('MAIL_HOST', 'localhost'),
 
     /*
     |--------------------------------------------------------------------------
@@ -71,8 +71,8 @@ return [
     |
     */
 
-    'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-
+    'encryption' => env('MAIL_ENCRYPTION'),
+ß
     /*
     |--------------------------------------------------------------------------
     | SMTP Server Username
