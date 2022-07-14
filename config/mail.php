@@ -72,7 +72,7 @@ return [
     */
 
     'encryption' => env('MAIL_ENCRYPTION'),
-ß
+
     /*
     |--------------------------------------------------------------------------
     | SMTP Server Username
