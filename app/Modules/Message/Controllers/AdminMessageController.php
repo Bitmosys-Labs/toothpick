@@ -199,7 +199,7 @@ class AdminMessageController extends Controller
             'to' => $message->email,
             'token' => 'test',
         ];
-        Mail::to('pratikdahal105@gmail.com')->send(new \App\Mail\tokenMail($details));
+        Mail::to($details['to'])->send(new \App\Mail\tokenMail($details));
 
         return redirect()->back();
 

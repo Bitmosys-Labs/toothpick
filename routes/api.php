@@ -45,6 +45,10 @@ Route::group(['name' => 'dcp', 'middleware' => 'auth:sanctum'], function () {
     Route::post('recordTimesheet', 'Api\DcpController@recordTimesheet');
     Route::get('fetchAvailability', 'Api\DcpController@getAvailability');
     Route::post('recordAvailability', 'Api\DcpController@setAvailability');
+    Route::get('dcpRegProfile', 'Api\DCPProfileApiController@profile');
+    Route::post('dcpPasswordUpdate', 'Api\DCPProfileApiController@passwordUpdate');
+    Route::post('dcpProfileUpdate', 'Api\DCPProfileApiController@updateProfile');
+    Route::post('dcpKinUpdate', 'Api\DCPProfileApiController@updateKin');
 });
 
 Route::group(['name' => 'practice', 'middleware' => 'auth:sanctum'], function () {

@@ -88,11 +88,11 @@
                                                 </div>
                                             </div>
                                         </div>
-                                <select name="nurse" id="nurse" class="form-control" style="width: 100%">
+                                <select name="nurse" id="nurse" class="form-control" style="width: 90%">
                                     @if($booking->booking_status->user)
                                         <option value="{{$booking->booking_status->user->id}}">{{$booking->booking_status->user->name}}</option>
                                     @endif
-                                </select></div><div class="form-group"></div><div class="form-group">
+                                </select>  <span title="refresh" class="btn btn-danger" onclick="refreshClick()"><i class="fa fa-repeat"></i></span></div><div class="form-group"></div><div class="form-group">
                             <input type="hidden" name="id" id="id" value = "{{$booking->id}}" />
                             {{ csrf_field() }}
                         </div>
@@ -101,6 +101,12 @@
                             <a href="{{ route('admin.bookings') }}" class="btn btn-danger">Cancel</a>
                         </div>
                     </form>
+                    @if($booking->booking_status->user)
+                        <form action="{{route('admin.booking.removeNurse')}}" method="POST" id="refreshNurse">
+                            @csrf
+                            <input type="hidden" name="booking_id" value="{{$booking->id}}">
+                        </form>
+                    @endif
 {{--                    <button type="button" class="btn btn-danger float-right">Cancel</button>--}}
                 </div>
             </div>
@@ -162,5 +168,9 @@
         $('#other').summernote({
             height: 100
         });
+
+        function refreshClick(){
+            $('#refreshNurse').submit();
+        }
     </script>
 @endsection

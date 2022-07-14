@@ -14,6 +14,7 @@ Route::group(array('prefix'=>'admin/','module'=>'Booking','middleware' => ['web'
     Route::get('bookings/delete/{id}', 'AdminBookingController@destroy')->name('admin.bookings.edit');
     Route::get('bookings/assignNurse', 'AdminBookingController@assignNurse')->name('admin.booking.assignNurse');
     Route::get('bookings/getAssignedNurse', 'AdminBookingController@getAssignedNurse')->name('admin.booking.getNurse');
+    Route::post('bookings/removeAsssignedNurse', 'AdminBookingController@removeAssignedNurse')->name('admin.booking.removeNurse');
 });
 
 

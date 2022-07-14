@@ -67,8 +67,8 @@ class DcpController extends Controller
     }
 
     public function timesheet(){
-        $timesheet = Timesheet::whereHas('booking.booking_status', function ($q){
-            $q->where('user_id', auth()->user()->id);
+        $timesheet = Timesheet::whereHas('booking.booking_status.user', function ($q){
+            $q->where('id', auth()->user()->id);
         })->get();
 
         $response = [

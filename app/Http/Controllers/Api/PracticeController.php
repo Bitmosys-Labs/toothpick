@@ -66,7 +66,7 @@ class PracticeController extends Controller
     {
         if (auth()->check()) {
             $user = User::where('id', auth()->user()->id)->first();
-            if (!$user || !Hash::check($request->password, $user->password)) {
+            if (!$user || !Hash::check($request->old_password, $user->password)) {
                 $response = [
                     'success' => false,
                     'message' => 'Incorrect Password',

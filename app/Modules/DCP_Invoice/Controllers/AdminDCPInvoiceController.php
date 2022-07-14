@@ -143,9 +143,13 @@ class AdminDCPInvoiceController extends Controller
      */
     public function edit($id)
     {
-        $timesheets = Booking_status::where('user_id', $id)->whereHas('booking.timesheet', function($q){
-            return $q->where('status', '!=', 0);
+//        $timesheets = Booking_status::where('user_id', $id)->whereHas('booking', function($q){
+//            return $q->where('status', '!=', 0)->with('timesheet');
+//        })->get();
+        $timesheets = timesheet::whereHas('booking.booking_status', function($q) use($id){
+            return $q->where('user_id', $id);
         })->get();
+
         $page['title'] = 'DCP Invoice | Detail';
         return view("DCP_Invoice::edit",compact('page','timesheets', 'id'));
 
@@ -190,21 +194,15 @@ class AdminDCPInvoiceController extends Controller
             return $q->where('status', '', 1)->whereDate('created_at', '<=', $till_date);
         })->get();
 
-        $timesheets = Booking_status::where('user_id', $id)->whereHas('booking.timesheet', function($q){
-            return $q->where('status', '!=', 0);
+        $timesheets = timesheet::whereHas('booking.booking_status', function($q) use($id){
+            return $q->where('user_id', $id);
         })->get();
 
         $page['title'] = 'DCP Invoice | Detail';
         $total_time = null;
-        if($timesheet->first()){
-            if($timesheet->booking->first()){
-                if($timesheet->booking->timesheet->first()){
-                    $total_time = $timesheet->booking->timesheet->sum(DB::raw("TIME_TO_SEC(total_hours)"));
-                }
-            }
-        }
-        return view("DCP_Invoice::edit",compact('page','timesheets', 'id', 'total_time'));
-//        return redirect()->back()->Compact('total_time', 'timesheets', 'id', 'page');
+        $total_time = $timesheet->sum("total_hours");
+//        return view("DCP_Invoice::edit",compact('page','timesheets', 'id', 'total_time'));
+        return redirect()->back()->Compact('total_time', 'timesheets', 'id', 'page');
 
     }
 }

@@ -287,6 +287,18 @@ class AdminBookingController extends Controller
     public function getAssignedNurse(Request $request)
     {
         $booking_id = $request->id;
-        $booking = Booking::where('id', $request->id)->with('booking_status.user')->first();
+        $booking = Booking::select('users.id AS user_id', 'users.name AS user_name', 'booking.id AS booking_id', 'booking.date AS booking_date')
+            ->where('booking.id', $request->id)
+            ->join('booking_status', 'booking.id', 'booking_status.id')
+            ->join('users', 'booking_status.user_id', 'users.id')
+            ->first();
+        return response($booking);
+    }
+
+    public function removeAssignedNurse(Request $request){
+        $booking = Booking::where('id', $request->booking_id)->with('booking_status')->first();
+        $booking->update(['status' => 0]);
+        $booking->booking_status->update(['user_id' => null]);
+        return redirect()->back();
     }
 }

@@ -38,32 +38,29 @@
                 </tr>
                 </thead>
                 <tbody>
-                @if($timesheets->first())
-                    @if($timesheets->booking->first())
-                        @if($timesheets->booking->timesheet->first())
-                            @foreach($timesheets->booking->timesheet as $timesheet)
+
+                        @foreach($timesheets as $timesheet)
+                            @if($timesheet->booking->booking_status->user_id == $id)
                                 <tr>
                                     <th scope="row">{{$timesheet->slug}}</th>
-                                    <td>{{$timesheet->created_at}}</td>
+{{--                                    <td>{{$timesheet->created_at}}</td>--}}
                                     <td>{{\Carbon\Carbon::parse($timesheet->created_at)->format('d/m/Y')}}</td>
                                     <td>{{$timesheet->start_time}}</td>
                                     <td>{{$timesheet->end_time}}</td>
                                     <td>{{$timesheet->lunch_time}}</td>
                                     <td>{{$timesheet->total_hours}}</td>
                                     <td>
-                                        @if($status == 0)
+                                        @if($timesheet->status == 0)
                                             Conflicted
-                                        @elseif($status == 1)
+                                        @elseif($timesheet->status == 1)
                                             Pending
                                         @else
                                             Paid
                                         @endif
                                     </td>
                                 </tr>
-                            @endforeach
-                        @endif
-                    @endif
-                @endif
+                            @endif
+                        @endforeach
                 </tbody>
             </table>
         </div>

@@ -16,21 +16,7 @@
                 </div>
                 <div class="modal-body">
                     <form id ='form-users'>
-                        <div class="form-group">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <label for="fulltime">Full Time </label><br><input type="checkbox" name="fulltime" value="check" id="fulltime">
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <label for="parttime">Part Time </label><br><input type="checkbox" name="parttime" value="check" id="parttime">
-                                    </div>
-                                </div>
-                            </div>
-                            <select name="nurse" id="nurse" class="form-control" style="width: 100%">
 
-                            </select>
-                        </div>
 {{--                        <div class="form-group">--}}
 {{--                            <label for="username">Username</label>--}}
 {{--                            <input type="text" name="username" id="username" class="form-control" value="{{ old('username') }}" >--}}
@@ -166,9 +152,9 @@
                 { data: function(data,b,c,table) {
                 var buttons = '';
                 buttons += "<a class='btn btn-sm btn-success btn-outline'  title='Edit' href='"+site_url+"/edit/"+data.id+"'><i class='icon wb-pencil' aria-hidden='true'></i></a>&nbsp;&nbsp";
-                if(data.status == 1 || data.status == 2){
-                    buttons += "<button class='btn btn-sm btn-success btn-outline'  title='Assign' onclick='buttonClick("+data.id+")'><i class='fa fa-user' aria-hidden='true'></i></button>&nbsp;&nbsp";
-                }
+                // if(data.status == 1 || data.status == 2){
+                //     buttons += "<button class='btn btn-sm btn-success btn-outline'  title='Assign' onclick='buttonClick("+data.id+")'><i class='fa fa-user' aria-hidden='true'></i></button>&nbsp;&nbsp";
+                // }
 
                 // buttons += "<a class='btn btn-sm btn-danger btn-outline' onclick='return confirm(\"are you sure you want to delete this data?\")' href='"+site_url+"/delete/"+data.id+"' ><i class='icon wb-trash' aria-hidden='true'></i></a>&nbsp;&nbsp";
 
@@ -184,20 +170,17 @@
         $.ajax({
             type:'GET',
             url:'{{route('admin.booking.getNurse')}}',
+            dataType: "json",
+            async: false,
             data:{
                 id: id,
             },
             success:function(data) {
-                $("#form-users").html(response.data);
+                console.log(data);
+                outputTags = '<div class="form-group">  <div class="container"> <div class="row"> <div class="col-sm-3"> <label for="fulltime">Full Time </label><br><input type="checkbox" name="fulltime" value="check" id="fulltime"> </div> <div class="col-sm-3"> <label for="parttime">Part Time </label><br><input type="checkbox" name="parttime" value="check" id="parttime"> </div> </div> </div> <select name="nurse" id="nurse" class="form-control" style="width: 100%"> <option value="'+ data.user_id +'" selected>'+ data.user_name +'</option> </select> </div>';
+                $("#form-users").append(outputTags);
             }
         });
-        $('#assign-modal').modal('show');
-    }
-    // $(document).on('click','#create-user-button', function () {
-    //     $('#user-modal').modal('show');
-    // });
-
-    $(document).ready(function(){
         $("#nurse").select2({
             placeholder: "Select Nurse",
             minimumInputLength: 0,
@@ -219,6 +202,34 @@
                 cache: true
             }
         });
-    });
+        $('#assign-modal').modal('show');
+    }
+    // $(document).on('click','#create-user-button', function () {
+    //     $('#user-modal').modal('show');
+    // });
+
+    {{--$(document).ready(function(){--}}
+    {{--    $("#nurse").select2({--}}
+    {{--        placeholder: "Select Nurse",--}}
+    {{--        minimumInputLength: 0,--}}
+    {{--        ajax: {--}}
+    {{--            url: '{{route('admin.booking.assignNurse')}}',--}}
+    {{--            dataType: 'json',--}}
+    {{--            type: "GET",--}}
+    {{--            delay: 250,--}}
+    {{--            data: function (params) {--}}
+    {{--                return {--}}
+    {{--                    searchTerm: params.term, full_time: $('input[name="fulltime"]:checked').val(), part_time: $('input[name="parttime"]:checked').val(), booking_date: $('input[name="bookingdate"]:checked').val(),--}}
+    {{--                };--}}
+    {{--            },--}}
+    {{--            processResults: function (response) {--}}
+    {{--                return {--}}
+    {{--                    results: response--}}
+    {{--                };--}}
+    {{--            },--}}
+    {{--            cache: true--}}
+    {{--        }--}}
+    {{--    });--}}
+    {{--});--}}
 </script>
 @endsection
