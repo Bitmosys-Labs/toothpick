@@ -125,10 +125,15 @@ class DcpController extends Controller
             if($booking->booking_status->id){
 //                if ($request->hasFile('signature')) {
                 if ($request->signature) {
-//                    $file = $request->file('signature');
-//                    $uploadPath = public_path('uploads/signatures/');
-//                    $data['signature'] = $this->fileUpload($file, $uploadPath);
-                    $data['signature'] = $request->signature;
+                    $image = $request->signature;  // your base64 encoded
+                    $image = str_replace('data:image/png;base64,', '', $image);
+                    $imageFile = base64_decode(str_replace(' ', '+', $image));
+//                    $imageName = str_random(10).'.'.'png';
+//                    \File::put(storage_path(). '/' . $imageName, base64_decode($image));
+////                    $file = $request->file('signature');
+                    $uploadPath = public_path('uploads/signatures/');
+                    $data['signature'] = $this->fileUpload($imageFile, $uploadPath);
+//                    $data['signature'] = $request->signature;
                     if($timesheet->where('booking_id', $booking->booking_id)->exists()){
                         $response = [
                             'success' => false,

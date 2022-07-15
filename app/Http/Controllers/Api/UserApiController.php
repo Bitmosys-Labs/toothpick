@@ -277,6 +277,6 @@ class UserApiController extends Controller
 
     public function logoutUser()
     {
-        return response('Logged Out', 200)->withCookie(Cookie::foget('jwt'));
+        return response('Logged Out', 200)->withCookie(Cookie::forget('jwt'));
     }
 }
