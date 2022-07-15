@@ -164,7 +164,11 @@ class UserApiController extends Controller
                 return response($response, 403);
             }
             $token = $users->createToken('token')->plainTextToken;
-            $cookie = cookie('jwt', $token, 60 * 24);
+            if($request->remember_token){
+                $cookie = cookie('jwt', $token, 60 * 24 * 30);
+            }else{
+                $cookie = cookie('jwt', $token, 60 * 24);
+            }
             $user = User::where('email', $request->email)->whereNotNull('email_verified_at')->first();
             if ($user->role == 1) {
                 $data = [

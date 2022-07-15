@@ -30,6 +30,6 @@ class contactMail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Regarding "'.$this->details['subject'].'"Token')->view('emails.contact');
+        return $this->subject('Regarding "'.$this->details['subject'].'"')->view('emails.contact');
     }
 }
