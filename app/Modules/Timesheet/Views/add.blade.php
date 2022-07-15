@@ -26,7 +26,7 @@
                                     <label for="end_time">End_time</label><input type="text" name="end_time" id="end_time" class="form-control" ></div><div class="form-group">
                                     <label for="lunch_time">Lunch_time</label><input type="text" name="lunch_time" id="lunch_time" class="form-control" ></div><div class="form-group">
                                     <label for="approved_by">Approved_by</label><input type="text" name="approved_by" id="approved_by" class="form-control" ></div><div class="form-group">
-                                    <label for="signature">Signature</label><input type="text" name="signature" id="signature" class="form-control" ></div><div class="form-group">
+{{--                                    <label for="signature">Signature</label><input type="text" name="signature" id="signature" class="form-control" ></div><div class="form-group">--}}
                                     <label for="payable_amount">Payable_amount</label><input type="text" name="payable_amount" id="payable_amount" class="form-control" ></div><div class="form-group">
                                     <label for="vat">Vat</label><input type="text" name="vat" id="vat" class="form-control" ></div><div class="form-group">
                                     <label for="status">Status</label><input type="text" name="status" id="status" class="form-control" ></div><div class="form-group">

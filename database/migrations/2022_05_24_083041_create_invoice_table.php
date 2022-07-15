@@ -15,7 +15,6 @@ class CreateInvoiceTable extends Migration
     {
         Schema::create('invoice', function (Blueprint $table) {
             $table->id();
-            $table->softDeletes();
             $table->string('slug')->nullable();
             $table->integer('practice_id')->nullable();
             $table->date('issue_date')->nullable();
@@ -23,6 +22,7 @@ class CreateInvoiceTable extends Migration
             $table->float('total')->nullable();
             $table->text('remarks')->nullable();
             $table->boolean('status')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

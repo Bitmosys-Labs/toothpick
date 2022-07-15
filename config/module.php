@@ -24,6 +24,8 @@ return [
         "Availability_date",
         "Compliance",
         "Document",
+        "Logo",
+        "Work_with",
         "Experience",
         "Identity",
         "Immunization",

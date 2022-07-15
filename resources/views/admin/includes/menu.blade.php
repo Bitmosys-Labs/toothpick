@@ -104,11 +104,27 @@
                         </li>
                     @endcan
                     <li class="site-menu-category">CMS</li>
+                    @can('logos')
+                        <li class="site-menu-item">
+                            <a href="{{ route('admin.logos') }}">
+                                <i class="site-menu-icon fa fa-certificate" aria-hidden="true"></i>
+                                <span class="site-menu-title">Logo</span>
+                            </a>
+                        </li>
+                    @endcan
                     @can('staff')
                         <li class="site-menu-item">
                             <a href="{{ route('admin.staff') }}">
                                 <i class="site-menu-icon fa fa-user" aria-hidden="true"></i>
                                 <span class="site-menu-title">Staff Type</span>
+                            </a>
+                        </li>
+                    @endcan
+                    @can('work_withs')
+                        <li class="site-menu-item">
+                            <a href="{{ route('admin.work_withs') }}">
+                                <i class="site-menu-icon fa fa-question" aria-hidden="true"></i>
+                                <span class="site-menu-title">Work With?</span>
                             </a>
                         </li>
                     @endcan

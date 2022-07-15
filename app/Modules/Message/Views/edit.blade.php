@@ -48,7 +48,7 @@
                         @csrf
                         <div class="form-group">
                             <label for="message">Reply</label>
-                            <textarea type="text"  name="reply" id="reply" rows="5" class="form-control" ></textarea>
+                            <textarea type="text"  name="reply" id="reply" rows="5" class="form-control" required></textarea>
                         </div>
                         <button type="submit" class="btn btn-success">Send</button>
 

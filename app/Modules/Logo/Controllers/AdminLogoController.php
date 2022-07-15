@@ -1,17 +1,16 @@
 <?php
 
-namespace App\Modules\Message\Controllers;
+namespace App\Modules\Logo\Controllers;
 
 use App\Http\Controllers\Controller;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Schema;
-use App\Modules\Message\Model\Message;
+use App\Modules\Logo\Model\Logo;
 
-class AdminMessageController extends Controller
+class AdminLogoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,8 +19,8 @@ class AdminMessageController extends Controller
      */
     public function index()
     {
-        $page['title'] = 'Message';
-        return view("Message::index",compact('page'));
+        $page['title'] = 'Logo';
+        return view("Logo::index",compact('page'));
 
         //
     }
@@ -31,22 +30,22 @@ class AdminMessageController extends Controller
      *
      */
 
-    public function getmessagesJson(Request $request)
+    public function getlogosJson(Request $request)
     {
-        $message = new Message;
+        $logo = new Logo;
         $where = $this->_get_search_param($request);
 
         // For pagination
-        $filterTotal = $message->where( function($query) use ($where) {
+        $filterTotal = $logo->where( function($query) use ($where) {
             if($where !== null) {
                 foreach($where as $val) {
                     $query->orWhere($val[0],$val[1],$val[2]);
                 }
             }
-        } )->orderBy('id', 'DESC')->get();
+        })->orderBy('id', 'DESC')->get();
 
         // Display limited list
-        $rows = $message->where( function($query) use ($where) {
+        $rows = $logo->where( function($query) use ($where) {
             if($where !== null) {
                 foreach($where as $val) {
                     $query->orWhere($val[0],$val[1],$val[2]);
@@ -55,7 +54,7 @@ class AdminMessageController extends Controller
         })->limit($request->length)->offset($request->start)->orderBy('id', 'DESC')->get();
 
         //To count the total values present
-        $total = $message->get();
+        $total = $logo->get();
 
 
         echo json_encode(['draw'=>$request['draw'],'recordsTotal'=>count($total),'recordsFiltered'=>count($filterTotal),'data'=>$rows]);
@@ -99,8 +98,8 @@ class AdminMessageController extends Controller
      */
     public function create()
     {
-        $page['title'] = 'Message | Create';
-        return view("Message::add",compact('page'));
+        $page['title'] = 'Logo | Create';
+        return view("Logo::add",compact('page'));
         //
     }
 
@@ -112,9 +111,20 @@ class AdminMessageController extends Controller
      */
     public function store(Request $request)
     {
+        $logo = Logo::where('id', 1)->first();
         $data = $request->except('_token');
-        $success = Message::Create($data);
-        return redirect()->route('admin.messages');
+        if ($request->hasFile('type')) {
+            $file = $request->file('type');
+            $uploadPath = public_path('logo/');
+            $data['type'] = $this->fileUpload($file, $uploadPath);
+        }
+        if($logo->first()){
+            $logo->update($data);
+        }else{
+            Logo::Create($data);
+        }
+//        $success = Logo::Create($data);
+        return redirect()->route('admin.logos');
         //
     }
 
@@ -137,11 +147,9 @@ class AdminMessageController extends Controller
      */
     public function edit($id)
     {
-        $message = Message::findOrFail($id);
-        $data['status'] = 1;
-        $message->update($data);
-        $page['title'] = 'Message | Update';
-        return view("Message::edit",compact('page','message'));
+        $logo = Logo::findOrFail($id);
+        $page['title'] = 'Logo | Update';
+        return view("Logo::edit",compact('page','logo'));
 
         //
     }
@@ -156,8 +164,14 @@ class AdminMessageController extends Controller
     public function update(Request $request)
     {
         $data = $request->except('_token', '_method');
-        $success = Message::where('id', $request->id)->update($data);
-        return redirect()->route('admin.messages');
+        if ($request->hasFile('type')) {
+            $file = $request->file('type');
+            $uploadPath = public_path('logo/');
+            $data['type'] = $this->fileUpload($file, $uploadPath);
+        }
+        $data['id'] = $request->id;
+        $success = Logo::where('id', $request->id)->update($data);
+        return redirect()->route('admin.logos');
 
         //
     }
@@ -170,38 +184,18 @@ class AdminMessageController extends Controller
      */
     public function destroy($id)
     {
-        $success = Message::where('id', $id)->delete();
-        return redirect()->route('admin.messages');
+        $success = Logo::where('id', $id)->delete();
+        return redirect()->route('admin.logos');
 
         //
     }
 
-    public function toggle($id)
-    {
-        $message = Message::findOrFail($id);
-        if($message->status == 1){
-            $data['status'] = 0;
-        }else{
-            $data['status'] = 1;
+    public function fileUpload($file, $path){
+        $ext = $file->getClientOriginalExtension();
+        $imageName = md5(microtime()) . '.' . $ext;
+        if (!$file->move($path, $imageName)) {
+            return redirect()->back();
         }
-        $message->update($data);
-        return redirect()->back();
-
-        //
-    }
-
-    public function reply(Request $request, $id)
-    {
-        $message = Message::findOrFail($id);
-        $details = [
-            'reply' => $request->reply,
-            'subject' => $message->subject,
-            'to' => $message->email,
-        ];
-        Mail::to($details['to'])->send(new \App\Mail\contactMail($details));
-
-        return redirect()->back();
-
-        //
+        return $imageName;
     }
 }
