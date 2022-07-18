@@ -22,8 +22,7 @@
                             <div class="form-group">
 {{--                                    <label for="user_id">User_id</label><input type="text" name="user_id" id="user_id" class="form-control" ></div><div class="form-group">--}}
                                     <label for="staff_id">Staff Type</label>
-                                        <select type="text" name="staff_id" id="staff_id" class="form-control" required>
-                                            <option value="" disabled selected>Select A Staff Type</option>
+                                        <select type="text" name="staff_id[]" id="staff_id" class="form-control" multiple="multiple" required style="width:100%;">
                                             @foreach($staffs as $staff)
                                                 <option value="{{$staff->id}}">{{$staff->type}}</option>
                                             @endforeach
@@ -119,6 +118,10 @@
                     cache: true
                 }
             });
+        });
+
+        $(document).ready(function() {
+            $('#staff_id').select2();
         });
     </script>
 @endsection

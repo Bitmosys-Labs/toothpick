@@ -112,9 +112,9 @@ class UserApiController extends Controller
             $dcp_data = [
                 'id' => $newUser->id,
                 'user_id' => $newUser->id,
-                'staff_id' => $request->staff_id,
+//                'staff_id' => $request->staff_id,
             ];
-            $dcp->create($dcp_data);
+            $dcp->create($dcp_data)->staff()->attach($request->staff_id);
             $token = new Token();
             $token_data = [
                 'user_id' => $newUser->id,

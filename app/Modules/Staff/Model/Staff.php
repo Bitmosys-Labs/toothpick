@@ -20,7 +20,7 @@ class Staff extends Model
 
     public function dcps()
     {
-        return  $this->hasMany(Dcp::class, 'staff_id', 'id');
+        return  $this->belongsToMany(Dcp::class, 'staff_dcp', 'staff_id', 'user_id');
     }
 
     public function experiences()

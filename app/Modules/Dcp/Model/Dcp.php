@@ -19,7 +19,7 @@ class Dcp extends Model
     protected $fillable = ['id','user_id','staff_id','gdc_no','postcode','address','latitude','longitude','country', 'travel','hourly_rate','status','employment_history','deleted_at','created_at','updated_at',];
 
     public function staff(){
-        return $this->belongsTo(Staff::class, 'staff_id', 'id');
+        return $this->belongsToMany(Staff::class, 'staff_dcp', 'user_id', 'staff_id');
     }
 
     public function practice(){

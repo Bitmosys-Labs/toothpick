@@ -122,6 +122,7 @@ class AdminDcpController extends Controller
      */
     public function store(Request $request)
     {
+        $dcp = new Dcp();
         $request->validate([
             'password' => 'required|confirmed|min:6'
         ]);
@@ -141,11 +142,11 @@ class AdminDcpController extends Controller
         $data = [
             'id' => $user->id,
             'user_id' => $user->id,
-            'staff_id' => $request->staff_id,
+//            'staff_id' => $request->staff_id,
             'employment_history' => $request->employment_history,
             'status' => 0,
         ];
-        $success = Dcp::Create($data);
+        $success = $dcp->Create($data)->staff()->attach($request->staff_id);
         return redirect()->route('admin.dcps');
         //
     }

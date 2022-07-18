@@ -55,14 +55,14 @@ class DCPProfileApiController extends Controller
             'contact' => $request->contact,
         ];
         $dcp_data = [
-            'staff_id' => $request->staff_id,
+//            'staff_id' => $request->staff_id,
 //            'gdc_no' => $request->gdc_no,
             'postcode' => $request->postcode,
             'address' => $request->address,
         ];
         $user->update($user_data);
         $dcp->update($dcp_data);
-
+        $dcp->staff()->sync($request->staff_id);
         $response = [
             'success' => true,
             'message' => 'Profile Updated Successfully',
