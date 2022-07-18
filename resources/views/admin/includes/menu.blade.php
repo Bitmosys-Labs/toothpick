@@ -42,7 +42,7 @@
                         <li class="site-menu-item">
                             <a href="{{ route('admin.dcps') }}">
                                 <i class="site-menu-icon fa fa-user-nurse" aria-hidden="true"></i>
-                                <span class="site-menu-title">Create DCP</span>
+                                <span class="site-menu-title">DCP's</span>
                             </a>
                         </li>
                     @endcan
@@ -50,7 +50,7 @@
                         <li class="site-menu-item">
                             <a href="{{ route('admin.practices') }}">
                                 <i class="site-menu-icon fa fa-hospital" aria-hidden="true"></i>
-                                <span class="site-menu-title">Create Practice</span>
+                                <span class="site-menu-title">Practice's</span>
                             </a>
                         </li>
                     @endcan

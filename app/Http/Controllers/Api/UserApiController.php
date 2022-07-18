@@ -62,6 +62,11 @@ class UserApiController extends Controller
                 'role' => 1,
                 'status' => 0,
             ];
+            if ($request->hasFile('picture')) {
+                $file = $request->file('picture');
+                $uploadPath = public_path('uploads/user_profile/');
+                $data['picture'] = $this->fileUpload($file, $uploadPath);
+            }
             $newUser = $user->create($data);
             $practice = new Practice();
             $practice_data = [
@@ -92,10 +97,16 @@ class UserApiController extends Controller
                 'name' => $request->full_name,
                 'email' => $request->email,
                 'contact' => $request->contact,
+                'dob' => $request->dob,
                 'password' => Hash::make($request->password),
                 'role' => 2,
                 'status' => 0,
             ];
+            if ($request->hasFile('picture')) {
+                $file = $request->file('picture');
+                $uploadPath = public_path('uploads/user_profile/');
+                $data['picture'] = $this->fileUpload($file, $uploadPath);
+            }
             $newUser = $user->create($data);
             $dcp = new Dcp();
             $dcp_data = [
@@ -286,6 +297,15 @@ class UserApiController extends Controller
             ];
             return response($response, 401);
         }
+    }
+
+    public function fileUpload($file, $path){
+        $ext = $file->getClientOriginalExtension();
+        $imageName = md5(microtime()) . '.' . $ext;
+        if (!$file->move($path, $imageName)) {
+            return redirect()->back();
+        }
+        return $imageName;
     }
 
     public function logoutUser()

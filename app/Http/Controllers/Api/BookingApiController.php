@@ -7,6 +7,7 @@ use App\Modules\Booking\Model\Booking;
 use App\Modules\Booking_status\Model\Booking_status;
 use App\Modules\Parking\Model\Parking;
 use App\Modules\Staff\Model\Staff;
+use App\Modules\Work_with\Model\Work_with;
 use App\User;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Http\Request;
@@ -18,8 +19,9 @@ class BookingApiController extends Controller
     public function staffType(){
         $staff = Staff::select('id', 'type')->get();
         $parking = Parking::select('id', 'type')->get();
+        $work_with = Work_with::select('type')->get();
 
-        $data = ['staff' => $staff, 'parking' => $parking];
+        $data = ['staff' => $staff, 'parking' => $parking, 'work_with' => $work_with];
         $response = [
             'success' => true,
             'message' => 'List of staff type for DCP registration',
