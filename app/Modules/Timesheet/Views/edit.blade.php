@@ -29,7 +29,10 @@
 {{--                                    <label for="signature">Signature</label><input type="text" value = "{{$timesheet->signature}}"  name="signature" id="signature" class="form-control"></div><div class="form-group">--}}
                                     <label for="payable_amount">Payable_amount</label><input type="number" value = "{{$timesheet->payable_amount}}"  name="payable_amount" id="payable_amount" class="form-control" required></div><div class="form-group">
                                     <label for="vat">Vat</label><input type="number" value = "{{$timesheet->vat}}"  name="vat" id="vat" class="form-control" required></div><div class="form-group">
-                                    <label for="signature">Signature</label>{!! $timesheet->signature !!}</div><div class="form-group">
+                                    <label for="signature">Signature</label>
+{{--                                        {!! $timesheet->signature !!}--}}
+                                        <img src="{{asset('uploads/signatures/'. $timesheet->signature)}}" alt="signature">
+                                    </div><div class="form-group">
                                     <label for="status">Status</label><input type="number" value = "{{$timesheet->status}}"  name="status" id="status" class="form-control" required></div><div class="form-group">
 {{--                                    <label for="deleted_at">Deleted_at</label><input type="text" value = "{{$timesheet->deleted_at}}"  name="deleted_at" id="deleted_at" class="form-control" ></div><div class="form-group">--}}
 {{--                                    <label for="created_at">Created_at</label><input type="text" value = "{{$timesheet->created_at}}"  name="created_at" id="created_at" class="form-control" ></div><div class="form-group">--}}

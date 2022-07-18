@@ -62,6 +62,10 @@
                 <i class="icon wb-plus" aria-hidden="true"></i>
                 <span class="hidden-sm-down">Create</span>
             </a>
+            <a href="{{ route('admin.booking.confirm.list') }}"  class="btn btn-sm btn-success btn-outline btn-round"  title="create">
+                <i class="icon wb-check" aria-hidden="true"></i>
+                <span class="hidden-sm-down">Confirm Bookings</span>
+            </a>
 
         </div>
     </div>

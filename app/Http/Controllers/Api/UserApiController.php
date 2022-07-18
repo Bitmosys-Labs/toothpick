@@ -262,13 +262,22 @@ class UserApiController extends Controller
             $data = [
                 'email_verified_at' => Carbon::now()->toDateTimeString()
             ];
-            $user->update($data);
-            $response = [
-                'success' => true,
-                'message' => 'Verified',
-                'result' => null
-            ];
-            return response($response, 200);
+            if($user->emial_verified_at){
+                $response = [
+                    'success' => true,
+                    'message' => 'Email Already Verified!',
+                    'result' => null
+                ];
+                return response($response, 200);
+            }else{
+                $user->update($data);
+                $response = [
+                    'success' => true,
+                    'message' => 'Email Verification Successful',
+                    'result' => null
+                ];
+                return response($response, 200);
+            }
         } else {
             $response = [
                 'success' => false,

@@ -301,4 +301,27 @@ class AdminBookingController extends Controller
         $booking->booking_status->update(['user_id' => null]);
         return redirect()->back();
     }
+
+    public function listBooking(){
+        $page['title'] = 'Booking | Confirm';
+        $bookings = Booking::where('status', 1)->with('booking_status.user', 'practice.user')->get();
+        return view("Booking::confirm",compact('page', 'bookings'));
+    }
+
+    public function confirmBooking(){
+        $bookings = Booking::where('status', 1)->with('booking_status.user')->get();
+        $user_ids = array();
+        foreach($bookings as $booking){
+            array_push($user_ids, $booking->booking_status->user->id);
+        }
+        $user_id = array_unique($user_ids);
+
+        for($i=0; $i<=count($user_id); $i++){
+            $booking_list = Booking::where('status', 1)
+                ->whereHas('booking_status.user', function ($q) use($user_id, $i){
+                    return $q->where('id', $user_id[$i]);
+                })->with('practice.user')->get();
+
+        }
+    }
 }

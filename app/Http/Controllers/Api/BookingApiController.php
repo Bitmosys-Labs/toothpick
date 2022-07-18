@@ -10,6 +10,7 @@ use App\Modules\Staff\Model\Staff;
 use App\User;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class BookingApiController extends Controller
@@ -62,6 +63,8 @@ class BookingApiController extends Controller
                     return response($response, 400);
                 }
             }
+            $details = auth()->user()->name;
+            Mail::to('booking@toothpickdentalstaff.com')->send(new \App\Mail\bookingMail($details));
             $response = [
                 'success' => true,
                 'message' => 'Booking Successful!',

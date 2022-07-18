@@ -5,33 +5,15 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Token</title>
-</head>
-<body>
-    <h1>{{$details['token']}}</h1>
-</body>
-</html>
-
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Contact</title>
+    <title>Booking Assigned</title>
 </head>
 <body style="background-color: #6A78D1FF;">
 <br>
 <br>
 <div class="container" style="background-color: white; width: 60%; border-radius: 15px; padding: 10%; margin: auto;">
     <div class="content">
-        <h2 style="text-align: center; color: #6A78D1FF;">Toothpick Dental Staff</h2><br>
-        <p>This is the token to verify your email address.</p>
-        <h3 style="text-align: center; color: #6A78D1FF;">{{$details['token']}}</h3>
-        <p>Enter this code to verify your email.</p><br><br>
-        <p>Thanks for helping us keep your account secure.<br><br>
-            Toothpick Dental Staff Team</p>
+        <h2 style="text-align: center; color: #6A78D1FF;">A new booking has been assigned to you!</h2><br>
+        <p>Text here</p>
     </div>
     <div class="flap"></div>
 </div>
@@ -42,4 +24,3 @@
 
 </body>
 </html>
-
