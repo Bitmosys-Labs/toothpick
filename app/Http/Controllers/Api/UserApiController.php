@@ -93,6 +93,7 @@ class UserApiController extends Controller
             ];
             return response($response, 201);
         } elseif ($request->role == 2) {
+            return response($request->all());
             $data = [
                 'name' => $request->full_name,
                 'email' => $request->email,
@@ -221,10 +222,10 @@ class UserApiController extends Controller
         }
     }
 
-    public function fetchToken()
-    {
-        return json_encode(session('token'));
-    }
+//    public function fetchToken()
+//    {
+//        return json_encode(session('token'));
+//    }
 
     public function emailVerification(Request $request)
     {

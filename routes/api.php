@@ -23,11 +23,11 @@ Route::group(['name' => 'Home'], function (){
     Route::post('message', 'Api\MessageApiController@message');
     Route::post('checkMail', 'Api\UserApiController@emailCheck');
     Route::post('userLogin', 'Api\UserApiController@userLogin');
-    Route::get('sendVerifyEmail', 'Api\UserApiController@emailVerification');
+    Route::post('sendVerifyEmail', 'Api\UserApiController@emailVerification');
     Route::post('verifyMail', 'Api\UserApiController@emailVerify');
     Route::get('careerOpportunities', 'Api\CareerApiController@job');
     Route::post('apply', 'Api\CareerApiController@jobApplication');
-    Route::get('loginToken', 'Api\UserApiController@fetchToken');
+//    Route::get('loginToken', 'Api\UserApiController@fetchToken');
 });
 
 Route::group(['name' => 'common', 'middleware' => 'auth:sanctum'], function (){
