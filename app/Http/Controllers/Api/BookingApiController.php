@@ -32,6 +32,7 @@ class BookingApiController extends Controller
 
     public function BookingCreate(Request $request){
         if (auth()->check()) {
+            dd($request->all());
             $count = count($request->staff_id);
             $booking_info = new Booking();
             for ($i = 0; $i < $count; $i++) {
