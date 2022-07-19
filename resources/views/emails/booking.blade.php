@@ -14,7 +14,7 @@
 <div class="container" style="background-color: white; width: 60%; border-radius: 15px; padding: 10%; margin: auto;">
     <div class="content">
         <h2 style="text-align: center; color: #2c97b3;">We have a new booking request from {{$details}}!</h2><br>
-        <p style="text-align: justify">Take a look <a href="{{route('admin.bookings.show')}}">here</a>
+        <p style="text-align: justify">Take a look <a href="{{route('admin.bookings')}}">here</a>
         </p>
     </div>
     <div class="flap"></div>
