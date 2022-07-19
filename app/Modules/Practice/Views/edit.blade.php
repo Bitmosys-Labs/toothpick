@@ -35,6 +35,31 @@
                                 <label for="payment">Payment Deadline in Days</label>
                                 <input type="number" name="payment" id="payment" value="{{$practice->payment}}" class="form-control" required>
                             </div><div class="form-group">
+                                <label for="role">Status</label>
+                                <select type="text" name="status" id="status" class="form-control" required>
+                                    @if($dcp->user->status == 0)
+                                        <option value="0" selected>Incomplete profile</option>
+                                        <option value="1">Waiting Approval From Admin</option>
+                                        <option value="2">Operational Profile</option>
+                                        <option value="3">Restricted By System</option>
+                                    @elseif($dcp->user->status == 1)
+                                        <option value="0">Incomplete profile</option>
+                                        <option value="1" selected>Waiting Approval From Admin</option>
+                                        <option value="2">Operational Profile</option>
+                                        <option value="3">Restricted By System</option>
+                                    @elseif($dcp->user->status == 2)
+                                        <option value="0">Incomplete profile</option>
+                                        <option value="1">Waiting Approval From Admin</option>
+                                        <option value="2" selected>Operational Profile</option>
+                                        <option value="3">Restricted By System</option>
+                                    @else
+                                        <option value="0">Incomplete profile</option>
+                                        <option value="1">Waiting Approval From Admin</option>
+                                        <option value="2">Operational Profile</option>
+                                        <option value="3" selected>Restricted By System</option>
+                                    @endif
+                                </select>
+                            </div><div class="form-group">
                             {{--                                    <label for="deleted_at">Deleted_at</label><input type="text" value = "{{$practice->deleted_at}}"  name="deleted_at" id="deleted_at" class="form-control" ></div><div class="form-group">--}}
 {{--                                    <label for="created_at">Created_at</label><input type="text" value = "{{$practice->created_at}}"  name="created_at" id="created_at" class="form-control" ></div><div class="form-group">--}}
 {{--                                    <label for="updated_at">Updated_at</label><input type="text" value = "{{$practice->updated_at}}"  name="updated_at" id="updated_at" class="form-control" ></div>--}}

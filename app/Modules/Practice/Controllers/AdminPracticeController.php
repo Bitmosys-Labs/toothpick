@@ -188,6 +188,7 @@ class AdminPracticeController extends Controller
             'name' => $request->full_name,
             'contact' => $request->phone,
             'email_verified_at' => Carbon::now()->toDateTimeString(),
+            'status' => $request->status,
         ];
         $user = User::where('id', $request->user_id)->update($user_data);
         $data = [

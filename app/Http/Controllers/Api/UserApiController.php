@@ -93,7 +93,7 @@ class UserApiController extends Controller
             ];
             return response($response, 201);
         } elseif ($request->role == 2) {
-            return response($request->all());
+//            return response($request->all());
             $data = [
                 'name' => $request->full_name,
                 'email' => $request->email,
