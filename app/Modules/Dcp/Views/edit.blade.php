@@ -50,6 +50,30 @@
                                         <option value="2" selected>Part Time</option>
                                     @endif
                                 </select>
+                                <label for="role">Status</label>
+                                <select type="text" name="status" id="status" class="form-control" required>
+                                    @if($dcp->user->status == 0)
+                                        <option value="0" selected>Incomplete profile</option>
+                                        <option value="1">Waiting Approval From Admin</option>
+                                        <option value="2">Operational Profile</option>
+                                        <option value="3">Restricted By System</option>
+                                    @elseif($dcp->user->status == 1)
+                                        <option value="0">Incomplete profile</option>
+                                        <option value="1" selected>Waiting Approval From Admin</option>
+                                        <option value="2">Operational Profile</option>
+                                        <option value="3">Restricted By System</option>
+                                    @elseif($dcp->user->status == 2)
+                                        <option value="0">Incomplete profile</option>
+                                        <option value="1">Waiting Approval From Admin</option>
+                                        <option value="2" selected>Operational Profile</option>
+                                        <option value="3">Restricted By System</option>
+                                    @else
+                                        <option value="0">Incomplete profile</option>
+                                        <option value="1">Waiting Approval From Admin</option>
+                                        <option value="2">Operational Profile</option>
+                                        <option value="3" selected>Restricted By System</option>
+                                    @endif
+                                </select>
                                 </div><div class="form-group">
                                     <label for="employment_history">Employment History</label>
                                     <select type="text" name="employment_history" id="employment_history" class="form-control" style="width: 100%">

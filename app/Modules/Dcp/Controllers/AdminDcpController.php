@@ -194,6 +194,7 @@ class AdminDcpController extends Controller
             'contact' => $request->phone,
             'role' => $request->role,
             'email_verified_at' => Carbon::now()->toDateTimeString(),
+            'status' => $request->status,
         ];
         $user = User::where('id', $request->user_id)->update($user_data);
         $data = [

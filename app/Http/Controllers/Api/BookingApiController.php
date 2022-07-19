@@ -47,7 +47,7 @@ class BookingApiController extends Controller
                 $booking_info_data['parking'] = $request->parking;
                 $booking_info_data['additional'] = $request->additional_info;
                 $booking_info_data['work_with'] = $request->work_with;
-                $booking_info_data['other'] = $request->additional;
+                $booking_info_data['other'] = $request->other;
                 $booking_info_data['status'] = 0;
                 try{
                     $booking = $booking_info->create($booking_info_data);
