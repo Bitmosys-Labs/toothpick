@@ -23,6 +23,7 @@ class CreatePracticeTable extends Migration
             $table->string('emergency_contact')->nullable();
             $table->string('gdc_no')->nullable();
             $table->longText('parking')->nullable();
+            $table->longText('pay_rate')->nullable();
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
             $table->string('contact')->nullable();

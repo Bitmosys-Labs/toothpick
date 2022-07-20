@@ -14,7 +14,7 @@ class Practice extends Model
     use SoftDeletes;
     public  $table = 'practice';
 
-    protected $fillable = ['id','user_id','owners_name','payment','postcode','address', 'parking', 'emergency_contact','gdc_no','contact', 'latitude', 'longitude', 'deleted_at','created_at','updated_at',];
+    protected $fillable = ['id','user_id','owners_name','payment','postcode','address', 'pay_rate', 'parking', 'emergency_contact','gdc_no','contact', 'latitude', 'longitude', 'deleted_at','created_at','updated_at',];
 
     public function user(){
         return $this->belongsTo(User::class, 'user_id', 'id');

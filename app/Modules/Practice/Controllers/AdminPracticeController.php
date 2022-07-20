@@ -195,6 +195,8 @@ class AdminPracticeController extends Controller
             'user_id' => $request->user_id,
             'owners_name' => $request->owners_name,
             'payment' => $request->payment,
+            'parking' => $request->parking,
+            'pay_rate' => $request->pay_rate,
         ];
         $success = Practice::where('id', $request->id)->update($data);
         return redirect()->route('admin.practices');

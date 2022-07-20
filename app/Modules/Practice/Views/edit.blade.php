@@ -35,19 +35,27 @@
                                 <label for="payment">Payment Deadline in Days</label>
                                 <input type="number" name="payment" id="payment" value="{{$practice->payment}}" class="form-control" required>
                             </div><div class="form-group">
+                            </div><div class="form-group">
+                                <label for="parking">Parking Information</label>
+                                <textarea type="text" name="parking" id="parking" class="form-control" required>{!! $practice->parking !!}</textarea>
+                            </div><div class="form-group">
+                            </div><div class="form-group">
+                                <label for="pay_rate">Pay Rate</label>
+                                <textarea type="text" name="pay_rate" id="pay_rate" class="form-control" required>{!! $practice->pay_rate !!}</textarea>
+                            </div><div class="form-group">
                                 <label for="role">Status</label>
                                 <select type="text" name="status" id="status" class="form-control" required>
-                                    @if($dcp->user->status == 0)
+                                    @if($practice->user->status == 0)
                                         <option value="0" selected>Incomplete profile</option>
                                         <option value="1">Waiting Approval From Admin</option>
                                         <option value="2">Operational Profile</option>
                                         <option value="3">Restricted By System</option>
-                                    @elseif($dcp->user->status == 1)
+                                    @elseif($practice->user->status == 1)
                                         <option value="0">Incomplete profile</option>
                                         <option value="1" selected>Waiting Approval From Admin</option>
                                         <option value="2">Operational Profile</option>
                                         <option value="3">Restricted By System</option>
-                                    @elseif($dcp->user->status == 2)
+                                    @elseif($practice->user->status == 2)
                                         <option value="0">Incomplete profile</option>
                                         <option value="1">Waiting Approval From Admin</option>
                                         <option value="2" selected>Operational Profile</option>
@@ -76,4 +84,30 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $('#parking').summernote({
+            height: 200,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['fontname', ['fontname']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link', 'picture', 'video']],
+            ],
+        });$('#pay_rate').summernote({
+            height: 200,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['fontname', ['fontname']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link', 'picture', 'video']],
+            ],
+        });
+    </script>
 @endsection
