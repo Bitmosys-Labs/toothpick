@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Hash;
 class DCPProfileApiController extends Controller
 {
     public function profile(){
-        $user = User::where('id', auth()->user()->id)->with('dcp.kin')->first();
+        $user = User::where('id', auth()->user()->id)->with('dcp.kin', 'dcp.staff')->first();
         $staff = Staff::all();
         $response = [
             'success' => true,
