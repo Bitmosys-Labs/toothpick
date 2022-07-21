@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Document\Controllers;
+namespace App\Modules\User_identity\Controllers;
 
 use App\Http\Controllers\Controller;
 use Auth;
@@ -8,9 +8,9 @@ use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Schema;
-use App\Modules\Document\Model\Document;
+use App\Modules\User_identity\Model\User_identity;
 
-class AdminDocumentController extends Controller
+class AdminUser_identityController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,8 +19,8 @@ class AdminDocumentController extends Controller
      */
     public function index()
     {
-        $page['title'] = 'Document';
-        return view("Document::index",compact('page'));
+        $page['title'] = 'User_identity';
+        return view("User_identity::index",compact('page'));
 
         //
     }
@@ -30,13 +30,13 @@ class AdminDocumentController extends Controller
      *
      */
 
-    public function getdocumentsJson(Request $request)
+    public function getuser_identitiesJson(Request $request)
     {
-        $document = new Document;
+        $user_identity = new User_identity;
         $where = $this->_get_search_param($request);
 
         // For pagination
-        $filterTotal = $document->where( function($query) use ($where) {
+        $filterTotal = $user_identity->where( function($query) use ($where) {
             if($where !== null) {
                 foreach($where as $val) {
                     $query->orWhere($val[0],$val[1],$val[2]);
@@ -45,7 +45,7 @@ class AdminDocumentController extends Controller
         })->orderBy('id', 'DESC')->get();
 
         // Display limited list
-        $rows = $document->where( function($query) use ($where) {
+        $rows = $user_identity->where( function($query) use ($where) {
             if($where !== null) {
                 foreach($where as $val) {
                     $query->orWhere($val[0],$val[1],$val[2]);
@@ -54,7 +54,7 @@ class AdminDocumentController extends Controller
         })->limit($request->length)->offset($request->start)->orderBy('id', 'DESC')->get();
 
         //To count the total values present
-        $total = $document->get();
+        $total = $user_identity->get();
 
 
         echo json_encode(['draw'=>$request['draw'],'recordsTotal'=>count($total),'recordsFiltered'=>count($filterTotal),'data'=>$rows]);
@@ -98,8 +98,8 @@ class AdminDocumentController extends Controller
      */
     public function create()
     {
-        $page['title'] = 'Document | Create';
-        return view("Document::add",compact('page'));
+        $page['title'] = 'User_identity | Create';
+        return view("User_identity::add",compact('page'));
         //
     }
 
@@ -112,8 +112,8 @@ class AdminDocumentController extends Controller
     public function store(Request $request)
     {
         $data = $request->except('_token');
-        $success = Document::Create($data);
-        return redirect()->route('admin.documents');
+        $success = User_identity::Create($data);
+        return redirect()->route('admin.user_identities');
         //
     }
 
@@ -136,9 +136,9 @@ class AdminDocumentController extends Controller
      */
     public function edit($id)
     {
-        $document = Document::findOrFail($id);
-        $page['title'] = 'Document | Update';
-        return view("Document::edit",compact('page','document'));
+        $user_identity = User_identity::findOrFail($id);
+        $page['title'] = 'User_identity | Update';
+        return view("User_identity::edit",compact('page','user_identity'));
 
         //
     }
@@ -153,8 +153,8 @@ class AdminDocumentController extends Controller
     public function update(Request $request)
     {
         $data = $request->except('_token', '_method');
-        $success = Document::where('id', $request->id)->update($data);
-        return redirect()->route('admin.documents');
+        $success = User_identity::where('id', $request->id)->update($data);
+        return redirect()->route('admin.user_identities');
 
         //
     }
@@ -167,8 +167,8 @@ class AdminDocumentController extends Controller
      */
     public function destroy($id)
     {
-        $success = Document::where('id', $id)->delete();
-        return redirect()->route('admin.documents');
+        $success = User_identity::where('id', $id)->delete();
+        return redirect()->route('admin.user_identities');
 
         //
     }

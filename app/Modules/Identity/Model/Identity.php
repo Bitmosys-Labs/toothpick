@@ -16,13 +16,13 @@ class Identity extends Model
 
     protected $fillable = ['id','type','staff_id','requirement','deleted_at','created_at','updated_at',];
 
-    public function documents(){
-        return $this->belongsToMany(Document::class, 'ide_doc', 'doc_id');
+    public function id_doc(){
+        return $this->hasMany(Document::class, 'ide_id', 'id');
     }
 
-    public function users(){
-        return $this->belongsToMany(User::class, 'ide_doc', 'user_id');
-    }
+//    public function users(){
+//        return $this->belongsToMany(User::class, 'ide_doc', 'user_id');
+//    }
 
     public function staff(){
         return $this->belongsTo(Staff::class, 'staff_id', 'id');

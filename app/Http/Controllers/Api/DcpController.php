@@ -10,46 +10,138 @@ use App\Modules\Booking\Model\Booking;
 use App\Modules\Compliance\Model\Compliance;
 use App\Modules\Day\Model\Day;
 use App\Modules\Dcp\Model\Dcp;
+use App\Modules\Document\Model\Document;
 use App\Modules\Experience\Model\Experience;
 use App\Modules\Identity\Model\Identity;
 use App\Modules\Immunization\Model\Immunization;
 use App\Modules\Invoice\Model\Invoice;
 use App\Modules\Timesheet\Model\Timesheet;
+use App\Modules\User_comp\Model\User_comp;
+use App\Modules\User_identity\Model\User_identity;
+use App\Modules\User_immunization\Model\User_immunization;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class DcpController extends Controller
 {
     public function profile(){
-        if (auth()->check()){
-            $dcp = Dcp::where('user_id', auth()->user()->id)->first();
-            $data = [
-                'experience' => Experience::where('staff_id', $dcp->staff_id)->get(),
-                'user_experience' => Experience::whereHas('users', function ($q){
-                    $q->where('users.id', auth()->user()->id);
-                })->get(),
-                'immunization' => Immunization::where('staff_id', $dcp->staff_id)->get(),
-                'user_immunization' => Immunization::whereHas('users', function ($q){
-                    $q->where('users.id', auth()->user()->id);
-                })->with('documents')->get(),
-                'compliance' => Compliance::where('staff_id', $dcp->staff_id)->get(),
-                'user_compliance' => Compliance::whereHas('users', function ($q){
-                    $q->where('users.id', auth()->user()->id);
-                })->with('documents')->get(),
-                'identity' => Identity::where('staff_id', $dcp->staff_id)->get(),
-                'user_identity' => Identity::whereHas('users', function ($q){
-                    $q->where('users.id', auth()->user()->id);
-                })->with('documents')->get(),
-            ];
-            $response = [
-                'success' => true,
-                'message' => 'User Profile Data',
-                'result' => $data
-            ];
-            return response($response, 200);
-        }else{
-            return response('unauthorized', 401);
+        $dcp = Dcp::where('user_id', auth()->user()->id)->first();
+        $data = [
+            'experience' => Experience::where('staff_id', $dcp->staff_id)->get(),
+            'user_experience' => User::where('id', auth()->user()->id)->with('experiences')->get(),
+            'immunization' => Immunization::where('staff_id', $dcp->staff_id)->get(),
+            'user_immunization' => User::where('id', auth()->user()->id)->with('dcp.immunization')->get(),
+            'compliance' => Compliance::where('staff_id', $dcp->staff_id)->get(),
+            'user_compliance' => User::where('id', auth()->user()->id)->with('dcp.compliance')->get(),
+            'identity' => Identity::where('staff_id', $dcp->staff_id)->get(),
+            'user_identity' => User::where('id', auth()->user()->id)->with('dcp.identity')->get(),
+        ];
+        $response = [
+            'success' => true,
+            'message' => 'User Profile Data',
+            'result' => $data
+        ];
+        return response($response, 200);
+    }
+
+    public function recordProfile(Request $request){
+        $for = $request->for;
+        switch ($for){
+            case "compliance":
+                $compliance = new User_comp();
+                $data = [
+                    'comp_id' => $request->id,
+                    'user_id' => auth()->user()->id,
+                    'status' => 0,
+                ];
+                if ($request->hasFile('picture')) {
+                    $file = $request->file('picture');
+                    $uploadPath = public_path('uploads/user_profile/');
+                    $data['picture'] = $this->fileUpload($file, $uploadPath);
+                }
+                if(User_comp::where('user_id', auth()->user()->id)->where('comp_id', $request->id)->exists()){
+                    $compliance->update($data);
+                }else{
+                    $compliance->create($data);
+                }
+                $response = [
+                    'success' => true,
+                    'message' => 'User Experience Updated',
+                    'result' => null
+                ];
+                return response($response, 200);
+                break;
+
+            case "experience":
+                $user = User::where('id', auth()->user()->id)->first();
+                $user->experiences()->sync($request->experience);
+//                $experience = DB::table('experience_user')->where('user_id', auth()->user()->id)->get();
+//                $experience->delete();
+//                for($i = 0; $i<count($request->experience); $i++){
+//                    DB::table('experience_user')->create([
+//                        'user_id' => auth()->user()->id,
+//                        'experience_id' => $request->experience[$i]
+//                    ]);
+//                }
+                $response = [
+                    'success' => true,
+                    'message' => 'User Experience Updated',
+                    'result' => null
+                ];
+                return response($response, 200);
+                break;
+
+            case "identity":
+                $identity = new User_identity();
+                $data = [
+                    'ide_id' => $request->id,
+                    'user_id' => auth()->user()->id,
+                    'status' => 0,
+                ];
+                if ($request->hasFile('picture')) {
+                    $file = $request->file('picture');
+                    $uploadPath = public_path('uploads/user_profile/');
+                    $data['picture'] = $this->fileUpload($file, $uploadPath);
+                }
+                if(User_identity::where('user_id', auth()->user()->id)->where('ide_id', $request->id)->exists()){
+                    $identity->update($data);
+                }else{
+                    $identity->create($data);
+                }
+                $response = [
+                    'success' => true,
+                    'message' => 'User Experience Updated',
+                    'result' => null
+                ];
+                return response($response, 200);
+                break;
+
+            case "immunization":
+                $immunization = new User_immunization();
+                $data = [
+                    'imm_id' => $request->id,
+                    'user_id' => auth()->user()->id,
+                    'status' => 0,
+                ];
+                if ($request->hasFile('picture')) {
+                    $file = $request->file('picture');
+                    $uploadPath = public_path('uploads/user_profile/');
+                    $data['picture'] = $this->fileUpload($file, $uploadPath);
+                }
+                if(User_immunization::where('user_id', auth()->user()->id)->where('imm_id', $request->id)->exists()){
+                    $immunization->update($data);
+                }else{
+                    $immunization->create($data);
+                }
+                $response = [
+                    'success' => true,
+                    'message' => 'User Experience Updated',
+                    'result' => null
+                ];
+                return response($response, 200);
+                break;
         }
     }
 

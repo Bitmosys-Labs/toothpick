@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateIdeDocTable extends Migration
+class CreateUserIdentityTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateIdeDocTable extends Migration
      */
     public function up()
     {
-        Schema::create('ide_doc', function (Blueprint $table) {
+        Schema::create('user_identity', function (Blueprint $table) {
             $table->id();
             $table->integer('ide_id')->nullable();
             $table->integer('user_id')->nullable();
-            $table->integer('doc_id')->nullable();
-            $table->date('validity')->nullable();
-            $table->text('feedback')->nullable();
+            $table->string('picture')->nullable();
             $table->boolean('status')->nullable();
+            $table->date('validity')->nullable();
+            $table->longText('feedback')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
@@ -33,6 +33,6 @@ class CreateIdeDocTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ide_doc');
+        Schema::dropIfExists('user_identity');
     }
 }

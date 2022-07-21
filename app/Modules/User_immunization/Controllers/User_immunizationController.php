@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Document\Controllers;
+namespace App\Modules\User_immunization\Controllers;
 
 use App\Http\Controllers\Controller;
 use Auth;
@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Schema;
 
-class DocumentController extends Controller
+class User_immunizationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,7 +18,7 @@ class DocumentController extends Controller
      */
     public function index()
     {
-        $page['title'] = 'documents';
+        $page['title'] = 'user_immunizations';
         //
     }
 

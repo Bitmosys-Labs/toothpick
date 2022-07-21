@@ -39,6 +39,7 @@ Route::group(['name' => 'common', 'middleware' => 'auth:sanctum'], function (){
 
 Route::group(['name' => 'dcp', 'middleware' => 'auth:sanctum'], function () {
     Route::get('dcpProfile', 'Api\DcpController@profile');
+    Route::post('recordProfileData', 'Api\DcpController@recordProfile');
     Route::get('bookingList', 'Api\DcpController@booking');
     Route::get('timesheetList', 'Api\DcpController@timesheet');
     Route::get('dcpDetails', 'Api\DcpController@details');

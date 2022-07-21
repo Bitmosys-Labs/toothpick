@@ -6,6 +6,9 @@ use App\Modules\Kin\Model\Kin;
 use App\Modules\Practice\Model\Practice;
 use App\Modules\Rating\Model\Rating;
 use App\Modules\Staff\Model\Staff;
+use App\Modules\User_comp\Model\User_comp;
+use App\Modules\User_identity\Model\User_identity;
+use App\Modules\User_immunization\Model\User_immunization;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
@@ -36,5 +39,17 @@ class Dcp extends Model
 
     public function rating(){
         return $this->hasMany(Rating::class, 'dcp_id', 'id');
+    }
+
+    public function compliance(){
+        return $this->hasMany(User_comp::class, 'user_id', 'id');
+    }
+
+    public function immunization(){
+        return $this->hasMany(User_immunization::class, 'user_id', 'id');
+    }
+
+    public function identity(){
+        return $this->hasMany(User_identity::class, 'user_id', 'id');
     }
 }
