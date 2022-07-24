@@ -89,33 +89,43 @@ class RegistrationController extends Controller
         $token = substr(uniqid(), 7, 11);
         $password_reset = new Password_reset();
         $user = User::where('email', $request->email)->first();
-        if (Password_reset::where('email', $user->email)->where('token', $token)
-            ->where('created_at', '>=', Carbon::now()->subMinutes(2)->toDateTimeString())->exists()) {
+        if($user){
+            if (Password_reset::where('email', $user->email)->where('token', $token)
+                ->where('created_at', '>=', Carbon::now()->subMinutes(2)->toDateTimeString())->exists()) {
+                $response = [
+                    'success' => false,
+                    'message' => 'Too many token request!',
+                    'result' => null
+                ];
+                return response($response, 400);
+            }
+            $password_reset->where('email', $user->email)->delete();
+            $data = [
+                'email' => $user->email,
+                'token' => $token,
+            ];
+            if($password_reset->create($data)){
+                $details = [
+                    'password' => true,
+                    'token' => $token
+                ];
+                Mail::to($user->email)->send(new tokenMail($details));
+                $response = [
+                    'success' => true,
+                    'message' => 'Email sent',
+                    'result' => null
+                ];
+                return response($response, 201);
+            }
+        }else{
             $response = [
                 'success' => false,
-                'message' => 'Too many token request!',
+                'message' => 'No user with this email!',
                 'result' => null
             ];
             return response($response, 400);
         }
-        $password_reset->where('email', $user->email)->delete();
-        $data = [
-            'email' => $user->email,
-            'token' => $token,
-        ];
-        if($password_reset->create($data)){
-            $details = [
-                'password' => true,
-                'token' => $token
-            ];
-            Mail::to($user->email)->send(new tokenMail($details));
-            $response = [
-                'success' => true,
-                'message' => 'Email sent',
-                'result' => null
-            ];
-            return response($response, 201);
-        }
+
     }
 
     public function changePassword(Request $request){
