@@ -27,9 +27,16 @@
 <div class="container" style="background-color: white; width: 60%; border-radius: 15px; padding: 10%; margin: auto;">
     <div class="content">
         <h2 style="text-align: center; color: #2c97b3;">Toothpick Dental Staff</h2><br>
-        <p>This is the token to verify your email address.</p>
-        <h3 style="text-align: center; color: #6A78D1FF;">{{$details['token']}}</h3>
-        <p>Enter this code to verify your email.</p><br><br>
+        @if($details['password'])
+            <p>This is the token to reset your password.</p>
+            <h3 style="text-align: center; color: #6A78D1FF;">{{$details['token']}}</h3>
+            <p>Please dont share this code with anyone!</p><br>
+            <p>Enter this code to change password.</p><br><br>
+        @else
+            <p>This is the token to verify your email address.</p>
+            <h3 style="text-align: center; color: #6A78D1FF;">{{$details['token']}}</h3>
+            <p>Enter this code to verify your email.</p><br><br>
+        @endif
         <p>Thanks for helping us keep your account secure.<br><br>
             Toothpick Dental Staff Team</p>
     </div>

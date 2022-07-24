@@ -2,13 +2,19 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Core_modules\User\Model\User;
 use App\Http\Controllers\Controller;
+use App\Mail\tokenMail;
 use App\Modules\Dcp\Model\Dcp;
 use App\Modules\Kin\Model\Kin;
+use App\Modules\Password_reset\Model\Password_reset;
 use App\Modules\Practice\Model\Practice;
-use App\User;
+use App\Modules\Token\Model\Token;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
 class RegistrationController extends Controller
@@ -47,7 +53,7 @@ class RegistrationController extends Controller
                 $data = [
                     'postcode' => $request->postcode,
                     'address' => $request->address,
-                    'gdc_no' => $request->gdc,
+                    'gdc_no' => $request->gdc_no,
                     'travel' => $request->travel,
                 ];
                 $save_dcp = $dcp->where('user_id', auth()->user()->id)->first();
@@ -77,6 +83,57 @@ class RegistrationController extends Controller
         }else{
             return response('Unauthorized', 401);
         }
+    }
+
+    public function forgotPassword(Request $request){
+        $token = substr(uniqid(), 7, 11);
+        $password_reset = new Password_reset();
+        $user = User::where('email', $request->email)->first();
+        if (Password_reset::where('email', $user->email)->where('token', $token)
+            ->where('created_at', '>=', Carbon::now()->subMinutes(2)->toDateTimeString())->exists()) {
+            $response = [
+                'success' => false,
+                'message' => 'Too many token request!',
+                'result' => null
+            ];
+            return response($response, 400);
+        }
+        $password_reset->where('email', $user->email)->delete();
+        $data = [
+            'email' => $user->email,
+            'token' => $token,
+        ];
+        if($password_reset->create($data)){
+            $details = [
+                'password' => true,
+                'token' => $token
+            ];
+            Mail::to($user->email)->send(new tokenMail($details));
+            $response = [
+                'success' => true,
+                'message' => 'Email sent',
+                'result' => null
+            ];
+            return response($response, 201);
+        }
+    }
+
+    public function changePassword(Request $request){
+        $email = $request->email;
+        $token = $request->token;
+        if (Password_reset::where('email', $email)->where('token', $token)
+            ->where('created_at', '>=', Carbon::now()->subMinutes(15)->toDateTimeString())->exists()) {
+            $user = User::where('email', $email)->first();
+            $user->update([
+                'password' => Hash::make($request->password)
+            ]);
+        }
+        $response = [
+            'success' => true,
+            'message' => 'Password Successfully Changed!',
+            'result' => null
+        ];
+        return response($response, 201);
     }
 
     public function me(Request $request){

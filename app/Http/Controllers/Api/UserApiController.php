@@ -243,6 +243,7 @@ class UserApiController extends Controller
             $record->where('user_id', $user->id)->delete();
             if ($record->create($data)) {
                 $details = [
+                    'password' => false,
                     'token' => $token
                 ];
                 Mail::to($user->email)->send(new tokenMail($details));
@@ -268,6 +269,15 @@ class UserApiController extends Controller
     {
         $user = User::where('email', $request->email)->orderBy('id', 'DESC')->first();
         $token = $request->token;
+        if (Token::where('user_id', $user->id)->where('token', $token)
+            ->where('created_at', '>=', Carbon::now()->subMinutes(2)->toDateTimeString())->exists()) {
+            $response = [
+                'success' => false,
+                'message' => 'Too many token request!',
+                'result' => null
+            ];
+            return response($response, 400);
+        }
 
         if (Token::where('user_id', $user->id)->where('token', $token)
             ->where('created_at', '>=', Carbon::now()->subMinutes(20)->toDateTimeString())->exists()) {

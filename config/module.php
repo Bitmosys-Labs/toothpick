@@ -26,6 +26,7 @@ return [
         "User_comp",
         "User_identity",
         "User_immunization",
+        "Password_reset",
         "Logo",
         "Work_with",
         "Experience",

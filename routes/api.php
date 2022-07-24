@@ -27,6 +27,8 @@ Route::group(['name' => 'Home'], function (){
     Route::post('verifyMail', 'Api\UserApiController@emailVerify');
     Route::get('careerOpportunities', 'Api\CareerApiController@job');
     Route::post('apply', 'Api\CareerApiController@jobApplication');
+    Route::post('forgotPassword', 'Api\RegistrationController@forgotPassword');
+    Route::post('changePassword', 'Api\RegistrationController@changePassword');
 //    Route::get('loginToken', 'Api\UserApiController@fetchToken');
 });
 
