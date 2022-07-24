@@ -3,6 +3,7 @@
 namespace App\Modules\Booking\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Mail\bookingAlertMail;
 use App\Modules\Booking_status\Model\Booking_status;
 use App\Modules\Parking\Model\Parking;
 use App\Modules\Practice\Model\Practice;
@@ -11,6 +12,7 @@ use App\User;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Schema;
 use App\Modules\Booking\Model\Booking;
 use Illuminate\Support\Str;
@@ -163,7 +165,8 @@ class AdminBookingController extends Controller
      */
     public function edit($id)
     {
-        $booking = Booking::findOrFail($id);
+        $booking = Booking::where('id', $id)->with('booking_status.user', 'practice.user')->first();
+//        dd($booking);
         $page['title'] = 'Booking | Update';
         $staffs = Staff::all();
         $parkings = Parking::all();
@@ -316,12 +319,57 @@ class AdminBookingController extends Controller
         }
         $user_id = array_unique($user_ids);
 
-        for($i=0; $i<=count($user_id); $i++){
+        for($i=0; $i<count($user_id); $i++){
             $booking_list = Booking::where('status', 1)
                 ->whereHas('booking_status.user', function ($q) use($user_id, $i){
                     return $q->where('id', $user_id[$i]);
                 })->with('practice.user')->get();
-
+            $details = [
+              'data' =>   $booking_list
+            ];
+            $user = User::where('id', $user_id[$i])->first();
+            Mail::to($user->email)->send(new bookingAlertMail($details));
         }
+        $bookings->update([
+            'status' => 2
+        ]);
+        return redirect()->route('admin.bookings');
+    }
+
+    public function bookingCancel(Request $request){
+        $booking = Booking::where('id', $request->booking_id)->with('booking_status')->first();
+//        $booking_status = Booking_status::where('id', $booking['id'])->first();
+        $data = [
+            'status' => 4
+        ];
+        $booking->update($data);
+//        if($request->other){
+//            $data = [
+//                'canceled_by' => $request->by,
+//                'reason_for_cancel' => $request->other,
+//            ];
+//        }else{
+            $data = [
+                'canceled_by' => $request->by,
+                'reason_for_cancel' => $request->reason_for_cancel,
+            ];
+//        }
+        if($booking->booking_status){
+            $booking->booking_status->update($data);
+        }
+        else{
+            $status = [
+                'id' => $booking->id
+            ];
+            $booking->booking_status->create($status);
+            $booking->booking_status->update($data);
+        }
+        return redirect()->route('admin.bookings');
+//        $response = [
+//            'success' => true,
+//            'message' => 'Booking Canceled',
+//            'result' => null
+//        ];
+//        return response($response, 200);
     }
 }

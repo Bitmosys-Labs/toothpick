@@ -3,11 +3,11 @@
 
     <div class="page-content container-fluid">
         <div class="page-header">
-            <h1 class="page-title">Confirm Booking</h1>
+            <h1 class="page-title">Assigned Booking Booking</h1>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('home') }}"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.bookings') }}">booking</a></li>
-{{--                <li class="breadcrumb-item active">Add</li>--}}
+                <li class="breadcrumb-item"><a href="{{ route('admin.dcps') }}">DCP</a></li>
+                {{--                <li class="breadcrumb-item active">Add</li>--}}
             </ol>
             <div class="page-header-actions">
             </div>
@@ -22,7 +22,8 @@
                         <th scope="col">ID</th>
                         <th scope="col">Practice</th>
                         <th scope="col">Date</th>
-                        <th scope="col">Assigned</th>
+                        <th scope="col">From</th>
+                        <th scope="col">To</th>
                         <th scope="col">Action</th>
                     </tr>
                     </thead>
@@ -32,7 +33,8 @@
                             <th scope="row"><a href="{{route('admin.bookings.edit', $booking->id)}}">{{$booking->slug}}</a></th>
                             <td>{{$booking->practice->user->name}}</td>
                             <td>{{$booking->date}}</td>
-                            <td>{{$booking->booking_status->user->name}}</td>
+                            <td>{{date("H:i", strtotime($booking->from))}}</td>
+                            <td>{{date("H:i", strtotime($booking->to))}}</td>
                             <td> <span title="refresh" class="btn btn-danger" onclick="refreshClick({{$booking->id}})"><i class="fa fa-trash"></i></span></td>
                         </tr>
                         <form action="{{route('admin.booking.removeNurse')}}" method="POST" id="refreshNurse{{$booking->id}}">
@@ -42,8 +44,6 @@
                     @endforeach
                     </tbody>
                 </table><hr><hr>
-
-                <a href="{{route('admin.booking.confirm.send')}}" class="btn btn-success">Confirm</a>
             </div>
         </div>
     </div>

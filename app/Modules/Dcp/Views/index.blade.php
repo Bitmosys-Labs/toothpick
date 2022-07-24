@@ -106,6 +106,8 @@
 
                 buttons += "<a class='btn btn-sm btn-success btn-outline'  title='Edit' href='"+site_url+"/edit/"+data.id+"'><i class='icon wb-pencil' aria-hidden='true'></i></a>&nbsp;&nbsp";
 
+                buttons += "<a class='btn btn-sm btn-primary btn-outline' title='List Assigned Bookings'  href='"+site_url+"/list/"+data.id+"' ><i class='icon wb-list' aria-hidden='true'></i></a>&nbsp;&nbsp";
+
                 buttons += "<a class='btn btn-sm btn-danger btn-outline' onclick='return confirm(\"are you sure you want to delete this data?\")' href='"+site_url+"/delete/"+data.id+"' ><i class='icon wb-trash' aria-hidden='true'></i></a>&nbsp;&nbsp";
 
                 return buttons;

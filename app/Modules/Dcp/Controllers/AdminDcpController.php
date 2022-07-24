@@ -3,6 +3,7 @@
 namespace App\Modules\Dcp\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Booking\Model\Booking;
 use App\Modules\Staff\Model\Staff;
 use App\Core_modules\User\Model\User;
 use Auth;
@@ -251,5 +252,15 @@ class AdminDcpController extends Controller
             }
         }
         echo json_encode($data);
+    }
+
+    public function listBookings($id){
+        $bookings = Booking::where('status', 1)
+            ->whereHas('booking_status.user', function ($q) use($id){
+                return $q->where('id', $id);
+            })->with('practice.user')->get();
+
+        $page['title'] = 'Dcp | Assigned Bookings';
+        return view("Dcp::bookings",compact('page', 'bookings'));
     }
 }

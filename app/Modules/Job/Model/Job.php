@@ -11,7 +11,7 @@ class Job extends Model
 {
     use Sluggable;
     use SoftDeletes;
-    public  $table = 'jobs';
+    public  $table = 'job';
 
     protected $fillable = ['id','slug','position','number','requirements','till','status','deleted_at','created_at','updated_at',];
 

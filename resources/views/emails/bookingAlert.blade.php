@@ -6,6 +6,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Booking Assigned</title>
+
 </head>
 <body style="background-color: #2c97b3;">
 <br>
@@ -13,8 +14,17 @@
 <div class="container" style="background-color: white; width: 60%; border-radius: 15px; padding: 10%; margin: auto;">
     <div class="content">
         <h2 style="text-align: center; color: #2c97b3;">A new booking has been assigned to you!</h2><br>
-        <p>Text here</p>
     </div>
+        @foreach($details['data'] as $booking)
+            <h4>ID: {{$booking->slug}}</h4>
+            <h4>Practice: {{$booking->practice->user->name}}</h4>
+            <h4>Date: {{$booking->date}}</h4>
+            <h4>From: {{date("H:i", strtotime($booking->from))}}</h4>
+            <h4>To: {{date("H:i", strtotime($booking->to))}}</h4><br>
+            <hr>
+            <br>
+        @endforeach
+    <hr>
     <div class="flap"></div>
 </div>
 <br>

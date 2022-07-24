@@ -110,6 +110,36 @@
 {{--                    <button type="button" class="btn btn-danger float-right">Cancel</button>--}}
                 </div>
             </div>
+            <div id="assign-modal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Assign Nurse</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form id ='form-users' action="{{route('admin.booking.cancel')}}" method="POST" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <label for="by">Canceled By</label>
+                                    <input type="text" name="by" id="by" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="reason_for_cancel">Reason For cancellation</label>
+                                    <textarea type="text" name="reason_for_cancel" id="reason_for_cancel" class="form-control" required></textarea>
+                                </div>
+                                <input type="hidden" name="booking_id" id="booking_id" value="{{$booking->id}}" >
+                                {{ csrf_field() }}
+                                <button type="submit" class="btn bg-green waves-effect">Confirm</button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a onclick='buttonClick()' class="btn btn-danger float-right">Cancel Booking</a>
         </div>
     </div>
 
@@ -171,6 +201,14 @@
 
         function refreshClick(){
             $('#refreshNurse').submit();
+        }
+
+        function buttonClick(){
+            $('#assign-modal').modal('show');
+        }
+
+        function save(){
+            $('#form-users').submit();
         }
     </script>
 @endsection

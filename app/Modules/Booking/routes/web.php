@@ -17,6 +17,7 @@ Route::group(array('prefix'=>'admin/','module'=>'Booking','middleware' => ['web'
     Route::post('bookings/removeAsssignedNurse', 'AdminBookingController@removeAssignedNurse')->name('admin.booking.removeNurse');
     Route::get('bookings/Confirm', 'AdminBookingController@listBooking')->name('admin.booking.confirm.list');
     Route::get('bookings/sendConfirm', 'AdminBookingController@confirmBooking')->name('admin.booking.confirm.send');
+    Route::post('bookings/cancel', 'AdminBookingController@bookingCancel')->name('admin.booking.cancel');
 });
 
 
