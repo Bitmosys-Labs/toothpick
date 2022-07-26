@@ -180,7 +180,7 @@
                     delay: 250,
                     data: function (params) {
                         return {
-                            searchTerm: params.term, full_time: $('input[name="fulltime"]:checked').val(), part_time: $('input[name="parttime"]:checked').val(), booking_date: {{$booking->date}}, staff_id: {{$booking->staff_id}},
+                            searchTerm: params.term, full_time: $('input[name="fulltime"]:checked').val(), part_time: $('input[name="parttime"]:checked').val(), booking_date: $('input[name="date"]').val(), staff_id: {{$booking->staff_id}},
                         };
                     },
                     processResults: function (response) {

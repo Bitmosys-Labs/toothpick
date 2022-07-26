@@ -18,7 +18,7 @@ class PracticeController extends Controller
         if (auth()->check()) {
             $data = Practice::join('users', 'users.id', 'practice.user_id')
                 ->where('practice.user_id', auth()->user()->id)
-                ->select('users.name', 'users.contact', 'practice.owners_name', 'practice.postcode', 'practice.address', 'practice.gdc_no', 'practice.emergency_contact')
+                ->select('users.name', 'users.contact', 'users.picture', 'practice.owners_name', 'practice.postcode', 'practice.address', 'practice.gdc_no', 'practice.emergency_contact')
                 ->first();
             $response = [
                 'success' => true,
