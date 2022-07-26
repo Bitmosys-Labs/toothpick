@@ -21,7 +21,7 @@
                         <input type="hidden" name="user_id" value="{{$id}}">
 
                         <button type="submit" class="btn btn-success">Get</button><br>
-                        <h2 id="Total Hours">Total Payable Hours: {{$total_time ?? '0.0'}}</h2>
+                        <h2 id="Total_Hours"></h2>
                     </div>
                 </div>
             </form>
@@ -65,4 +65,19 @@
             </table>
         </div>
     </div>
+
+    <script>
+        function getTotalHour() {
+            let till_date = $('input[name="fulltime"]').val();
+            let user_id = $('input[name="user_id"]').val();
+            $.ajax({
+                type:'get',
+                url:{{route('admin.payableHours')}},
+                data:{till_date, user_id},
+                success:function(data) {
+                    $("#Total_Hours").html(data);
+                }
+            });
+        }
+    </script>
 @endsection
