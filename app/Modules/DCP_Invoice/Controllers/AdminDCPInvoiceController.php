@@ -200,7 +200,7 @@ class AdminDCPInvoiceController extends Controller
 //
 //        $page['title'] = 'DCP Invoice | Detail';
 //        $total_time = null;
-        $total_time = $timesheet->sum("total_hours");
+        $total_time = $timesheet->booking->timesheet->sum("total_hours");
 
         echo($till_date);
 //        return view("DCP_Invoice::edit",compact('page','timesheets', 'id', 'total_time'));
