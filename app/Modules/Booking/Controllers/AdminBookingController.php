@@ -224,25 +224,32 @@ class AdminBookingController extends Controller
             $full = $request->full_time;
             $part = $request->part_time;
             $booking_date = $request->booking_date;
-            $fetchData = User::where(function ($query) use($full, $part, $booking_date){
-                if($full){
-                    $query->Where('role', 3)->whereHas('availability.days', function ($q) use ($booking_date){
-                        return $q->where('day', date('l', strtotime($booking_date)));
-                    });
-                }
-                elseif($part){
+            $staff_id = $request->staff_id;
+            $fetchData = User::where(function ($query) use($full, $part, $booking_date, $staff_id){
+//                if($full){
+//                    $query->Where('role', 3)->whereHas('availability.days', function ($q) use ($booking_date){
+//                        return $q->where('days.day', date('l', strtotime($booking_date)));
+//                    })->whereHas('dcp.staff', function ($q) use($staff_id){
+//                        return $q->where('staff.id', $staff_id);
+//                    });
+//                }
+//                elseif($part){
                     $query->where('role', 2)->whereHas('available_dates',function ($q) use($booking_date){
                         return $q->where('date', $booking_date);
+                    })->whereHas('dcp.staff', function ($q) use($staff_id){
+                        return $q->where('staff.id', $staff_id);
                     });
-                }
-                else{
-                    $query->where('role', 2)->whereHas('available_dates',function ($q) use($booking_date){
-                        return $q->where('date', $booking_date);
-                    })
-                        ->orWhere('role', 3)->whereHas('availability.days', function ($q) use ($booking_date){
-                            return $q->where('day', date('l', strtotime($booking_date)));
-                        });
-                }
+//                }
+//                else{
+//                    $query->where('role', 2)->whereHas('available_dates',function ($q) use($booking_date){
+//                        return $q->where('date', $booking_date);
+//                    })
+//                        ->orWhere('role', 3)->whereHas('availability.days', function ($q) use ($booking_date){
+//                            return $q->where('days.day', date('l', strtotime($booking_date)));
+//                        })->whereHas('dcp.staff', function ($q) use($staff_id){
+//                            return $q->where('staff.id', $staff_id);
+//                        });
+//                }
             })->where('status', 2)->limit(7)->get();
             $data = array();
             foreach ($fetchData as  $row){
@@ -261,15 +268,20 @@ class AdminBookingController extends Controller
             $booking_date = $request->booking_date;
             $full = $request->full_time;
             $part = $request->part_time;
-            $fetchData = User::where('name', 'like', '%'.$search.'%' )->where(function ($query) use($full, $part, $booking_date){
+            $staff_id = $request->staff_id;
+            $fetchData = User::where('name', 'like', '%'.$search.'%' )->where(function ($query) use($full, $part, $booking_date, $staff_id){
                 if($full){
                     $query->Where('role', 3)->whereHas('availability.days', function ($q) use ($booking_date){
-                        return $q->where('day', date('l', strtotime($booking_date)));
+                        return $q->where('days.day', date('l', strtotime($booking_date)));
+                    })->whereHas('dcp.staff', function ($q) use($staff_id){
+                        return $q->where('staff.id', $staff_id);
                     });
                 }
                 elseif($part){
                     $query->where('role', 2)->whereHas('available_dates',function ($q) use($booking_date){
                         return $q->where('date', $booking_date);
+                    })->whereHas('dcp.staff', function ($q) use($staff_id){
+                        return $q->where('staff.id', $staff_id);
                     });
                 }
                 else{
@@ -277,7 +289,9 @@ class AdminBookingController extends Controller
                         return $q->where('date', $booking_date);
                     })
                         ->orWhere('role', 3)->whereHas('availability.days', function ($q) use ($booking_date){
-                            return $q->where('day', date('l', strtotime($booking_date)));
+                            return $q->where('days.day', date('l', strtotime($booking_date)));
+                        })->whereHas('dcp.staff', function ($q) use($staff_id){
+                            return $q->where('staff.id', $staff_id);
                         });
                 }
             })->where('status', 2)->limit(7)->get();

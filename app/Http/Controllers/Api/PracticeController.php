@@ -40,6 +40,11 @@ class PracticeController extends Controller
                 'name' => $request->name,
                 'contact' => $request->contact,
             ];
+            if ($request->hasFile('picture')) {
+                $file = $request->file('picture');
+                $uploadPath = public_path('uploads/user_profile/');
+                $user_data['picture'] = $this->fileUpload($file, $uploadPath);
+            }
             $user->update($user_data);
             $practice_data = [
               'owners_name' => $request->owners_name,
@@ -145,5 +150,14 @@ class PracticeController extends Controller
             'result' => $invoice
         ];
         return response($response, 200);
+    }
+
+    public function fileUpload($file, $path){
+        $ext = $file->getClientOriginalExtension();
+        $imageName = md5(microtime()) . '.' . $ext;
+        if (!$file->move($path, $imageName)) {
+            return redirect()->back();
+        }
+        return $imageName;
     }
 }

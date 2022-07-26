@@ -89,7 +89,7 @@
                                             </div>
                                         </div>
                                 <select name="nurse" id="nurse" class="form-control" style="width: 90%">
-                                    @if($booking->booking_status->user)
+                                    @if($booking->booking_status)
                                         <option value="{{$booking->booking_status->user->id}}">{{$booking->booking_status->user->name}}</option>
                                     @endif
                                 </select>  <span title="refresh" class="btn btn-danger" onclick="refreshClick()"><i class="fa fa-repeat"></i></span></div><div class="form-group"></div><div class="form-group">
@@ -101,7 +101,7 @@
                             <a href="{{ route('admin.bookings') }}" class="btn btn-danger">Cancel</a>
                         </div>
                     </form>
-                    @if($booking->booking_status->user)
+                    @if($booking->booking_status)
                         <form action="{{route('admin.booking.removeNurse')}}" method="POST" id="refreshNurse">
                             @csrf
                             <input type="hidden" name="booking_id" value="{{$booking->id}}">
@@ -180,7 +180,7 @@
                     delay: 250,
                     data: function (params) {
                         return {
-                            searchTerm: params.term, full_time: $('input[name="fulltime"]:checked').val(), part_time: $('input[name="parttime"]:checked').val(), booking_date: {{$booking->date}},
+                            searchTerm: params.term, full_time: $('input[name="fulltime"]:checked').val(), part_time: $('input[name="parttime"]:checked').val(), booking_date: {{$booking->date}}, staff_id: {{$booking->staff_id}},
                         };
                     },
                     processResults: function (response) {

@@ -51,12 +51,17 @@ class DCPProfileApiController extends Controller
         $user = User::where('id', auth()->user()->id)->first();
         $dcp = Dcp::where('user_id', auth()->user()->id)->first();
         $user_data = [
-//          'name' => $request->name,
+          'name' => $request->name,
             'contact' => $request->contact,
         ];
+        if ($request->hasFile('picture')) {
+            $file = $request->file('picture');
+            $uploadPath = public_path('uploads/user_profile/');
+            $user_data['picture'] = $this->fileUpload($file, $uploadPath);
+        }
         $dcp_data = [
 //            'staff_id' => $request->staff_id,
-//            'gdc_no' => $request->gdc_no,
+            'gdc_no' => $request->gdc_no,
             'postcode' => $request->postcode,
             'address' => $request->address,
         ];
@@ -88,5 +93,15 @@ class DCPProfileApiController extends Controller
             'result' => null
         ];
         return response($response, 201);
+    }
+
+
+    public function fileUpload($file, $path){
+        $ext = $file->getClientOriginalExtension();
+        $imageName = md5(microtime()) . '.' . $ext;
+        if (!$file->move($path, $imageName)) {
+            return redirect()->back();
+        }
+        return $imageName;
     }
 }
