@@ -75,7 +75,7 @@
                 url:{{route('admin.payableHours')}},
                 data:{till_date, user_id},
                 success:function(data) {
-                    $("#Total_Hours").html(data);
+                    $("#Total_Hours").text(data);
                 }
             });
         }
