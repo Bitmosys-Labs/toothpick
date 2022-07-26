@@ -12,7 +12,7 @@ Route::group(array('prefix'=>'admin/','module'=>'DCP_Invoice','middleware' => ['
     Route::get('dcpInvoice/edit/{id}','AdminDCPInvoiceController@edit')->name('admin.dcpInvoice.edit');
     Route::match(['put', 'patch'], 'dcpInvoice/update','AdminDCPInvoiceController@update')->name('admin.dcpInvoice.update');
     Route::get('dcpInvoice/delete/{id}', 'AdminDCPInvoiceController@destroy')->name('admin.dcpInvoice.edit');
-    Route::get('payableHours', 'AdminDCPInvoiceController@payableHours')->name('admin.payableHours');
+    Route::post('payableHours', 'AdminDCPInvoiceController@payableHours')->name('admin.payableHours');
 });
 
 

@@ -190,8 +190,12 @@ class AdminDCPInvoiceController extends Controller
         $till_date = $request->till_date;
         $id = $request->user_id;
 
-        $timesheet = Booking_status::where('user_id', $id)->whereHas('booking.timesheet', function($q) use($till_date){
-            return $q->where('status', 1)->whereDate('created_at', '<=', $till_date);
+//        $timesheet = Booking_status::where('user_id', $id)->whereHas('booking.timesheet', function($q) use($till_date){
+//            return $q->where('status', 1)->whereDate('created_at', '<=', $till_date);
+//        })->get();
+
+        $timesheet = Timesheet::where('status', 1)->whereDate('created_at', '<=', $till_date)->whereHas('booking.booking_status', function ($q) use($id){
+            $q->where('booking_status.user_id', $id);
         })->get();
 
 //        $timesheets = timesheet::whereHas('booking.booking_status', function($q) use($id){
@@ -200,9 +204,9 @@ class AdminDCPInvoiceController extends Controller
 //
 //        $page['title'] = 'DCP Invoice | Detail';
 //        $total_time = null;
-        $total_time = $timesheet->booking->timesheet->sum("total_hours");
+            $total_time = $timesheet->sum("total_hours");
 
-        echo($till_date);
+            echo($total_time);
 //        return view("DCP_Invoice::edit",compact('page','timesheets', 'id', 'total_time'));
 //        return redirect()->back()->with(compact('total_time', 'timesheets', 'id', 'page'));
 
