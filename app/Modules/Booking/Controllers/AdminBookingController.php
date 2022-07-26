@@ -2,13 +2,13 @@
 
 namespace App\Modules\Booking\Controllers;
 
+use App\Core_modules\User\Model\User;
 use App\Http\Controllers\Controller;
 use App\Mail\bookingAlertMail;
 use App\Modules\Booking_status\Model\Booking_status;
 use App\Modules\Parking\Model\Parking;
 use App\Modules\Practice\Model\Practice;
 use App\Modules\Staff\Model\Staff;
-use App\User;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -224,16 +224,24 @@ class AdminBookingController extends Controller
             $full = $request->full_time;
             $part = $request->part_time;
             $booking_date = $request->booking_date;
-            $fetchData = User::where(function ($query) use($full, $part){
+            $fetchData = User::where(function ($query) use($full, $part, $booking_date){
                 if($full){
-                    $query->Where('role', 3);
+                    $query->Where('role', 3)->whereHas('availability.days', function ($q) use ($booking_date){
+                        return $q->where('day', date('l', strtotime($booking_date)));
+                    });
                 }
                 elseif($part){
-                    $query->where('role', 2);
+                    $query->where('role', 2)->whereHas('available_dates',function ($q) use($booking_date){
+                        return $q->where('date', $booking_date);
+                    });
                 }
                 else{
-                    $query->where('role', 2)
-                        ->orWhere('role', 3);
+                    $query->where('role', 2)->whereHas('available_dates',function ($q) use($booking_date){
+                        return $q->where('date', $booking_date);
+                    })
+                        ->orWhere('role', 3)->whereHas('availability.days', function ($q) use ($booking_date){
+                            return $q->where('day', date('l', strtotime($booking_date)));
+                        });
                 }
             })->where('status', 2)->limit(7)->get();
             $data = array();
@@ -253,23 +261,24 @@ class AdminBookingController extends Controller
             $booking_date = $request->booking_date;
             $full = $request->full_time;
             $part = $request->part_time;
-
-//            $fetchData = City::with('state')->where('name', 'like', '%'. $search .'%')->whereHas('state', function($q) use($search, $country_id){
-//                $q->where('country_id', $country_id)->orWhere('name', 'like', '%'. $search .'%');
-//            })
-//            ->limit(5)
-//            ->get();
-//            $fetchData = \Illuminate\Support\Facades\DB::select('SELECT cities.name AS city, cities.id, states.name AS state FROM cities JOIN states ON states.id = cities.state_id WHERE (cities.name LIKE "%'.$search.'%" OR states.name LIKE "%'.$search.'%") AND states.country_id = '.$country_id.' LIMIT 5');
-            $fetchData = User::where('name', 'like', '%'.$search.'%' )->where(function ($query) use($full, $part){
+            $fetchData = User::where('name', 'like', '%'.$search.'%' )->where(function ($query) use($full, $part, $booking_date){
                 if($full){
-                    $query->Where('role', 3);
+                    $query->Where('role', 3)->whereHas('availability.days', function ($q) use ($booking_date){
+                        return $q->where('day', date('l', strtotime($booking_date)));
+                    });
                 }
                 elseif($part){
-                    $query->where('role', 2);
+                    $query->where('role', 2)->whereHas('available_dates',function ($q) use($booking_date){
+                        return $q->where('date', $booking_date);
+                    });
                 }
                 else{
-                    $query->where('role', 2)
-                        ->orWhere('role', 3);
+                    $query->where('role', 2)->whereHas('available_dates',function ($q) use($booking_date){
+                        return $q->where('date', $booking_date);
+                    })
+                        ->orWhere('role', 3)->whereHas('availability.days', function ($q) use ($booking_date){
+                            return $q->where('day', date('l', strtotime($booking_date)));
+                        });
                 }
             })->where('status', 2)->limit(7)->get();
             $data = array();

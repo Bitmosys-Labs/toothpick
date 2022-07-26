@@ -3,6 +3,7 @@
 namespace App\Core_modules\User\Model;
 
 use App\Modules\Availability\Model\Availability;
+use App\Modules\Availability_date\Model\Availability_date;
 use App\Modules\Bank_detail\Model\Bank_detail;
 use App\Modules\Booking_status\Model\Booking_status;
 use App\Modules\Compliance\Model\Compliance;
@@ -59,6 +60,10 @@ class User extends Authenticatable implements JWTSubject
 
     public function availability(){
         return $this->hasMany(Availability::class, 'user_id', 'id');
+    }
+
+    public function available_dates(){
+        return $this->hasMany(Availability_date::class, 'user_id', 'id');
     }
 
     public function bank_details(){

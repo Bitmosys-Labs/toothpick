@@ -29,13 +29,13 @@ class DcpController extends Controller
     public function profile(){
         $dcp = Dcp::where('user_id', auth()->user()->id)->first();
         $data = [
-            'experience' => Experience::where('staff_id', $dcp->staff_id)->get(),
+            'experience' => Experience::all(),
             'user_experience' => User::where('id', auth()->user()->id)->with('experiences')->get(),
-            'immunization' => Immunization::where('staff_id', $dcp->staff_id)->get(),
+            'immunization' => Immunization::all(),
             'user_immunization' => User::where('id', auth()->user()->id)->with('dcp.immunization')->get(),
-            'compliance' => Compliance::where('staff_id', $dcp->staff_id)->get(),
+            'compliance' => Compliance::all(),
             'user_compliance' => User::where('id', auth()->user()->id)->with('dcp.compliance')->get(),
-            'identity' => Identity::where('staff_id', $dcp->staff_id)->get(),
+            'identity' => Identity::all(),
             'user_identity' => User::where('id', auth()->user()->id)->with('dcp.identity')->get(),
         ];
         $response = [
