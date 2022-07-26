@@ -235,6 +235,15 @@ class UserApiController extends Controller
             }
             $token = substr(uniqid(), 7, 11);
             $user = User::where('email', $request->email)->orderBy('id', 'DESC')->first();
+            if (Token::where('user_id', $user->id)->where('token', $token)
+                ->where('created_at', '>=', Carbon::now()->subMinutes(2)->toDateTimeString())->exists()) {
+                $response = [
+                    'success' => false,
+                    'message' => 'Too many token request!',
+                    'result' => null
+                ];
+                return response($response, 400);
+            }
             $record = new Token();
             $data = [
                 'user_id' => $user->id,
@@ -269,15 +278,6 @@ class UserApiController extends Controller
     {
         $user = User::where('email', $request->email)->orderBy('id', 'DESC')->first();
         $token = $request->token;
-        if (Token::where('user_id', $user->id)->where('token', $token)
-            ->where('created_at', '>=', Carbon::now()->subMinutes(2)->toDateTimeString())->exists()) {
-            $response = [
-                'success' => false,
-                'message' => 'Too many token request!',
-                'result' => null
-            ];
-            return response($response, 400);
-        }
 
         if (Token::where('user_id', $user->id)->where('token', $token)
             ->where('created_at', '>=', Carbon::now()->subMinutes(20)->toDateTimeString())->exists()) {

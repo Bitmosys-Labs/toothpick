@@ -112,7 +112,7 @@
                         @else
                             <div class="form-group">
                                 <label for="full_name">Available Dates</label>
-                                <input type="date" name="available_date[]" id="available_date" class="form-control" required>
+                                <input type="date" name="available_date[]" id="available_date" multiple="multiple" class="form-control" required>
                             </div>
                         @endif
                         <input type="hidden" value="{{$dcp->id}}" name="dcp_id">

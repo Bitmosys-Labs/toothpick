@@ -202,7 +202,7 @@ class AdminDCPInvoiceController extends Controller
         $total_time = null;
         $total_time = $timesheet->sum("total_hours");
 //        return view("DCP_Invoice::edit",compact('page','timesheets', 'id', 'total_time'));
-        return redirect()->back()->Compact('total_time', 'timesheets', 'id', 'page');
+        return redirect()->back()->with(compact('total_time', 'timesheets', 'id', 'page'));
 
     }
 }
