@@ -12,19 +12,19 @@
             </div>
         </div>
         <div class="panel">
-            <form action="{{route('admin.payableHours')}}" method="get" style="padding: 30px;">
-                @csrf
+{{--            <form action="{{route('admin.payableHours')}}" method="get" style="padding: 30px;">--}}
+{{--                @csrf--}}
                 <div class="box-body">
                     <div class="form-group">
                         <label for="values_till_date">Total Payable Hours Till Date</label>
                         <input type="date" class="form-control" name="till_date" required><br>
                         <input type="hidden" name="user_id" value="{{$id}}">
 
-                        <button type="submit" class="btn btn-success">Get</button><br>
+                        <a onclick="getTotalHour()" class="btn btn-success">Get</a><br>
                         <h2 id="Total_Hours"></h2>
                     </div>
                 </div>
-            </form>
+{{--            </form>--}}
             <table class="table">
                 <thead class="thead-dark">
                 <tr>
