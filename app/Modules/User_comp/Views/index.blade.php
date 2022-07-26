@@ -4,7 +4,7 @@
 <div class="page-content container-fluid">
 
 	<div class="page-header">
-        <h1 class="page-title">User_comps</h1>
+        <h1 class="page-title">Compliance Documents</h1>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('home') }}"><i class="fa fa-dashboard"></i> Home</a></li>
             <li class="breadcrumb-item active"><a href="#">User_comps</a></li>
@@ -32,11 +32,11 @@
 <th >User_id</th>
 <th >Picture</th>
 <th >Status</th>
-<th >Validity</th>
-<th >Feedback</th>
-<th >Deleted_at</th>
-<th >Created_at</th>
-<th >Updated_at</th>
+{{--<th >Validity</th>--}}
+{{--<th >Feedback</th>--}}
+{{--<th >Deleted_at</th>--}}
+{{--<th >Created_at</th>--}}
+{{--<th >Updated_at</th>--}}
 
                             <th>Action</th>
                         </tr>
@@ -69,7 +69,8 @@
                 { data: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 },name: "sn", searchable: false },
-                { data: "comp_id",name: "comp_id"},{ data: "user_id",name: "user_id"},{ data: "picture",name: "picture"},{ data: "status",name: "status"},{ data: "validity",name: "validity"},{ data: "feedback",name: "feedback"},{ data: "deleted_at",name: "deleted_at"},{ data: "created_at",name: "created_at"},{ data: "updated_at",name: "updated_at"},
+                { data: "comp_id",name: "comp_id"},{ data: "user_id",name: "user_id"},{ data: "picture",name: "picture"},{ data: "status",name: "status"},
+                // { data: "validity",name: "validity"},{ data: "feedback",name: "feedback"},{ data: "deleted_at",name: "deleted_at"},{ data: "created_at",name: "created_at"},{ data: "updated_at",name: "updated_at"},
 
                 { data: function(data,b,c,table) {
                 var buttons = '';

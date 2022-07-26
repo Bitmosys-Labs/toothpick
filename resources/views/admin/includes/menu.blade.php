@@ -86,6 +86,36 @@
                             </a>
                         </li>
                     @endcan
+                    <li class="site-menu-item has-sub">
+                        <a href="javascript:void(0)">
+                            <i class="site-menu-icon icon wb-check" aria-hidden="true"></i>
+                            <span class="site-menu-title">Review Documents</span>
+                            <span class="site-menu-arrow"></span>
+                        </a>
+                        <ul class="site-menu-sub">
+                            @can('user_comps')
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="{{route('admin.user_comps')}}">
+                                    <span class="site-menu-title">Compliance</span>
+                                </a>
+                            </li>
+                            @endcan
+                            @can('user_identities')
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="{{route('admin.user_identities')}}">
+                                    <span class="site-menu-title">Identity</span>
+                                </a>
+                            </li>
+                            @endcan
+                            @can('user_immunizations')
+                            <li class="site-menu-item">
+                                <a class="animsition-link" href="{{route('admin.user_immunizations')}}">
+                                    <span class="site-menu-title">Immunization</span>
+                                </a>
+                            </li>
+                            @endcan
+                        </ul>
+                    </li>
                     <li class="site-menu-category">Job</li>
                     @can('jobs')
                         <li class="site-menu-item">

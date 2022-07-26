@@ -91,6 +91,34 @@
                             <a href="{{ route('admin.dcps') }}" class="btn btn-danger">Cancel</a>
                         </div>
                     </form>
+                    <hr>
+
+                    <form role="form" action="{{route('admin.dcps.availability')}}"  method="post" enctype="multipart/form-data">
+                        <h3>Availability</h3>
+                        @csrf
+                        @if($dcp->user->role == 3)
+                            <div class="form-group">
+                                <label for="full_name">Available Days</label>
+                                <select type="text" name="available_days[]" id="available_days" multiple="multiple" required style="width:100%;">
+                                    @foreach($days as $day)
+                                        @if($availability->user->availability->contains('days_id', $day->id))
+                                            <option value="{{$day->id}}" selected>{{$day->day}}</option>
+                                        @else
+                                            <option value="{{$day->id}}">{{$day->day}}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                        @else
+                            <div class="form-group">
+                                <label for="full_name">Available Dates</label>
+                                <input type="date" name="available_date[]" id="available_date" class="form-control" required>
+                            </div>
+                        @endif
+                        <input type="hidden" value="{{$dcp->id}}" name="dcp_id">
+                        <input type="hidden" value="{{$dcp->user->role}}" name="role">
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -119,5 +147,10 @@
                 }
             });
         });
+
+        $("#available_days").select2({
+
+        });
+
     </script>
 @endsection

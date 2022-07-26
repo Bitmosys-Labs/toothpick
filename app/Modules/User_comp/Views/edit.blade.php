@@ -2,7 +2,7 @@
 @section('content')
     <div class="page-content container-fluid">
         <div class="page-header">
-            <h1 class="page-title">Edit User_comps </h1>
+            <h1 class="page-title">Edit Compliance Documents </h1>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('home') }}"><i class="fa fa-dashboard"></i> Home</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.user_comps') }}">user_comp</a></li>
@@ -22,13 +22,13 @@
                             <div class="form-group">
                                     <label for="comp_id">Comp_id</label><input type="text" value = "{{$user_comp->comp_id}}"  name="comp_id" id="comp_id" class="form-control" ></div><div class="form-group">
                                     <label for="user_id">User_id</label><input type="text" value = "{{$user_comp->user_id}}"  name="user_id" id="user_id" class="form-control" ></div><div class="form-group">
-                                    <label for="picture">Picture</label><input type="text" value = "{{$user_comp->picture}}"  name="picture" id="picture" class="form-control" ></div><div class="form-group">
+                                    <label for="picture">Picture</label><input type="file" value = "{{$user_comp->picture}}"  name="picture" id="picture" class="form-control" ></div><div class="form-group">
                                     <label for="status">Status</label><input type="text" value = "{{$user_comp->status}}"  name="status" id="status" class="form-control" ></div><div class="form-group">
-                                    <label for="validity">Validity</label><input type="text" value = "{{$user_comp->validity}}"  name="validity" id="validity" class="form-control" ></div><div class="form-group">
+                                    <label for="validity">Validity</label><input type="date" value = "{{$user_comp->validity}}"  name="validity" id="validity" class="form-control" ></div><div class="form-group">
                                     <label for="feedback">Feedback</label><input type="text" value = "{{$user_comp->feedback}}"  name="feedback" id="feedback" class="form-control" ></div><div class="form-group">
-                                    <label for="deleted_at">Deleted_at</label><input type="text" value = "{{$user_comp->deleted_at}}"  name="deleted_at" id="deleted_at" class="form-control" ></div><div class="form-group">
-                                    <label for="created_at">Created_at</label><input type="text" value = "{{$user_comp->created_at}}"  name="created_at" id="created_at" class="form-control" ></div><div class="form-group">
-                                    <label for="updated_at">Updated_at</label><input type="text" value = "{{$user_comp->updated_at}}"  name="updated_at" id="updated_at" class="form-control" ></div>
+{{--                                    <label for="deleted_at">Deleted_at</label><input type="text" value = "{{$user_comp->deleted_at}}"  name="deleted_at" id="deleted_at" class="form-control" ></div><div class="form-group">--}}
+{{--                                    <label for="created_at">Created_at</label><input type="text" value = "{{$user_comp->created_at}}"  name="created_at" id="created_at" class="form-control" ></div><div class="form-group">--}}
+{{--                                    <label for="updated_at">Updated_at</label><input type="text" value = "{{$user_comp->updated_at}}"  name="updated_at" id="updated_at" class="form-control" ></div>--}}
 <input type="hidden" name="id" id="id" value = "{{$user_comp->id}}" />
                             {{ csrf_field() }}
                         </div>

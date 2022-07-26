@@ -58,7 +58,7 @@ class DcpController extends Controller
                 ];
                 if ($request->hasFile('picture')) {
                     $file = $request->file('picture');
-                    $uploadPath = public_path('uploads/user_profile/');
+                    $uploadPath = public_path('uploads/compliance/');
                     $data['picture'] = $this->fileUpload($file, $uploadPath);
                 }
                 if(User_comp::where('user_id', auth()->user()->id)->where('comp_id', $request->id)->exists()){
@@ -102,7 +102,7 @@ class DcpController extends Controller
                 ];
                 if ($request->hasFile('picture')) {
                     $file = $request->file('picture');
-                    $uploadPath = public_path('uploads/user_profile/');
+                    $uploadPath = public_path('uploads/identity/');
                     $data['picture'] = $this->fileUpload($file, $uploadPath);
                 }
                 if(User_identity::where('user_id', auth()->user()->id)->where('ide_id', $request->id)->exists()){
@@ -127,7 +127,7 @@ class DcpController extends Controller
                 ];
                 if ($request->hasFile('picture')) {
                     $file = $request->file('picture');
-                    $uploadPath = public_path('uploads/user_profile/');
+                    $uploadPath = public_path('uploads/immunization/');
                     $data['picture'] = $this->fileUpload($file, $uploadPath);
                 }
                 if(User_immunization::where('user_id', auth()->user()->id)->where('imm_id', $request->id)->exists()){

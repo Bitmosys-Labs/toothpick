@@ -3,7 +3,9 @@
 namespace App\Modules\Dcp\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Availability\Model\Availability;
 use App\Modules\Booking\Model\Booking;
+use App\Modules\Day\Model\Day;
 use App\Modules\Staff\Model\Staff;
 use App\Core_modules\User\Model\User;
 use Auth;
@@ -172,10 +174,15 @@ class AdminDcpController extends Controller
     public function edit($id)
     {
         $dcp = Dcp::where('id', $id)->with('user')->with('practice.user')->first();
+        if($dcp->user->role == 2){
+            $availability = Dcp::where('id', $id)->with('user.available_dates')->first();
+        }else{
+            $availability = Dcp::where('id', $id)->with('user.availability')->first();
+        }
+        $days = Day::all();
         $staffs = Staff::all();
-//        dd($dcp);
         $page['title'] = 'Dcp | Update';
-        return view("Dcp::edit",compact('page','dcp', 'staffs'));
+        return view("Dcp::edit",compact('page','dcp', 'staffs', 'days', 'availability'));
 
         //
     }
@@ -262,5 +269,23 @@ class AdminDcpController extends Controller
 
         $page['title'] = 'Dcp | Assigned Bookings';
         return view("Dcp::bookings",compact('page', 'bookings'));
+    }
+
+    public function availability(Request $request){
+        if($request->role == 3){
+            $dcp = Dcp::where('id', $request->dcp_id)->with('user.availability')->first();
+            $dcp->user->availability()->delete();
+            for($i=0; $i<count($request->available_days); $i++){
+                $data = [
+                    'user_id' => $dcp->user->id,
+                    'days_id' => $request->available_days[$i],
+                ];
+                Availability::create($data);
+            }
+        }else{
+
+        }
+
+        return redirect()->route('admin.dcps');
     }
 }
