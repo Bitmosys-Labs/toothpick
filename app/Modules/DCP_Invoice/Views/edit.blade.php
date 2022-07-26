@@ -20,7 +20,7 @@
                         <input type="date" class="form-control" name="till_date" required><br>
                         <input type="hidden" name="user_id" value="{{$id}}">
 
-                        <a onclick="getTotalHour()" class="btn btn-success">Get</a><br>
+                        <a onClick='getTotalHour()' class="btn btn-success">Get</a><br>
                         <h2 id="Total_Hours"></h2>
                     </div>
                 </div>
@@ -67,7 +67,7 @@
     </div>
 
     <script>
-        function getTotalHour() {
+        function getTotalHour(){
             let till_date = $('input[name="fulltime"]').val();
             let user_id = $('input[name="user_id"]').val();
             $.ajax({
