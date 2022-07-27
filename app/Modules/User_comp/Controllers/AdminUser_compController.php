@@ -118,7 +118,7 @@ class AdminUser_compController extends Controller
         if ($request->hasFile('picture')) {
             $file = $request->file('picture');
             $uploadPath = public_path('uploads/compliance/');
-            $data['type'] = $this->fileUpload($file, $uploadPath);
+            $data['picture'] = $this->fileUpload($file, $uploadPath);
         }
         $compliance = Compliance::where('type', $request->comp_id)->first();
         $data['comp_id'] = $compliance->id;
@@ -162,7 +162,12 @@ class AdminUser_compController extends Controller
      */
     public function update(Request $request)
     {
-        $data = $request->except('_token', '_method');
+        $data = $request->except('_token', '_method', 'picture');
+        if ($request->hasFile('picture')) {
+            $file = $request->file('picture');
+            $uploadPath = public_path('uploads/compliance/');
+            $data['picture'] = $this->fileUpload($file, $uploadPath);
+        }
         $success = User_comp::where('id', $request->id)->update($data);
         return redirect()->route('admin.user_comps');
 
