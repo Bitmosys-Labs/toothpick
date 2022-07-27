@@ -12,6 +12,8 @@ Route::group(array('prefix'=>'admin/','module'=>'User_comp','middleware' => ['we
     Route::get('user_comps/edit/{id}','AdminUser_compController@edit')->name('admin.user_comps.edit');
     Route::match(['put', 'patch'], 'user_comps/update','AdminUser_compController@update')->name('admin.user_comps.update');
     Route::get('user_comps/delete/{id}', 'AdminUser_compController@destroy')->name('admin.user_comps.edit');
+    Route::get('user_comps/get/dcp', 'AdminUser_compController@getDcp')->name('admin.user_comps.get.dcp');
+
 });
 
 

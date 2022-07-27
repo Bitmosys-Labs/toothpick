@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Modules\Timesheet\Model;
+use App\Modules\Additional\Model\Additional;
 use App\Modules\Booking\Model\Booking;
 use App\Modules\Invoice\Model\Invoice;
-use App\Modules\Receipt\Model\Receipt;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
@@ -20,8 +20,8 @@ class Timesheet extends Model
         return $this->belongsTo(Booking::class, 'booking_id', 'id');
     }
 
-    public function receipt(){
-        return $this->hasOne(Receipt::class, 'timesheet_id', 'id');
+    public function additional(){
+        return $this->hasOne(Additional::class, 'invoice_id', 'id');
     }
 
     public function invoice()

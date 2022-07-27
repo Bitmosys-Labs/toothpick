@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Modules\Additional\Model;
-use App\Modules\Receipt\Model\Receipt;
+use App\Modules\Timesheet\Model\Timesheet;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
@@ -14,7 +14,7 @@ class Additional extends Model
 
     protected $fillable = ['id','invoice_id','amount','purpose','receipt','status','deleted_at','created_at','updated_at',];
 
-    public function receipt(){
-        return $this->belongsTo(Receipt::class, 'receipt_id', 'id');
+    public function timesheet(){
+        return $this->belongsTo(Timesheet::class, 'invoice_id', 'id');
     }
 }

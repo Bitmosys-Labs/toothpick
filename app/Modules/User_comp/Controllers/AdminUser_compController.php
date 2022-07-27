@@ -2,7 +2,9 @@
 
 namespace App\Modules\User_comp\Controllers;
 
+use App\Core_modules\User\Model\User;
 use App\Http\Controllers\Controller;
+use App\Modules\Compliance\Model\Compliance;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
@@ -99,7 +101,8 @@ class AdminUser_compController extends Controller
     public function create()
     {
         $page['title'] = 'User_comp | Create';
-        return view("User_comp::add",compact('page'));
+        $compliances = Compliance::select('type')->distinct()->get();
+        return view("User_comp::add",compact('page', 'compliances'));
         //
     }
 
@@ -112,6 +115,13 @@ class AdminUser_compController extends Controller
     public function store(Request $request)
     {
         $data = $request->except('_token');
+        if ($request->hasFile('picture')) {
+            $file = $request->file('picture');
+            $uploadPath = public_path('uploads/compliance/');
+            $data['type'] = $this->fileUpload($file, $uploadPath);
+        }
+        $compliance = Compliance::where('type', $request->comp_id)->first();
+        $data['comp_id'] = $compliance->id;
         $success = User_comp::Create($data);
         return redirect()->route('admin.user_comps');
         //
@@ -171,5 +181,39 @@ class AdminUser_compController extends Controller
         return redirect()->route('admin.user_comps');
 
         //
+    }
+
+    public function fileUpload($file, $path){
+        $ext = $file->getClientOriginalExtension();
+        $imageName = md5(microtime()) . '.' . $ext;
+        if (!$file->move($path, $imageName)) {
+            return redirect()->back();
+        }
+        return $imageName;
+    }
+
+    public function getDcp(Request $request){
+        if(!isset($request->searchTerm)){
+            $fetchData = User::select('*')->where('role', 2)->orWhere('role', 3)->limit(5)->get();
+            $data = array();
+            foreach ($fetchData as  $row){
+                $data[] = array(
+                    'id' => $row->id,
+                    'text' => $row->email
+                );
+            }
+        }
+        else{
+            $search = $request->searchTerm;
+            $fetchData = User::where('email', 'like', '%'.$search.'%' )->where('role', 2)->orWhere('role', 3)->limit(5)->get();
+            $data = array();
+            foreach ($fetchData as  $row){
+                $data[] = array(
+                    'id' => $row->id,
+                    'text' => $row->email
+                );
+            }
+        }
+        echo json_encode($data);
     }
 }

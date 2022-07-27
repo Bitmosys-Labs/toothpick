@@ -52,6 +52,7 @@ Route::group(['name' => 'dcp', 'middleware' => 'auth:sanctum'], function () {
     Route::post('dcpPasswordUpdate', 'Api\DCPProfileApiController@passwordUpdate');
     Route::post('dcpProfileUpdate', 'Api\DCPProfileApiController@updateProfile');
     Route::post('dcpKinUpdate', 'Api\DCPProfileApiController@updateKin');
+    Route::post('additionalExpenses', 'Api\DcpController@additionalExpenses');
 });
 
 Route::group(['name' => 'practice', 'middleware' => 'auth:sanctum'], function () {

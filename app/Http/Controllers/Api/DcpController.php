@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Core_modules\User\Model\User;
 use App\Http\Controllers\Controller;
+use App\Modules\Additional\Model\Additional;
 use App\Modules\Availability\Model\Availability;
 use App\Modules\Availability_date\Model\Availability_date;
 use App\Modules\Booking\Model\Booking;
@@ -23,6 +24,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Ramsey\Uuid\Type\Time;
 
 class DcpController extends Controller
 {
@@ -62,6 +64,7 @@ class DcpController extends Controller
                     $data['picture'] = $this->fileUpload($file, $uploadPath);
                 }
                 if(User_comp::where('user_id', auth()->user()->id)->where('comp_id', $request->id)->exists()){
+                    $data['status'] = 2;
                     $compliance->update($data);
                 }else{
                     $compliance->create($data);
@@ -106,6 +109,7 @@ class DcpController extends Controller
                     $data['picture'] = $this->fileUpload($file, $uploadPath);
                 }
                 if(User_identity::where('user_id', auth()->user()->id)->where('ide_id', $request->id)->exists()){
+                    $data['status'] = 2;
                     $identity->update($data);
                 }else{
                     $identity->create($data);
@@ -131,6 +135,7 @@ class DcpController extends Controller
                     $data['picture'] = $this->fileUpload($file, $uploadPath);
                 }
                 if(User_immunization::where('user_id', auth()->user()->id)->where('imm_id', $request->id)->exists()){
+                    $data['status'] = 2;
                     $immunization->update($data);
                 }else{
                     $immunization->create($data);
@@ -161,7 +166,7 @@ class DcpController extends Controller
     public function timesheet(){
         $timesheet = Timesheet::whereHas('booking.booking_status.user', function ($q){
             $q->where('id', auth()->user()->id);
-        })->get();
+        })->with('additional')->get();
 
         $response = [
             'success' => true,
@@ -341,6 +346,29 @@ class DcpController extends Controller
         }
     }
 
+    public function additionalExpenses(Request $request){
+        $timesheet = Timesheet::where('slug', $request->slug)->first();
+        $data = [
+            'invoice_id' => $timesheet->id,
+            'amount' => $request->amount,
+            'purpose' => $request->purpose,
+            'status' => 0,
+        ];
+        if ($request->hasFile('receipt')) {
+            $file = $request->file('receipt');
+            $uploadPath = public_path('uploads/additional/receipt');
+            $data['receipt'] = $this->fileUpload($file, $uploadPath);
+        }
+        Additional::create($data);
+        $response = [
+            'success' => true,
+            'message' => 'Data Recorded!',
+            'result' => $data
+        ];
+        return response($response, 200);
+    }
+
+
     public function fileUpload($file, $path){
         $ext = $file->getClientOriginalExtension();
         $imageName = md5(microtime()) . '.' . $ext;
@@ -349,4 +377,5 @@ class DcpController extends Controller
         }
         return $imageName;
     }
+
 }
