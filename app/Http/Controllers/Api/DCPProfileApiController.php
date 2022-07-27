@@ -67,7 +67,8 @@ class DCPProfileApiController extends Controller
         ];
         $user->update($user_data);
         $dcp->update($dcp_data);
-        $dcp->staff()->sync($request->staff_id);
+        $staff_id = explode(",",$request->staff_id);
+        $dcp->staff()->sync($staff_id);
         $response = [
             'success' => true,
             'message' => 'Profile Updated Successfully',
