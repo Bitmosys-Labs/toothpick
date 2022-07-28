@@ -146,7 +146,7 @@ class AdminUser_compController extends Controller
      */
     public function edit($id)
     {
-        $user_comp = User_comp::findOrFail($id);
+        $user_comp = User_comp::where($id)->with('compliance', 'dcp.user')->get();
         $page['title'] = 'User_comp | Update';
         return view("User_comp::edit",compact('page','user_comp'));
 

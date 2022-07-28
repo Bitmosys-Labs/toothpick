@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Core_modules\User\Model\User;
 use App\Http\Controllers\Controller;
 use App\Modules\Booking\Model\Booking;
 use App\Modules\Booking_status\Model\Booking_status;
 use App\Modules\Invoice\Model\Invoice;
 use App\Modules\Practice\Model\Practice;
 use App\Modules\Timesheet\Model\Timesheet;
-use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
