@@ -27,7 +27,7 @@
 {{--                                <input type="text" value = "{{$user_comp->user_id}}"  name="user_id" id="user_id" class="form-control" >--}}
                             </div><div class="form-group">
                                     <label for="picture">Picture</label><input type="file" value = "{{$user_comp->picture}}"  name="picture" id="picture" class="form-control" >
-                                    <a href="{{asset('public/uploads/compliance').'/'.$user_comp->picture}}}" target="_blank"><img src="{{asset('public/uploads/compliance').'/'.$user_comp->picture}}}" alt="Compliance"></a>
+                                    <a href="{{asset('public/uploads/compliance').'/'.$user_comp->picture}}" target="_blank"><img src="{{asset('public/uploads/compliance').'/'.$user_comp->picture}}" alt="Compliance"></a>
                             </div><div class="form-group">
                                     <label for="status">Status</label><input type="text" value = "{{$user_comp->status}}"  name="status" id="status" class="form-control" ></div><div class="form-group">
                                     <label for="validity">Validity</label><input type="date" value = "{{$user_comp->validity}}"  name="validity" id="validity" class="form-control" ></div><div class="form-group">
