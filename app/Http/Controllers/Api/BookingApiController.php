@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Core_modules\User\Model\User;
 use App\Http\Controllers\Controller;
 use App\Modules\Booking\Model\Booking;
 use App\Modules\Booking_status\Model\Booking_status;
 use App\Modules\Parking\Model\Parking;
 use App\Modules\Staff\Model\Staff;
 use App\Modules\Work_with\Model\Work_with;
-use App\User;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
