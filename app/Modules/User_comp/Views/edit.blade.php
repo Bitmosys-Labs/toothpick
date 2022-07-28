@@ -29,7 +29,7 @@
                                     <label for="picture">Picture</label><input type="file" value = "{{$user_comp->picture}}"  name="picture" id="picture" class="form-control" >
                                     <a href="{{asset('public/uploads/compliance').'/'.$user_comp->picture}}" target="_blank"><img src="{{asset('public/uploads/compliance').'/'.$user_comp->picture}}" width="200" height="200" alt="Compliance"></a>
                             </div><div class="form-group">
-                                    <label for="status">Status</label><input type="text" value = "{{$user_comp->status}}"  name="status" id="status" class="form-control" ></div><div class="form-group">
+{{--                                    <label for="status">Status</label><input type="text" value = "{{$user_comp->status}}"  name="status" id="status" class="form-control" ></div><div class="form-group">--}}
                                 <label for="status">Status</label>
                                 <select type="text" name="status" id="status" class="form-control" required>
                                     @if($user_comp->status == 1)

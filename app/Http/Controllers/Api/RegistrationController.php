@@ -148,7 +148,7 @@ class RegistrationController extends Controller
 
     public function me(Request $request){
             $data = User::where('id', auth()->user()->id)
-                ->select('id','name', 'email', 'status', 'role')
+                ->select('id','name', 'email', 'status', 'role', 'picture')
                 ->first();
             return $data;
     }
