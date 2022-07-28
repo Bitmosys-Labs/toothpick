@@ -27,11 +27,22 @@
 {{--                                <input type="text" value = "{{$user_comp->user_id}}"  name="user_id" id="user_id" class="form-control" >--}}
                             </div><div class="form-group">
                                     <label for="picture">Picture</label><input type="file" value = "{{$user_comp->picture}}"  name="picture" id="picture" class="form-control" >
-                                    <a href="{{asset('public/uploads/compliance').'/'.$user_comp->picture}}" target="_blank"><img src="{{asset('public/uploads/compliance').'/'.$user_comp->picture}}" alt="Compliance"></a>
+                                    <a href="{{asset('public/uploads/compliance').'/'.$user_comp->picture}}" target="_blank"><img src="{{asset('public/uploads/compliance').'/'.$user_comp->picture}}" width="200" height="200" alt="Compliance"></a>
                             </div><div class="form-group">
                                     <label for="status">Status</label><input type="text" value = "{{$user_comp->status}}"  name="status" id="status" class="form-control" ></div><div class="form-group">
+                                <label for="status">Status</label>
+                                <select type="text" name="status" id="status" class="form-control" required>
+                                    @if($user_comp->status == 1)
+                                        <option value="0">Pending</option>
+                                        <option value="1" selected>Approved</option>
+                                    @else
+                                        <option value="0" selected>Pending</option>
+                                        <option value="1">Approved</option>
+                                    @endif
+                                </select>
+                            </div><div class="form-group">
                                     <label for="validity">Validity</label><input type="date" value = "{{$user_comp->validity}}"  name="validity" id="validity" class="form-control" ></div><div class="form-group">
-                                    <label for="feedback">Feedback</label><input type="text" value = "{{$user_comp->feedback}}"  name="feedback" id="feedback" class="form-control" ></div><div class="form-group">
+                                <label for="feedback">Feedback</label><textarea type="text"  name="feedback" id="feedback" class="form-control" >{!! $user_comp->feedback !!}</textarea></div><div class="form-group">
 {{--                                    <label for="deleted_at">Deleted_at</label><input type="text" value = "{{$user_comp->deleted_at}}"  name="deleted_at" id="deleted_at" class="form-control" ></div><div class="form-group">--}}
 {{--                                    <label for="created_at">Created_at</label><input type="text" value = "{{$user_comp->created_at}}"  name="created_at" id="created_at" class="form-control" ></div><div class="form-group">--}}
 {{--                                    <label for="updated_at">Updated_at</label><input type="text" value = "{{$user_comp->updated_at}}"  name="updated_at" id="updated_at" class="form-control" ></div>--}}
@@ -47,4 +58,10 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $('#feedback').summernote({
+            height: 100
+        });
+    </script>
 @endsection
