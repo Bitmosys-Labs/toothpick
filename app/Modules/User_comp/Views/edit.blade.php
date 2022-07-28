@@ -16,7 +16,7 @@
             </header>
             <div class="panel-body">
                 <div class="table-responsive">
-                    <form role="form" action="{{ route('admin.user_comps.update')}}"  method="post">
+                    <form role="form" action="{{ route('admin.user_comps.update')}}"  method="post" enctype="multipart/form-data">
                         <div class="box-body">
                             {{method_field('PATCH')}}
                             <div class="form-group">

@@ -3,6 +3,7 @@
 namespace App\Modules\User_immunization\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Immunization\Model\Immunization;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
@@ -99,7 +100,8 @@ class AdminUser_immunizationController extends Controller
     public function create()
     {
         $page['title'] = 'User_immunization | Create';
-        return view("User_immunization::add",compact('page'));
+        $immunizations = Immunization::select('type')->distinct()->get();
+        return view("User_immunization::add",compact('page', 'immunizations'));
         //
     }
 
@@ -111,7 +113,14 @@ class AdminUser_immunizationController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->except('_token');
+        $data = $request->except('_token', 'picture');
+        if ($request->hasFile('picture')) {
+            $file = $request->file('picture');
+            $uploadPath = public_path('uploads/immunization/');
+            $data['picture'] = $this->fileUpload($file, $uploadPath);
+        }
+        $imm = Immunization::where('type', $request->imm_id)->first();
+        $data['imm_id'] = $imm->id;
         $success = User_immunization::Create($data);
         return redirect()->route('admin.user_immunizations');
         //
@@ -136,7 +145,7 @@ class AdminUser_immunizationController extends Controller
      */
     public function edit($id)
     {
-        $user_immunization = User_immunization::findOrFail($id);
+        $user_immunization = User_immunization::where('id',$id)->with('dcp.user', 'immunization')->first();
         $page['title'] = 'User_immunization | Update';
         return view("User_immunization::edit",compact('page','user_immunization'));
 
@@ -152,7 +161,12 @@ class AdminUser_immunizationController extends Controller
      */
     public function update(Request $request)
     {
-        $data = $request->except('_token', '_method');
+        $data = $request->except('_token', '_method', 'picture');
+        if ($request->hasFile('picture')) {
+            $file = $request->file('picture');
+            $uploadPath = public_path('uploads/immunization/');
+            $data['picture'] = $this->fileUpload($file, $uploadPath);
+        }
         $success = User_immunization::where('id', $request->id)->update($data);
         return redirect()->route('admin.user_immunizations');
 
@@ -171,5 +185,14 @@ class AdminUser_immunizationController extends Controller
         return redirect()->route('admin.user_immunizations');
 
         //
+    }
+
+    public function fileUpload($file, $path){
+        $ext = $file->getClientOriginalExtension();
+        $imageName = md5(microtime()) . '.' . $ext;
+        if (!$file->move($path, $imageName)) {
+            return redirect()->back();
+        }
+        return $imageName;
     }
 }

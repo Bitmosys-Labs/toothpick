@@ -3,6 +3,7 @@
 namespace App\Modules\User_identity\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Identity\Model\Identity;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
@@ -99,7 +100,8 @@ class AdminUser_identityController extends Controller
     public function create()
     {
         $page['title'] = 'User_identity | Create';
-        return view("User_identity::add",compact('page'));
+        $identities = Identity::select('type')->distinct()->get();
+        return view("User_identity::add",compact('page', 'identities'));
         //
     }
 
@@ -111,7 +113,14 @@ class AdminUser_identityController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->except('_token');
+        $data = $request->except('_token', 'picture');
+        if ($request->hasFile('picture')) {
+            $file = $request->file('picture');
+            $uploadPath = public_path('uploads/identity/');
+            $data['picture'] = $this->fileUpload($file, $uploadPath);
+        }
+        $compliance = Identity::where('type', $request->ide_id)->first();
+        $data['ide_id'] = $compliance->id;
         $success = User_identity::Create($data);
         return redirect()->route('admin.user_identities');
         //
@@ -136,7 +145,7 @@ class AdminUser_identityController extends Controller
      */
     public function edit($id)
     {
-        $user_identity = User_identity::findOrFail($id);
+        $user_identity = User_identity::where('id',$id)->with('identity', 'dcp.user')->first();
         $page['title'] = 'User_identity | Update';
         return view("User_identity::edit",compact('page','user_identity'));
 
@@ -152,7 +161,12 @@ class AdminUser_identityController extends Controller
      */
     public function update(Request $request)
     {
-        $data = $request->except('_token', '_method');
+        $data = $request->except('_token', '_method', 'picture');
+        if ($request->hasFile('picture')) {
+            $file = $request->file('picture');
+            $uploadPath = public_path('uploads/identity/');
+            $data['picture'] = $this->fileUpload($file, $uploadPath);
+        }
         $success = User_identity::where('id', $request->id)->update($data);
         return redirect()->route('admin.user_identities');
 
@@ -171,5 +185,14 @@ class AdminUser_identityController extends Controller
         return redirect()->route('admin.user_identities');
 
         //
+    }
+
+    public function fileUpload($file, $path){
+        $ext = $file->getClientOriginalExtension();
+        $imageName = md5(microtime()) . '.' . $ext;
+        if (!$file->move($path, $imageName)) {
+            return redirect()->back();
+        }
+        return $imageName;
     }
 }

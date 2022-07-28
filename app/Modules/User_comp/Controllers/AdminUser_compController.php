@@ -114,7 +114,7 @@ class AdminUser_compController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->except('_token');
+        $data = $request->except('_token', 'picture');
         if ($request->hasFile('picture')) {
             $file = $request->file('picture');
             $uploadPath = public_path('uploads/compliance/');

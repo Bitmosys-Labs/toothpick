@@ -17,7 +17,7 @@
             </header>
             <div class="panel-body">
                 <div class="table-responsive">
-                    <form role="form" action="{{ route('admin.user_comps.store') }}"  method="post">
+                    <form role="form" action="{{ route('admin.user_comps.store') }}"  method="post" enctype="multipart/form-data">
                         <div class="box-body">
                             <div class="form-group">
                                     <label for="comp_id">Compliance</label>
