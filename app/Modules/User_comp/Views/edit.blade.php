@@ -20,7 +20,7 @@
                         <div class="box-body">
                             {{method_field('PATCH')}}
                             <div class="form-group">
-{{--                                    <label for="comp_id">Compliance: {{$user_comp->compliance->type}}</label>--}}
+                                    <label for="comp_id">Compliance: {{$user_comp->compliance->type}}</label>
 {{--                                <input type="text" value = "{{$user_comp->comp_id}}"  name="comp_id" id="comp_id" class="form-control" >--}}
                             </div><div class="form-group">
                                     <label for="user_id">User: {{$user_comp->dcp->user->email}}</label>
