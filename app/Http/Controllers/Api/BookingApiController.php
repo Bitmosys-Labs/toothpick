@@ -33,6 +33,7 @@ class BookingApiController extends Controller
     public function BookingCreate(Request $request){
         if (auth()->check()) {
             $count = count($request->staff_id);
+            $user = User::where('id',auth()->user()->id)->with('practice')->first();
             $booking_info = new Booking();
             for ($i = 0; $i < $count; $i++) {
                 do{
@@ -47,7 +48,7 @@ class BookingApiController extends Controller
                 $booking_info_data['parking'] = $request->parking;
                 $booking_info_data['additional'] = $request->additional_info;
                 $booking_info_data['work_with'] = $request->work_with;
-                $booking_info_data['other'] = $request->other.auth()->user()->practice()->parking;
+                $booking_info_data['other'] = $request->other.$user->practice->parking;
                 $booking_info_data['status'] = 0;
                 try{
                     $booking = $booking_info->create($booking_info_data);
