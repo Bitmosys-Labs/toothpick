@@ -20,14 +20,14 @@
                         <div class="box-body">
                             {{method_field('PATCH')}}
                             <div class="form-group">
-                                    <label for="comp_id">Compliance: {{$user_comp->compliance->type}}</label>
+                                    <h3>Compliance: {{$user_comp->compliance->type}}</h3>
 {{--                                <input type="text" value = "{{$user_comp->comp_id}}"  name="comp_id" id="comp_id" class="form-control" >--}}
                             </div><div class="form-group">
-                                    <label for="user_id">User: {{$user_comp->dcp->user->email}}</label>
+                                    <h3>User: {{$user_comp->dcp->user->email}}</h3>
 {{--                                <input type="text" value = "{{$user_comp->user_id}}"  name="user_id" id="user_id" class="form-control" >--}}
                             </div><div class="form-group">
                                     <label for="picture">Picture</label><input type="file" value = "{{$user_comp->picture}}"  name="picture" id="picture" class="form-control" >
-                                    <a href="{{asset('uploads/compliance').'/'.$user_comp->picture}}}" target="_blank"><img src="{{asset('uploads/compliance').'/'.$user_comp->picture}}}" alt="Compliance"></a>
+                                    <a href="{{public_path('uploads/compliance').'/'.$user_comp->picture}}}" target="_blank"><img src="{{public_path('uploads/compliance').'/'.$user_comp->picture}}}" alt="Compliance"></a>
                             </div><div class="form-group">
                                     <label for="status">Status</label><input type="text" value = "{{$user_comp->status}}"  name="status" id="status" class="form-control" ></div><div class="form-group">
                                     <label for="validity">Validity</label><input type="date" value = "{{$user_comp->validity}}"  name="validity" id="validity" class="form-control" ></div><div class="form-group">
