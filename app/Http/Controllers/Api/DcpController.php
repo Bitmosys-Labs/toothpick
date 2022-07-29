@@ -153,7 +153,7 @@ class DcpController extends Controller
     public function booking(){
         $booking = Booking::whereHas('booking_status', function ($q){
             $q->where('user_id', auth()->user()->id);
-        })->with('practice.user')->get();
+        })->with('practice.user')->orderBy('booking.id', 'DESC')->get();
 
         $response = [
             'success' => true,
@@ -166,18 +166,18 @@ class DcpController extends Controller
     public function timesheet(){
         $timesheet = Timesheet::whereHas('booking.booking_status.user', function ($q){
             $q->where('id', auth()->user()->id);
-        })->with('additional')->get();
+        })->with('additional')->orderBy('timesheet.id', 'DESC')->get();
 
         $response = [
             'success' => true,
             'message' => 'User Booking Data',
             'result' => $timesheet
         ];
-        return response($response, 200);
+        return response($response, '200');
     }
 
     public function recordTimesheet(Request $request){
-//        try{
+        try{
             $timesheet = new Timesheet();
             $booking = Booking::where('slug', $request->slug)->whereHas('booking_status', function ($q){
                 return $q->where('user_id', auth()->user()->id);
@@ -264,15 +264,15 @@ class DcpController extends Controller
                 ];
                 return response($response, 400);
             }
-//        }
-//        catch (\Exception $e){
-//            $response = [
-//                'success' => false,
-//                'message' => 'Something Went Wrong!',
-//                'result' => null
-//            ];
-//            return response($response, 400);
-//        }
+        }
+        catch (\Exception $e){
+            $response = [
+                'success' => false,
+                'message' => 'Something Went Wrong!',
+                'result' => null
+            ];
+            return response($response, 400);
+        }
 
     }
 

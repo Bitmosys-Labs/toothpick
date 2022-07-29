@@ -97,7 +97,7 @@ class PracticeController extends Controller
     }
 
     public function listBooking(){
-        $booking = Booking::where('practice_id', auth()->user()->id)->with('booking_status.user', 'parking', 'staff')->get();
+        $booking = Booking::where('practice_id', auth()->user()->id)->with('booking_status.user', 'parking', 'staff')->orderBy('booking.id', 'DESC')->get();
         $response = [
             'success' => true,
             'message' => 'Data successfully registered',
